@@ -12,7 +12,7 @@ Hack your Amazon Dash to run what you want.
 
 2. Use discovery mode to know the mac of your Dash (Run the program, and then press the button):
 
-.. code::
+.. code:: bash
 
     sudo amazon-dash discovery
 
@@ -20,6 +20,7 @@ Hack your Amazon Dash to run what you want.
 3. Create a config file:
 
 .. code:: yaml
+
     # amazon-dash.yml
     # ---------------
     settings:
