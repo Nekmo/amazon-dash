@@ -6,6 +6,7 @@ import logging
 
 import sys
 
+from amazon_dash.listener import Listener
 
 CONFIG_FILE = 'amazon-dash.yml'
 
@@ -90,7 +91,7 @@ def execute_from_command_line(argv=None):
     create_logger('amazon-dash', args.loglevel)
 
     if not getattr(args, 'which', None) or args.which == 'run':
-        pass
+        Listener(args.config).run()
     elif args.which == 'discovery':
         from amazon_dash.discovery import discover
         discover()
