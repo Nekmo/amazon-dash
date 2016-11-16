@@ -5,7 +5,7 @@ setup(
     name='amazon-dash',
     version=__version__,
     packages=['amazon_dash'],
-    url='',
+    url='https://github.com/Nekmo/amazon-dash',
     license='',
     author='Nekmo',
     author_email='contacto@nekmo.com',
