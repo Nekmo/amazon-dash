@@ -18,7 +18,7 @@ class Listener(object):
         self.mac_devices = list(map(str.lower, self.config['devices'].keys()))
 
     def on_push(self, device):
-        if last_execution[device.src] + self.settings.get('delay', 10) > time.time():
+        if last_execution[device.src] + self.settings.get('delay', DEFAULT_DELAY) > time.time():
             return
         last_execution[device.src] = time.time()
         print_pkt(device)
