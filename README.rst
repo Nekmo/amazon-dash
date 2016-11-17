@@ -2,6 +2,14 @@
 .. image:: https://raw.githubusercontent.com/Nekmo/amazon-dash/master/amazon-dash.png
     :width: 100%
 
+.. image:: https://img.shields.io/pypi/v/amazon-dash.svg?style=flat-square
+  :target: https://pypi.python.org/pypi/amazon-dash
+  :alt: Latest PyPI version
+
+.. image:: https://img.shields.io/pypi/pyversions/amazon-dash.svg?style=flat-square
+  :target: https://pypi.python.org/pypi/amazon-dash
+  :alt: Python versions
+
 
 Python Amazon Dash
 ##################
