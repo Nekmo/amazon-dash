@@ -271,6 +271,11 @@ for version in range(2, 4):
         break
 CLASSIFIERS.extend(['Programming Language :: Python :: %s' % version for version in python_versions])
 
+CLASSIFIERS.extend([
+    'Natural Language :: {}'.format(NATURAL_LANGUAGE),
+    'Development Status :: {} - {}'.format(STATUS_LEVEL, status_name),
+])
+
 setup(
     name=PACKAGE_NAME,
     version=package_version,
@@ -283,10 +288,7 @@ setup(
 
     url=URL,
 
-    classifiers=CLASSIFIERS.extend([
-        'Natural Language :: {}'.format(NATURAL_LANGUAGE),
-        'Development Status :: {} - {}'.format(STATUS_LEVEL, status_name),
-    ]),
+    classifiers=CLASSIFIERS,
 
     platforms=PLATFORMS,
 
