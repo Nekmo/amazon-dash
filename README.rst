@@ -55,8 +55,8 @@ Easy mode: Do not choose the product to buy when setting up
 When you first set your button, you are asked which product you want to buy when you press the button. If you do not
 choose an option, the button will work, but an order will not be created.
 
-However, in order to take advantage of the free balance ($5/€5/£5), it is necessary to choose a product. The solution is
- after ordering, deactivate the button, reconfigure it, and not choosing the product the second time.
+However, in order to take advantage of the free balance ($5/€5/£5), it is necessary to choose a product. The solution 
+is after ordering, deactivate the button, reconfigure it, and not choosing the product the second time.
 
 However, you will receive an alert in the Amazon application every time you press the button asking you to finish the
 configuration. You can turn off notifications, delete the application, or use another Amazon account.
