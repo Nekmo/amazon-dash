@@ -1,5 +1,5 @@
 
-.. image:: https://github.com/Nekmo/amazon-dash/blob/master/amazon-dash.png
+.. image:: https://raw.githubusercontent.com/Nekmo/amazon-dash/master/amazon-dash.png
     :width: 100%
 
 
