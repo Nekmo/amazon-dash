@@ -79,3 +79,15 @@ Raspberry PI solution
 You can use the Raspberry PI as a router if you have 2 network cards. The method is similar to the previous one, but
 being a Linux system you can use iptables.
 
+
+Why root is required
+====================
+This program needs permission to open raw sockets on your system. You can set this permission using setcap, but you
+must be very careful about who can run the program. Raw sockets permission could allow scaling permissions on the
+system::
+
+    setcap cap_net_raw=eip /usr/bin/pythonX.X
+    setcap cap_net_raw=eip /usr/bin/tcpdump
+
+http://stackoverflow.com/questions/36215201/python-scapy-sniff-without-root
+
