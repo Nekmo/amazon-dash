@@ -1,3 +1,8 @@
+
+.. image:: https://github.com/Nekmo/amazon-dash/blob/master/amazon-dash.png
+    :width: 100%
+
+
 Python Amazon Dash
 ##################
 Hack your Amazon Dash to run what you want. Without welders. For the entire family.
