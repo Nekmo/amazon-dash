@@ -10,6 +10,11 @@
   :target: https://pypi.python.org/pypi/amazon-dash
   :alt: Python versions
 
+.. image:: https://img.shields.io/codeclimate/github/Nekmo/amazon-dash.svg?style=flat-square
+  :target: https://codeclimate.com/github/Nekmo/amazon-dash
+  :alt: Code Climate
+
+
 
 Python Amazon Dash
 ##################
