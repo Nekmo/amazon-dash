@@ -14,6 +14,9 @@
   :target: https://codeclimate.com/github/Nekmo/amazon-dash
   :alt: Code Climate
 
+.. image:: https://img.shields.io/requires/github/Nekmo/amazon-dash.svg?style=flat-square
+     :target: https://requires.io/github/Nekmo/amazon-dash/requirements/?branch=master
+     :alt: Requirements Status
 
 
 Python Amazon Dash
