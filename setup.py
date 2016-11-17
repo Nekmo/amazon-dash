@@ -45,7 +45,14 @@ PLATFORMS = [
     # 'ios'
     # 'android'
 ]
-ROOT_INCLUDE = ['requirements.txt', 'VERSION', 'LICENSE.txt']
+ROOT_INCLUDE = [
+    'requirements.txt',
+    'common-requirements.txt',
+    'py2-requirements.txt',
+    'py3-requirements.txt',
+    'VERSION',
+    'LICENSE.txt'
+]
 PYTHON_VERSIONS = ['2', '3']
 
 ######## FIN DE LA CONFIGURACIÓN DEL PAQUTE ########
@@ -58,7 +65,7 @@ readme_path = os.path.join(__dir__, 'README')
 if not os.path.exists(readme_path):
     readme_path = os.path.join(__dir__, 'README.md')
 version_path = os.path.join(__dir__, 'VERSION')
-requirements_path = os.path.join(__dir__, 'requirements.txt')
+requirements_path = os.path.join(__dir__, 'py{}-requirements.txt'.format(sys.version_info.major))
 scripts_path = os.path.join(__dir__, 'scripts')
 
 
