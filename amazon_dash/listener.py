@@ -5,6 +5,8 @@ import logging
 
 import subprocess
 
+import os
+
 from amazon_dash.config import Config
 from amazon_dash.scan import scan, print_pkt
 
@@ -13,6 +15,13 @@ DEFAULT_DELAY = 10
 
 last_execution = defaultdict(lambda: 0)
 logger = logging.getLogger('amazon-dash')
+
+
+def run_as_cmd(cmd, user):
+    if os.getuid():
+        # Is't root
+        return cmd
+    return 'sudo -s --set-home -u {} {}'.format(user, cmd)
 
 
 def check_execution_success(cmd, p):
@@ -33,6 +42,7 @@ class Device(object):
         self.src = getattr(device, 'src', device).lower()
         self.data = data
         self.cmd = data.get('cmd')
+        self.user = data.get('user')
         self.cwd = data.get('cwd')
 
     @property
@@ -44,7 +54,10 @@ class Device(object):
         if not self.cmd:
             logger.warning('%s: There is no cmd in device conf.', self.name)
             return
-        execute(self.cmd, self.cwd)
+        cmd = self.cmd
+        if self.user:
+            cmd = run_as_cmd(cmd, self.user)
+        execute(cmd, self.cwd)
 
 
 class Listener(object):
