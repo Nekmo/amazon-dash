@@ -2,12 +2,14 @@
 .. image:: https://raw.githubusercontent.com/Nekmo/amazon-dash/master/amazon-dash.png
     :width: 100%
 
+|
+
 .. image:: https://img.shields.io/pypi/v/amazon-dash.svg?style=flat-square
-  :target: https://pypi.python.org/pypi/amazon-dash
+  :target: https://pypi.org/project/amazon-dash/
   :alt: Latest PyPI version
 
 .. image:: https://img.shields.io/pypi/pyversions/amazon-dash.svg?style=flat-square
-  :target: https://pypi.python.org/pypi/amazon-dash
+  :target: https://pypi.org/project/amazon-dash/
   :alt: Python versions
 
 .. image:: https://img.shields.io/codeclimate/github/Nekmo/amazon-dash.svg?style=flat-square
