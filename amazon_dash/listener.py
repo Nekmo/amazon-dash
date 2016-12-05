@@ -12,26 +12,33 @@ from amazon_dash.scan import scan
 
 
 DEFAULT_DELAY = 10
+EXECUTE_SHELL_PARAM = '-c'
 
 last_execution = defaultdict(lambda: 0)
 logger = logging.getLogger('amazon-dash')
 
 
-def run_as_cmd(cmd, user):
+def get_shell(name):
+    if name.startswith('/'):
+        return [name]
+    return ['/usr/bin/env', name]
+
+
+def run_as_cmd(cmd, user, shell='bash'):
     if os.getuid():
-        # Is't root
+        # Is not root
         return cmd
-    return 'sudo -s --set-home -u {} {}'.format(user, cmd)
+    return ['sudo', '-s', '--set-home', '-u', user] + get_shell(shell) + [EXECUTE_SHELL_PARAM, cmd]
 
 
 def check_execution_success(cmd, p):
     stdout, stderr = p.communicate()
     if p.returncode:
-        logger.error('%i return code on "%s" command. Stderr: %s', p.returncode, cmd, stderr)
+        logger.error('%i return code on "%s" command. Stderr: %s', p.returncode, ' '.join(cmd), stderr)
 
 
 def execute(cmd, cwd=None):
-    p = subprocess.Popen(cmd, shell=True, cwd=cwd, stderr=subprocess.PIPE)
+    p = subprocess.Popen(cmd, cwd=cwd, stderr=subprocess.PIPE)
     l = threading.Thread(target=check_execution_success, args=(cmd, p))
     l.daemon = True
     l.start()
