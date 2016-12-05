@@ -1,5 +1,3 @@
-from threading import Thread
-
 from .scan import scan, print_pkt
 
 mac_id_list = []

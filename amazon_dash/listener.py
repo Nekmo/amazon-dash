@@ -8,7 +8,7 @@ import subprocess
 import os
 
 from amazon_dash.config import Config
-from amazon_dash.scan import scan, print_pkt
+from amazon_dash.scan import scan
 
 
 DEFAULT_DELAY = 10
