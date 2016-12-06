@@ -86,5 +86,5 @@ class Listener(object):
         device = self.devices[src]
         device.execute()
 
-    def run(self):
+    def run(self, root_allowed=False):
         scan(self.on_push, lambda d: d.src.lower() in self.devices)
