@@ -1,3 +1,4 @@
+import getpass
 import threading
 from collections import defaultdict
 import time
@@ -8,11 +9,13 @@ import subprocess
 import os
 
 from amazon_dash.config import Config
+from amazon_dash.exceptions import SecurityException
 from amazon_dash.scan import scan
 
 
 DEFAULT_DELAY = 10
 EXECUTE_SHELL_PARAM = '-c'
+ROOT_USER = 'root'
 
 last_execution = defaultdict(lambda: 0)
 logger = logging.getLogger('amazon-dash')
@@ -49,25 +52,28 @@ class Device(object):
         self.src = getattr(device, 'src', device).lower()
         self.data = data
         self.cmd = data.get('cmd')
-        self.user = data.get('user')
+        self.user = data.get('user', getpass.getuser())
         self.cwd = data.get('cwd')
 
     @property
     def name(self):
         return self.data.get('name', self.src)
 
-    def execute(self):
+    def execute(self, root_allowed=False):
         logger.debug('%s device executed (mac %s)', self.name, self.src)
         if not self.cmd:
             logger.warning('%s: There is no cmd in device conf.', self.name)
             return
         cmd = self.cmd
-        if self.user:
-            cmd = run_as_cmd(cmd, self.user)
+        if self.user == ROOT_USER and not root_allowed:
+            raise SecurityException('For security, execution as root is not allowed.')
+        cmd = run_as_cmd(cmd, self.user)
         execute(cmd, self.cwd)
 
 
 class Listener(object):
+    root_allowed = False
+
     def __init__(self, config_path):
         self.config = Config(config_path)
         self.settings = self.config.get('settings', {})
@@ -84,7 +90,8 @@ class Listener(object):
     def execute(self, device):
         src = device.src.lower()
         device = self.devices[src]
-        device.execute()
+        device.execute(root_allowed=self.root_allowed)
 
     def run(self, root_allowed=False):
+        self.root_allowed = root_allowed
         scan(self.on_push, lambda d: d.src.lower() in self.devices)

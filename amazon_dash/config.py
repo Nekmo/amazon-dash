@@ -1,14 +1,14 @@
 import os
 import stat
-from yaml import load, dump
+
+from yaml import load
+
+from amazon_dash.exceptions import SecurityException
+
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
 except ImportError:
     from yaml import Loader, Dumper
-
-
-class SecurityException(Exception):
-    pass
 
 
 def bitperm(s, perm, pos):
@@ -37,7 +37,7 @@ def only_root_write(path):
 class Config(dict):
     def __init__(self, file, **kwargs):
         super().__init__(**kwargs)
-        if (os.getuid() and not only_root_write(file)) or oth_w_perm(file):
+        if (not os.getuid() and not only_root_write(file)) or oth_w_perm(file):
             raise SecurityException('There should be no permissions for other users in the file "{}". {}.'.format(
                 file, 'Removes write permission for others' if os.getuid()
                 else 'Only root must be able to write to file'
