@@ -28,9 +28,6 @@ def get_shell(name):
 
 
 def run_as_cmd(cmd, user, shell='bash'):
-    if os.getuid():
-        # Is not root
-        return cmd
     return ['sudo', '-s', '--set-home', '-u', user] + get_shell(shell) + [EXECUTE_SHELL_PARAM, cmd]
 
 

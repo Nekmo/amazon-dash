@@ -40,7 +40,7 @@ Hack your Amazon Dash to run what you want. Without welders. For the entire fami
     sudo amazon-dash discovery
 
 
-3. Create a config file:
+3. Create a config file (``amazon-dash.yml``):
 
 .. code:: yaml
 
@@ -98,12 +98,27 @@ You can use the Raspberry PI as a router if you have 2 network cards. The method
 being a Linux system you can use iptables.
 
 
+Troubleshooting
+===============
+
+Requirements and installation
+-----------------------------
+All dependencies are commonly used on a Linux system, but some may not be installed on your system. The dependencies
+are:
+
+    * Python 2.7 or 3.4+.
+    * Python-pip (pip).
+    * tcpdump.
+    * Sudo
+
+
 Why root is required
 ====================
 This program needs permission to open raw sockets on your system. You can set this permission using setcap, but you
 must be very careful about who can run the program. Raw sockets permission could allow scaling permissions on the
 system::
 
+    setcap cap_net_raw=eip ./scripts/amazon-dash
     setcap cap_net_raw=eip /usr/bin/pythonX.X
     setcap cap_net_raw=eip /usr/bin/tcpdump
 
