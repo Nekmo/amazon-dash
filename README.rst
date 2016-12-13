@@ -98,6 +98,14 @@ You can use the Raspberry PI as a router if you have 2 network cards. The method
 being a Linux system you can use iptables.
 
 
+Examples
+========
+Here are some examples of how to use your Amazon Dash button:
+
+* **Random Episode**: Play a random chapter of your favorite series,
+like *The Simpsons*, *Futurama*, *Friends*... https://github.com/Nekmo/random-episode
+
+
 Troubleshooting
 ===============
 
@@ -108,7 +116,7 @@ are:
 
     * Python 2.7 or 3.4+.
     * Python-pip (pip).
-    * tcpdump.
+    * Tcpdump.
     * Sudo
 
 

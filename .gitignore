@@ -11,6 +11,7 @@ __pycache__/
 .Python
 env/
 build/
+/random-episode.yml
 develop-eggs/
 dist/
 downloads/
