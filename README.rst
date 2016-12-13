@@ -102,8 +102,7 @@ Examples
 ========
 Here are some examples of how to use your Amazon Dash button:
 
-* **Random Episode**: Play a random chapter of your favorite series,
-like *The Simpsons*, *Futurama*, *Friends*... https://github.com/Nekmo/random-episode
+* **Random Episode**: Play a random chapter of your favorite series, like *The Simpsons*, *Futurama*, *Friends*... https://github.com/Nekmo/random-episode
 
 
 Troubleshooting
