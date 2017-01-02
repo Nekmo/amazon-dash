@@ -1,4 +1,4 @@
-common-requirements.txt
-py2-requirements.txt
-py3-requirements.txt
-README.rst
+include common-requirements.txt
+include py2-requirements.txt
+include py3-requirements.txt
+include README.rst
