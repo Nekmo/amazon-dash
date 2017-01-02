@@ -21,6 +21,8 @@
      :alt: Requirements Status
 
 
+.. index::
+
 Python Amazon Dash
 ##################
 Hack your Amazon Dash to run what you want. Without welders. For the entire family.
@@ -64,6 +66,13 @@ Hack your Amazon Dash to run what you want. Without welders. For the entire fami
 .. code:: bash
 
     sudo amazon-dash run
+
+Contents
+========
+- `Avoid making a purchase by pressing the button <#avoid-making-a-purchase-by-pressing-the-button>`_.
+- `Examples <#examples>`_
+- `Troubleshooting <#troubleshooting>`_
+- `References <#references>`_
 
 
 Avoid making a purchase by pressing the button
