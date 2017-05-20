@@ -64,7 +64,7 @@ def execute_from_command_line(argv=None):
     A simple method that runs a ManagementUtility.
     """
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config', default=CONFIG_FILE)
+    parser.add_argument('--config', default=CONFIG_FILE, help='Path to config file.')
 
     parser.add_argument('--warning', help='set logging to warning', action='store_const', dest='loglevel',
                         const=logging.WARNING, default=logging.INFO)

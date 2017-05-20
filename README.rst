@@ -65,13 +65,20 @@ Hack your Amazon Dash to run what you want. Without welders. For the entire fami
 
 .. code:: bash
 
-    sudo amazon-dash run
+    sudo amazon-dash[ --config amazon-dash.yml] run
+
+By default, `amazon-dash` will use the `amazon-dash.yml` file in the current directory with `sudo amazon-dash run`.
+However, you can set the path to the file (for example, `/etc/amazon-dash.yml`) with `--config`.
+Please note that `--config` must be before `run`.
+
 
 Contents
 ========
 - `Avoid making a purchase by pressing the button <#avoid-making-a-purchase-by-pressing-the-button>`_.
+- `Run at startup <#run-at-startup>`_
 - `Examples <#examples>`_
 - `Troubleshooting <#troubleshooting>`_
+- `Why Root is required <#why-root-is-required>`_
 - `References <#references>`_
 
 
@@ -105,6 +112,17 @@ Raspberry PI solution
 ---------------------
 You can use the Raspberry PI as a router if you have 2 network cards. The method is similar to the previous one, but
 being a Linux system you can use iptables.
+
+
+Run at startup
+==============
+This example is for systems with **Systemd**. The files of the services are in this `link <https://github.com/Nekmo/amazon-dash/tree/master/services>`_.
+If your system is not supported, feel free to do a **pull request**.
+
+1. Copy `amazon-dash.service` to `/etc/systemd/system/`.
+2. Create your config file in `/etc/amazon-dash.yml`.
+3. Enable your service with `sudo systemctl enable amazon-dash`.
+4. Start your service with `sudo systemctl start amazon-dash`.
 
 
 Examples
