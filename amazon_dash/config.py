@@ -3,7 +3,7 @@ import stat
 
 from yaml import load
 
-from amazon_dash.exceptions import SecurityException, ConfigFileNotFoundError
+from amazon_dash.exceptions import SecurityException, ConfigFileNotFoundError, InvalidConfig
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
@@ -48,4 +48,9 @@ class Config(dict):
         self.read()
 
     def read(self):
-        self.update(load(open(self.file), Loader))
+        try:
+            data = load(open(self.file), Loader)
+        except UnicodeDecodeError as e:
+            raise InvalidConfig(self.file, '{}'.format(e))
+        assert isinstance(data, dict), InvalidConfig(self.file, 'Config data type: {}'.format(type(data)))
+        self.update(data)

@@ -7,5 +7,14 @@ class SecurityException(Exception):
 
 class ConfigFileNotFoundError(FileNotFoundError):
     def __init__(self, file):
-        file = file if os.path.isabs(file) else os.path.join(os.getcwd(), file)
+        file = os.path.abspath(file)
         super(ConfigFileNotFoundError, self).__init__('The configuration file was not found on "{}"'.format(file))
+
+
+class InvalidConfig(Exception):
+    def __init__(self, file, extra_body=''):
+        file = os.path.abspath(file)
+        body = 'The configuration file is invalid ({}). Check the file and read the documentation.'.format(file)
+        if extra_body:
+            body += ' {}'.format(extra_body)
+        super(InvalidConfig, self).__init__(body)
