@@ -3,7 +3,7 @@ import stat
 
 from yaml import load
 
-from amazon_dash.exceptions import SecurityException
+from amazon_dash.exceptions import SecurityException, ConfigFileNotFoundError
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
@@ -37,6 +37,8 @@ def only_root_write(path):
 class Config(dict):
     def __init__(self, file, **kwargs):
         super(Config, self).__init__(**kwargs)
+        if not os.path.lexists(file):
+            raise ConfigFileNotFoundError(file)
         if (not os.getuid() and not only_root_write(file)) or oth_w_perm(file):
             raise SecurityException('There should be no permissions for other users in the file "{}". {}.'.format(
                 file, 'Removes write permission for others' if os.getuid()
