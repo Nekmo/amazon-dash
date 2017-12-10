@@ -1,0 +1,13 @@
+# amazon-dash.yml
+# ---------------
+settings:
+  delay: 10
+devices:
+  0C:47:C9:98:4A:12:
+    name: Hero
+    user: nekmo
+    cmd: spotify
+  44:65:0D:48:FA:88:
+    name: Pompadour
+    user: nekmo
+    cmd: kwrite
