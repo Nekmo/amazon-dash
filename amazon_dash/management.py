@@ -6,6 +6,7 @@ import logging
 
 import sys
 
+from amazon_dash.exceptions import AmazonDashException
 from amazon_dash.listener import Listener
 
 CONFIG_FILE = 'amazon-dash.yml'
@@ -59,6 +60,14 @@ def set_default_subparser(self, name, args=None):
 argparse.ArgumentParser.set_default_subparser = set_default_subparser
 
 
+def execute_args(args):
+    if not getattr(args, 'which', None) or args.which == 'run':
+        Listener(args.config).run(root_allowed=args.root_allowed)
+    elif args.which == 'discovery':
+        from amazon_dash.discovery import discover
+        discover()
+
+
 def execute_from_command_line(argv=None):
     """
     A simple method that runs a ManagementUtility.
@@ -90,9 +99,7 @@ def execute_from_command_line(argv=None):
     args = parser.parse_args(argv[1:])
 
     create_logger('amazon-dash', args.loglevel)
-
-    if not getattr(args, 'which', None) or args.which == 'run':
-        Listener(args.config).run(root_allowed=args.root_allowed)
-    elif args.which == 'discovery':
-        from amazon_dash.discovery import discover
-        discover()
+    try:
+        execute_args(args)
+    except AmazonDashException as e:
+        sys.stderr.write('[Error] Amazon Dash Exception:\n{}\n'.format(e))

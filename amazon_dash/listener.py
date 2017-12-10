@@ -45,8 +45,11 @@ def execute(cmd, cwd=None):
 
 
 class Device(object):
-    def __init__(self, device, data=None):
-        self.src = getattr(device, 'src', device).lower()
+    def __init__(self, src, data=None):
+        data = data or {}
+        if isinstance(src, Device):
+            src = src.src
+        self.src = src.lower()
         self.data = data
         self.cmd = data.get('cmd')
         self.user = data.get('user', getpass.getuser())

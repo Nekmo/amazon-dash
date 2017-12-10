@@ -1,17 +1,21 @@
 import os
 
 
-class SecurityException(Exception):
+class AmazonDashException(Exception):
     pass
 
 
-class ConfigFileNotFoundError(FileNotFoundError):
+class SecurityException(AmazonDashException):
+    pass
+
+
+class ConfigFileNotFoundError(AmazonDashException, FileNotFoundError):
     def __init__(self, file):
         file = os.path.abspath(file)
         super(ConfigFileNotFoundError, self).__init__('The configuration file was not found on "{}"'.format(file))
 
 
-class InvalidConfig(Exception):
+class InvalidConfig(AmazonDashException):
     def __init__(self, file, extra_body=''):
         file = os.path.abspath(file)
         body = 'The configuration file is invalid ({}). Check the file and read the documentation.'.format(file)

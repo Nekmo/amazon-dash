@@ -1,6 +1,7 @@
 import os
 import stat
 
+from jsonschema import validate, ValidationError
 from yaml import load
 
 from amazon_dash.exceptions import SecurityException, ConfigFileNotFoundError, InvalidConfig
@@ -9,6 +10,44 @@ try:
     from yaml import CLoader as Loader, CDumper as Dumper
 except ImportError:
     from yaml import Loader, Dumper
+
+SCHEMA = {
+    "title": "Config",
+    "type": "object",
+    "properties": {
+        "settings": {
+            "type": "object",
+            "properties": {
+                "delay": {
+                    "type": "integer"
+                }
+            }
+        },
+        "devices": {
+            "type": "object",
+            "properties": {
+                "/": {}
+            },
+            "patternProperties": {
+                "^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "cmd": {
+                            "type": "string"
+                        },
+                    },
+                }
+            },
+            "additionalProperties": False,
+
+        },
+    },
+    "required": ["devices"]
+}
+
 
 
 def bitperm(s, perm, pos):
@@ -52,5 +91,8 @@ class Config(dict):
             data = load(open(self.file), Loader)
         except UnicodeDecodeError as e:
             raise InvalidConfig(self.file, '{}'.format(e))
-        assert isinstance(data, dict), InvalidConfig(self.file, 'Config data type: {}'.format(type(data)))
+        try:
+            validate(data, SCHEMA)
+        except ValidationError as e:
+            raise InvalidConfig(self.file, e)
         self.update(data)
