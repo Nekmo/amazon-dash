@@ -4,6 +4,11 @@
 
 |
 
+
+.. image:: https://img.shields.io/travis/Nekmo/amazon-dash.svg?style=flat-square&maxAge=2592000
+  :target: https://travis-ci.org/Nekmo/amazon-dash
+  :alt: Latest Travis CI build status
+
 .. image:: https://img.shields.io/pypi/v/amazon-dash.svg?style=flat-square
   :target: https://pypi.org/project/amazon-dash/
   :alt: Latest PyPI version
@@ -15,6 +20,10 @@
 .. image:: https://img.shields.io/codeclimate/github/Nekmo/amazon-dash.svg?style=flat-square
   :target: https://codeclimate.com/github/Nekmo/amazon-dash
   :alt: Code Climate
+
+.. image:: https://img.shields.io/codecov/c/github/Nekmo/djangocms-comments/master.svg?style=flat-square
+  :target: https://codecov.io/github/Nekmo/djangocms-comments
+  :alt: Test coverage
 
 .. image:: https://img.shields.io/requires/github/Nekmo/amazon-dash.svg?style=flat-square
      :target: https://requires.io/github/Nekmo/amazon-dash/requirements/?branch=master
