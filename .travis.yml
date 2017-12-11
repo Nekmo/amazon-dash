@@ -1,0 +1,12 @@
+language: python
+sudo: false
+python:
+- 3.6
+- 3.5
+- 3.4
+- 2.7
+before_install:
+- pip install codecov tox>=1.8
+script: COMMAND='coverage run' tox -e$TOXENV
+after_success:
+- codecov

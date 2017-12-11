@@ -1,6 +1,10 @@
-from .scan import scan, print_pkt
+from .scan import scan
 
 mac_id_list = []
+
+
+def print_pkt(pkt):
+    print(pkt.src)
 
 
 def discovery_print(pkt):
