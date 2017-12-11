@@ -1,25 +1,15 @@
-import unittest
-from unittest.mock import patch, mock_open
 import os
+import unittest
+from unittest.mock import patch
 
-from amazon_dash.exceptions import SecurityException, InvalidConfig
 from pyfakefs.fake_filesystem_unittest import Patcher
+
 from amazon_dash.config import Config, only_root_write, oth_w_perm
+from amazon_dash.exceptions import SecurityException, InvalidConfig
+from amazon_dash.tests.base import FileMockBase
 
 __dir__ = os.path.abspath(os.path.dirname(__file__))
 config_data = open(os.path.join(__dir__, 'fixtures', 'config.yml')).read()
-
-
-
-class FileMockBase(object):
-    def setUp(self):
-        self.patcher = Patcher()
-        self.patcher.setUp()
-        self.file = 'config.yml'
-        self.patcher.fs.CreateFile(self.file)
-
-    def tearDown(self):
-        self.patcher.tearDown()
 
 
 class TestConfig(unittest.TestCase):
