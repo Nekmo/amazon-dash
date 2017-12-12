@@ -4,11 +4,11 @@ import subprocess
 import threading
 
 import getpass
-from json import JSONDecodeError
 
 from requests import request
-
+from amazon_dash._compat import JSONDecodeError
 from amazon_dash.exceptions import SecurityException, InvalidConfig
+
 
 EXECUTE_SHELL_PARAM = '-c'
 ROOT_USER = 'root'
