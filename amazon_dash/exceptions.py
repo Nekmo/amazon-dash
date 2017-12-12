@@ -16,9 +16,12 @@ class ConfigFileNotFoundError(AmazonDashException, FileNotFoundError):
 
 
 class InvalidConfig(AmazonDashException):
-    def __init__(self, file, extra_body=''):
-        file = os.path.abspath(file)
-        body = 'The configuration file is invalid ({}). Check the file and read the documentation.'.format(file)
+    def __init__(self, file=None, extra_body=''):
+        body = 'The configuration file is invalid'
+        if file:
+            file = os.path.abspath(file)
+            body += '({})'.format(file)
+        body += '. Check the file and read the documentation.'.format(file)
         if extra_body:
             body += ' {}'.format(extra_body)
         super(InvalidConfig, self).__init__(body)

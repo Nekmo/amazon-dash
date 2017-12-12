@@ -66,7 +66,7 @@ class ExecuteCmd(Execute):
         self.cwd = data.get('cwd')
 
     def validate(self):
-        return True
+        return
 
     def execute(self, root_allowed=False):
         if self.user == ROOT_USER and not root_allowed:
@@ -80,8 +80,8 @@ class ExecuteUrl(Execute):
         if (self.data.get('content-type') or self.data.get('body')) and \
                         self.data.get('method', '').lower() not in CONTENT_TYPE_METHODS:
             raise InvalidConfig(
-                'The body/content-type option only can be used with the {} methods. The device is {}. '
-                'Check the configuration file.'.format(', '.join(CONTENT_TYPE_METHODS), self.name)
+                extra_body='The body/content-type option only can be used with the {} methods. The device is {}. '
+                           'Check the configuration file.'.format(', '.join(CONTENT_TYPE_METHODS), self.name)
             )
         self.data['content-type'] = CONTENT_TYPE_ALIASES.get(self.data.get('content-type'),
                                                              self.data.get('content-type'))
@@ -91,7 +91,7 @@ class ExecuteUrl(Execute):
                 self.data['body'] = json.loads(self.data['body'])
             except JSONDecodeError:
                 raise InvalidConfig(
-                    'Invalid JSON body on {} device.'.format(self.name)
+                    extra_body='Invalid JSON body on {} device.'.format(self.name)
                 )
 
     def execute(self, root_allowed=False):
@@ -100,4 +100,10 @@ class ExecuteUrl(Execute):
             kwargs['headers'] = {'content-type': self.data['content-type']}
         if self.data.get('body'):
             kwargs['data'] = self.data['body']
-        request(self.data.get('method', 'get').lower(), self.data['url'], **kwargs)
+        try:
+            resp = request(self.data.get('method', 'get').lower(), self.data['url'], **kwargs)
+        except Exception as e:
+            logger.warning('Exception on request to {}: {}'.format(self.data['url'], e))
+            return
+        if resp.status_code >= 400:
+            logger.warning('"{}" return code {}.'.format(self.data['url'], resp.status_code))

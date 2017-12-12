@@ -28,11 +28,11 @@ class Device(object):
         execs = [cls(self.name, data) for name, cls in EXECUTE_CLS.items() if name in self.data]
         if len(execs) > 1:
             raise InvalidConfig(
-                'There can only be one method of execution on a device. The device is {}. '
-                'Check the configuration file.'.format(self.name)
+                extra_body='There can only be one method of execution on a device. The device is {}. '.format(self.name)
             )
         elif len(execs):
             self.execute_instance = execs[0]
+            self.execute_instance.validate()
 
     @property
     def name(self):
