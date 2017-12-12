@@ -48,22 +48,6 @@ class TestDevice(ExecuteMockBase, unittest.TestCase):
         device = Device('key')
         self.assertEqual(device.name, 'key')
 
-    def test_execute(self):
-        device = Device('key', {'cmd': 'ls'})
-        device.execute()
-        self.execute_mock_req.assert_called_once()
-
-    def test_execute_root(self):
-        device = Device('key', {'cmd': 'ls', 'user': 'root'})
-        device.execute(True)
-        self.execute_mock_req.assert_called_once()
-
-    def test_execute_root_error(self):
-        device = Device('key', {'cmd': 'ls', 'user': 'root'})
-        with self.assertRaises(SecurityException):
-            device.execute(False)
-        self.execute_mock_req.assert_not_called()
-
-    def test_no_cmd(self):
+    def test_no_execute(self):
         device = Device('key')
         device.execute()

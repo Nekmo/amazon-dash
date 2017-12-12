@@ -86,7 +86,7 @@ class ExecuteUrl(Execute):
         self.data['content-type'] = CONTENT_TYPE_ALIASES.get(self.data.get('content-type'),
                                                              self.data.get('content-type'))
         form_type = CONTENT_TYPE_ALIASES['form']
-        if self.data.get('body') and self.data.get('content-type', form_type) == form_type:
+        if self.data.get('body') and (self.data.get('content-type') or form_type) == form_type:
             try:
                 self.data['body'] = json.loads(self.data['body'])
             except JSONDecodeError:
