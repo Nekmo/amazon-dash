@@ -38,6 +38,29 @@ SCHEMA = {
                         "cmd": {
                             "type": "string"
                         },
+                        "url": {
+                            "type": "string"
+                        },
+                        "method": {
+                            "type": "string",
+                            "oneOf": [
+                                {"pattern": "GET|get"},
+                                {"pattern": "HEAD|head"},
+                                {"pattern": "POST|post"},
+                                {"pattern": "PUT|put"},
+                                {"pattern": "DELETE|delete"},
+                                {"pattern": "CONNECT|connect"},
+                                {"pattern": "OPTIONS|options"},
+                                {"pattern": "trace|trace"},
+                                {"pattern": "PATCH|patch"},
+                            ]
+                        },
+                        "content-type": {
+                            "type": "string"
+                        },
+                        "body": {
+                            "type": "string"
+                        }
                     },
                 }
             },

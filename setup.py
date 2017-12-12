@@ -53,7 +53,7 @@ ROOT_INCLUDE = [
     'VERSION',
     'LICENSE.txt'
 ]
-PYTHON_VERSIONS = ['2.6-2.7', '3.2-3.5']
+PYTHON_VERSIONS = ['2.7', '3.4-3.6']
 
 ######## FIN DE LA CONFIGURACIÓN DEL PAQUTE ########
 

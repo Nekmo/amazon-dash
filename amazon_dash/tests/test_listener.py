@@ -42,8 +42,6 @@ class TestDevice(ExecuteMockBase, unittest.TestCase):
         }
         device = Device('KeY', data)
         self.assertEqual(device.src, 'key')
-        for key, value in data.items():
-            self.assertEqual(getattr(device, key), value)
         self.assertEqual(device.name, data['name'])
 
     def test_name(self):

@@ -31,7 +31,7 @@ class ConfigFileMockBase(FileMockBase):
 
 class ExecuteMockBase(object):
     def setUp(self):
-        self.execute_mock = patch('amazon_dash.listener.execute', return_value=None)
+        self.execute_mock = patch('amazon_dash.execute.execute_cmd', return_value=None)
         self.execute_mock_req = self.execute_mock.start()
         super(ExecuteMockBase, self).setUp()
 

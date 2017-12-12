@@ -22,3 +22,11 @@ class InvalidConfig(AmazonDashException):
         if extra_body:
             body += ' {}'.format(extra_body)
         super(InvalidConfig, self).__init__(body)
+
+
+class SocketPermissionError(AmazonDashException):
+    def __init__(self):
+        msg = 'This program needs permission to open raw sockets on your system. ' \
+              'The easy way to run this program is to use root. To use a normal user,' \
+              ' consult the documentation.'
+        super(SocketPermissionError, self).__init__(msg)

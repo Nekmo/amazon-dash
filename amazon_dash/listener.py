@@ -1,59 +1,38 @@
-import getpass
-import threading
-from collections import defaultdict
 import time
-import logging
+from collections import defaultdict
 
-import subprocess
-
-import os
 
 from amazon_dash.config import Config
-from amazon_dash.exceptions import SecurityException
+from amazon_dash.exceptions import InvalidConfig
+from amazon_dash.execute import logger, ExecuteCmd, ExecuteUrl
 from amazon_dash.scan import scan
 
-
 DEFAULT_DELAY = 10
-EXECUTE_SHELL_PARAM = '-c'
-ROOT_USER = 'root'
+EXECUTE_CLS = {
+    'cmd': ExecuteCmd,
+    'url': ExecuteUrl,
+}
 
 last_execution = defaultdict(lambda: 0)
-logger = logging.getLogger('amazon-dash')
-
-
-def get_shell(name):
-    if name.startswith('/'):
-        return [name]
-    return ['/usr/bin/env', name]
-
-
-def run_as_cmd(cmd, user, shell='bash'):
-    return ['sudo', '-s', '--set-home', '-u', user] + get_shell(shell) + [EXECUTE_SHELL_PARAM, cmd]
-
-
-def check_execution_success(cmd, p):
-    stdout, stderr = p.communicate()
-    if p.returncode:
-        logger.error('%i return code on "%s" command. Stderr: %s', p.returncode, ' '.join(cmd), stderr)
-
-
-def execute(cmd, cwd=None):
-    p = subprocess.Popen(cmd, cwd=cwd, stderr=subprocess.PIPE)
-    l = threading.Thread(target=check_execution_success, args=(cmd, p))
-    l.daemon = True
-    l.start()
 
 
 class Device(object):
+    execute_instance = None
+
     def __init__(self, src, data=None):
         data = data or {}
         if isinstance(src, Device):
             src = src.src
         self.src = src.lower()
         self.data = data
-        self.cmd = data.get('cmd')
-        self.user = data.get('user', getpass.getuser())
-        self.cwd = data.get('cwd')
+        execs = [cls(self.name, data) for name, cls in EXECUTE_CLS.items() if name in self.data]
+        if len(execs) > 1:
+            raise InvalidConfig(
+                'There can only be one method of execution on a device. The device is {}. '
+                'Check the configuration file.'.format(self.name)
+            )
+        elif len(execs):
+            self.execute_instance = execs[0]
 
     @property
     def name(self):
@@ -61,14 +40,10 @@ class Device(object):
 
     def execute(self, root_allowed=False):
         logger.debug('%s device executed (mac %s)', self.name, self.src)
-        if not self.cmd:
-            logger.warning('%s: There is no cmd in device conf.', self.name)
+        if not self.execute_instance:
+            logger.warning('%s: There is not execution method in device conf.', self.name)
             return
-        cmd = self.cmd
-        if self.user == ROOT_USER and not root_allowed:
-            raise SecurityException('For security, execution as root is not allowed.')
-        cmd = run_as_cmd(cmd, self.user)
-        execute(cmd, self.cwd)
+        self.execute_instance.execute(root_allowed)
 
 
 class Listener(object):

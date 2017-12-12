@@ -30,7 +30,6 @@
      :alt: Requirements Status
 
 
-.. index::
 
 Python Amazon Dash
 ##################
