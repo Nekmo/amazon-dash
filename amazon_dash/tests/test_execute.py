@@ -1,6 +1,8 @@
 import json
 import unittest
 
+from requests_mock import NoMockAddress
+
 from amazon_dash.exceptions import SecurityException, InvalidConfig
 from amazon_dash.execute import ExecuteCmd, ExecuteUrl
 from amazon_dash.tests.base import ExecuteMockBase
@@ -76,6 +78,31 @@ class TestExecuteUrl(unittest.TestCase):
         execute_url.validate()
         execute_url.execute()
         self.assertTrue(self.get_mock.called_once)
+
+    def test_execute_content_type(self):
+        self.session_mock.post(self.url, request_headers={'content-type': 'foo'})
+        execute_url = ExecuteUrl('key', dict(self.get_default_data(), method='post',
+                                             **{'content-type': 'foo'}))
+        execute_url.validate()
+        execute_url.execute()
+        execute_url2 = ExecuteUrl('key', dict(self.get_default_data(), method='post',
+                                             **{'content-type': 'bar'}))
+        execute_url2.validate()
+        with self.assertRaises(NoMockAddress):
+            execute_url2.execute()
+
+    def test_execute_body(self):
+        self.session_mock.post(self.url, additional_matcher=lambda r: r.body == 'foo')
+        execute_url = ExecuteUrl('key', dict(self.get_default_data(), method='post', body='foo',
+                                             **{'content-type': 'plain'}))
+        execute_url.validate()
+        execute_url.execute()
+        execute_url2 = ExecuteUrl('key', dict(self.get_default_data(), method='post', body='bar',
+                                             **{'content-type': 'plain'}))
+        execute_url2.validate()
+        with self.assertRaises(NoMockAddress):
+            execute_url2.execute()
+
 
     def tearDown(self):
         super(TestExecuteUrl, self).tearDown()

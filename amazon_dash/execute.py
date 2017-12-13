@@ -5,7 +5,7 @@ import threading
 
 import getpass
 
-from requests import request
+from requests import request, RequestException
 from amazon_dash._compat import JSONDecodeError
 from amazon_dash.exceptions import SecurityException, InvalidConfig
 
@@ -102,7 +102,7 @@ class ExecuteUrl(Execute):
             kwargs['data'] = self.data['body']
         try:
             resp = request(self.data.get('method', 'get').lower(), self.data['url'], **kwargs)
-        except Exception as e:
+        except RequestException as e:
             logger.warning('Exception on request to {}: {}'.format(self.data['url'], e))
             return
         if resp.status_code >= 400:
