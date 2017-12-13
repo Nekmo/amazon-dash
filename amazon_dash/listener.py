@@ -5,7 +5,7 @@ from collections import defaultdict
 from amazon_dash.config import Config
 from amazon_dash.exceptions import InvalidConfig
 from amazon_dash.execute import logger, ExecuteCmd, ExecuteUrl
-from amazon_dash.scan import scan
+from amazon_dash.scan import scan_devices
 
 DEFAULT_DELAY = 10
 EXECUTE_CLS = {
@@ -69,4 +69,4 @@ class Listener(object):
 
     def run(self, root_allowed=False):
         self.root_allowed = root_allowed
-        scan(self.on_push, lambda d: d.src.lower() in self.devices)
+        scan_devices(self.on_push, lambda d: d.src.lower() in self.devices)

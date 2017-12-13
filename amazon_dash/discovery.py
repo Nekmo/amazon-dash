@@ -1,4 +1,4 @@
-from .scan import scan
+from amazon_dash.scan import scan_devices
 
 # https://standards.ieee.org/develop/regauth/oui/oui.csv
 # import csv
@@ -46,23 +46,23 @@ able to create the configuration file.\
 mac_id_list = []
 
 
-def print_pkt(pkt):
+def pkt_text(pkt):
     if pkt.src.upper() in BANNED_DEVICES:
-        return 
-    if pkt.src.upper()[:8] in AMAZON_DEVICES:
+        body = ''
+    elif pkt.src.upper()[:8] in AMAZON_DEVICES:
         body = '{} (Amazon Device)'.format(pkt.src)
     else:
         body = pkt.src
-    print(body)
+    return body
 
 
 def discovery_print(pkt):
     if pkt.src in mac_id_list:
         return
     mac_id_list.append(pkt.src)
-    print_pkt(pkt)
+    print(pkt_text(pkt))
 
 
 def discover():
     print(HELP)
-    scan(discovery_print, lfilter=lambda d: d.src not in mac_id_list)
+    scan_devices(discovery_print, lfilter=lambda d: d.src not in mac_id_list)
