@@ -1,7 +1,7 @@
 import unittest
 
 import os
-from unittest.mock import patch
+from amazon_dash.tests._compat import patch
 
 from amazon_dash.exceptions import InvalidConfig
 from amazon_dash.listener import Listener, Device, last_execution, logger

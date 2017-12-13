@@ -3,9 +3,8 @@ import unittest
 from threading import Thread
 
 import requests
-from requests import patch
 from requests_mock import NoMockAddress
-from unittest.mock import patch as mock_patch, Mock
+from amazon_dash.tests._compat import patch as mock_patch, Mock
 
 from amazon_dash.exceptions import SecurityException, InvalidConfig
 from amazon_dash.execute import ExecuteCmd, ExecuteUrl, logger, execute_cmd, check_execution_success, get_shell
