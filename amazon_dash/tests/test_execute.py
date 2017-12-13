@@ -1,10 +1,14 @@
 import json
 import unittest
+from threading import Thread
 
+import requests
+from requests import patch
 from requests_mock import NoMockAddress
+from unittest.mock import patch as mock_patch, Mock
 
 from amazon_dash.exceptions import SecurityException, InvalidConfig
-from amazon_dash.execute import ExecuteCmd, ExecuteUrl
+from amazon_dash.execute import ExecuteCmd, ExecuteUrl, logger, execute_cmd, check_execution_success, get_shell
 from amazon_dash.tests.base import ExecuteMockBase
 
 import requests_mock
@@ -26,6 +30,26 @@ class TestExecuteCmd(ExecuteMockBase, unittest.TestCase):
         with self.assertRaises(SecurityException):
             device.execute(False)
         self.execute_mock_req.assert_not_called()
+
+    def test_execute_cmd_start(self):
+        with mock_patch.object(Thread, 'start') as start_mock:
+            execute_cmd('ls', '/tmp')
+            start_mock.assert_called_once()
+
+    @mock_patch('subprocess.Popen', autospec=True)
+    def test_check_execution_success(self, popen_mock):
+        popen_mock.return_value = Mock()
+        popen_mock_obj = popen_mock.return_value
+
+        popen_mock_obj.communicate.return_value = ("OUT", "ERR")
+        popen_mock_obj.returncode = 1
+        with mock_patch.object(logger, 'error') as logger_error:
+            check_execution_success('ls', '/tmp')
+            logger_error.assert_called_once()
+
+    def test_get_shell(self):
+        self.assertEqual(get_shell('/usr/bin/command'), ['/usr/bin/command'])
+        self.assertEqual(get_shell('command'), ['/usr/bin/env', 'command'])
 
 
 class TestExecuteUrl(unittest.TestCase):
@@ -102,6 +126,24 @@ class TestExecuteUrl(unittest.TestCase):
         execute_url2.validate()
         with self.assertRaises(NoMockAddress):
             execute_url2.execute()
+
+    def test_execute_exception(self):
+        self.session_mock.post(self.url, exc=requests.exceptions.ConnectTimeout)
+        execute_url = ExecuteUrl('key', dict(self.get_default_data(), method='post', body='foo',
+                                             **{'content-type': 'plain'}))
+        execute_url.validate()
+        with mock_patch.object(logger, 'warning') as warning_mock:
+            execute_url.execute()
+            warning_mock.assert_called_once()
+
+    def test_execute_400(self):
+        self.session_mock.post(self.url, status_code=400)
+        execute_url = ExecuteUrl('key', dict(self.get_default_data(), method='post',
+                                             **{'content-type': 'plain'}))
+        execute_url.validate()
+        with mock_patch.object(logger, 'warning') as warning_mock:
+            execute_url.execute()
+            warning_mock.assert_called_once()
 
 
     def tearDown(self):

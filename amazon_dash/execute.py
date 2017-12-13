@@ -23,7 +23,6 @@ CONTENT_TYPE_ALIASES = {
 logger = logging.getLogger('amazon-dash')
 
 
-
 def get_shell(name):
     if name.startswith('/'):
         return [name]
@@ -34,15 +33,15 @@ def run_as_cmd(cmd, user, shell='bash'):
     return ['sudo', '-s', '--set-home', '-u', user] + get_shell(shell) + [EXECUTE_SHELL_PARAM, cmd]
 
 
-def check_execution_success(cmd, p):
+def check_execution_success(cmd, cwd):
+    p = subprocess.Popen(cmd, cwd=cwd, stderr=subprocess.PIPE)
     stdout, stderr = p.communicate()
     if p.returncode:
         logger.error('%i return code on "%s" command. Stderr: %s', p.returncode, ' '.join(cmd), stderr)
 
 
 def execute_cmd(cmd, cwd=None):
-    p = subprocess.Popen(cmd, cwd=cwd, stderr=subprocess.PIPE)
-    l = threading.Thread(target=check_execution_success, args=(cmd, p))
+    l = threading.Thread(target=check_execution_success, args=(cmd, cwd))
     l.daemon = True
     l.start()
 

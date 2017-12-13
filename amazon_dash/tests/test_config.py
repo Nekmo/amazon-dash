@@ -14,11 +14,20 @@ config_data = open(os.path.join(__dir__, 'fixtures', 'config.yml')).read()
 
 class TestConfig(unittest.TestCase):
 
-    @patch('os.path.lexists')
+    @patch('os.path.lexists', return_value=False)
     def test_not_found(self, mock_method):
         with self.assertRaises(FileNotFoundError):
             Config('config.yml')
         mock_method.assert_called_once()
+
+    def test_yaml_exception(self):
+        file = 'config.yml'
+        with Patcher() as patcher:
+            patcher.fs.CreateFile(file, contents='\x00')
+            os.chown(file, 0, 0)
+            os.chmod(file, 0o660)
+            with self.assertRaises(InvalidConfig):
+                Config('config.yml')
 
     @patch('os.getuid', return_value=1000)
     def test_other_user(self, getuid_mock):
@@ -52,7 +61,7 @@ class TestConfig(unittest.TestCase):
         patcher.tearDown()
 
     @patch('os.getuid', return_value=0)
-    def test_root(self, getuid_mock):
+    def test_root_error(self, getuid_mock):
         file = 'amazon-dash.yml'
         with Patcher() as patcher:
             patcher.fs.CreateFile(file, contents=config_data)

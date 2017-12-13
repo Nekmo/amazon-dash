@@ -3,6 +3,7 @@ import stat
 
 from jsonschema import validate, ValidationError
 from yaml import load
+from yaml.error import YAMLError
 
 from amazon_dash.exceptions import SecurityException, ConfigFileNotFoundError, InvalidConfig
 
@@ -112,7 +113,7 @@ class Config(dict):
     def read(self):
         try:
             data = load(open(self.file), Loader)
-        except UnicodeDecodeError as e:
+        except (UnicodeDecodeError, YAMLError) as e:
             raise InvalidConfig(self.file, '{}'.format(e))
         try:
             validate(data, SCHEMA)
