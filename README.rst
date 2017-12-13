@@ -21,7 +21,7 @@
   :target: https://codeclimate.com/github/Nekmo/amazon-dash
   :alt: Code Climate
 
-.. image:: https://img.shields.io/codecov/c/github/Nekmo/djangocms-comments/master.svg?style=flat-square
+.. image:: https://img.shields.io/codecov/c/github/Nekmo/amazon-dash/master.svg?style=flat-square
   :target: https://codecov.io/github/Nekmo/djangocms-comments
   :alt: Test coverage
 

@@ -75,6 +75,13 @@ SCHEMA = {
 }
 
 
+def get_file_owner(file):
+    return getpwuid(os.stat(file).st_uid)[0]
+
+
+def get_file_group(file):
+    return getgrgid(os.stat(file).st_uid)[0]
+
 
 def bitperm(s, perm, pos):
     perm = perm.upper()
@@ -106,13 +113,12 @@ class Config(dict):
             raise ConfigFileNotFoundError(file)
         if (not os.getuid() and not only_root_write(file)) or oth_w_perm(file):
             file = os.path.abspath(file)
-            stat_info = os.stat(file)
             raise SecurityException(
                 'There should be no permissions for other users in the file "{file}". '
                 'Current permissions: {user}:{group} {perms}. {msg}. '
                 'Run "sudo chmod 660 \'{file}\' && sudo chown root:root \'{file}\'"'.format(
-                    file=file, user=getpwuid(stat_info.st_uid)[0],
-                    group=getgrgid(stat_info.st_gid)[0], perms=stat_info.st_mode & 0o777,
+                    file=file, user=get_file_owner(file),
+                    group=get_file_group(file), perms=os.stat(file).st_mode & 0o777,
                     msg='Removes write permission for others' if os.getuid()
                     else 'Only root must be able to write to file'))
         self.file = file

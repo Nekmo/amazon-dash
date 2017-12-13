@@ -39,8 +39,10 @@ class TestConfig(unittest.TestCase):
             Config(file)
         patcher.tearDown()
 
+    @patch('amazon_dash.config.get_file_group', return_value='test')
+    @patch('amazon_dash.config.get_file_owner', return_value='test')
     @patch('os.getuid', return_value=1000)
-    def test_other_user_error(self, getuid_mock):
+    def test_other_user_error(self, getuid_mock, file_owner_mock, file_group_mock):
         file = 'amazon-dash.yml'
         with Patcher() as patcher:
             patcher.fs.CreateFile(file, contents=config_data)
@@ -60,8 +62,10 @@ class TestConfig(unittest.TestCase):
             Config(file)
         patcher.tearDown()
 
-    @patch('os.getuid', return_value=0)
-    def test_root_error(self, getuid_mock):
+    @patch('amazon_dash.config.get_file_group', return_value='test')
+    @patch('amazon_dash.config.get_file_owner', return_value='test')
+    @patch('os.getuid', return_value=1000)
+    def test_root_error(self, getuid_mock, file_owner_mock, file_group_mock):
         file = 'amazon-dash.yml'
         with Patcher() as patcher:
             patcher.fs.CreateFile(file, contents=config_data)
