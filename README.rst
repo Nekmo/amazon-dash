@@ -35,6 +35,12 @@ Python Amazon Dash
 ##################
 Hack your Amazon Dash to run what you want. Without welders. For the entire family.
 
+This program written in Python runs in daemon mode waiting for someone in the same
+network to press a configured Amazon Dash button. It is not necessary to know
+programming to use this program. Amazon-Dash executes commands by command line
+or calls a url. This program works  well on a raspberry PI or on computers with
+few resources.
+
 
 1. Install Amazon Dash:
 
@@ -66,7 +72,13 @@ Hack your Amazon Dash to run what you want. Without welders. For the entire fami
       44:65:0D:48:FA:88:
         name: Pompadour
         user: nekmo
-        cmd: kwrite
+        cmd: /opt/open-door kitcken
+      AC:63:BE:67:B2:F1:
+        name: Kit Kat
+        url: 'http://domain.com/path/to/webhook'
+        method: post
+        content-type: json
+        body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'
 
 
 4. Run the daemon:
@@ -76,7 +88,7 @@ Hack your Amazon Dash to run what you want. Without welders. For the entire fami
     sudo amazon-dash[ --config amazon-dash.yml] run
 
 By default, `amazon-dash` will use the `amazon-dash.yml` file in the current directory with `sudo amazon-dash run`.
-However, you can set the path to the file (for example, `/etc/amazon-dash.yml`) with `--config`.
+However, you can set the path to the file (for example, `/etc/amazon-dash.yml`) with `--config` parameter.
 Please note that `--config` must be before `run`.
 
 
@@ -85,6 +97,7 @@ Contents
 - `Avoid making a purchase by pressing the button <#avoid-making-a-purchase-by-pressing-the-button>`_.
 - `Run at startup <#run-at-startup>`_
 - `Examples <#examples>`_
+- `Changelog <#changelog>`_
 - `Troubleshooting <#troubleshooting>`_
 - `Why Root is required <#why-root-is-required>`_
 - `References <#references>`_
@@ -138,6 +151,37 @@ Examples
 Here are some examples of how to use your Amazon Dash button:
 
 * **Random Episode**: Play a random chapter of your favorite series, like *The Simpsons*, *Futurama*, *Friends*... https://github.com/Nekmo/random-episode
+
+
+Changelog
+=========
+
+v0.3.0
+------
+
+- Unit testing.
+- Travis CI.
+- Config validation.
+- Help messages.
+- Request to URL.
+- Distinguish Amazon devices in discovery mode.
+
+
+v0.2.0
+------
+
+- Securize config file.
+- Systemd config file example.
+- Refactor imports.
+- Updated README.
+
+v0.1.0
+------
+
+- Execute commands.
+- Discovery mode.
+- Setup.py
+- README.
 
 
 Troubleshooting
