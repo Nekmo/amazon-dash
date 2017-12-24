@@ -188,9 +188,9 @@ When the **cmd execution method** is used, the following options are available.
 
 When the **url execution method** is used, the following options are available.
 
-* **method** HTTP method. By default GET.
-* **content-type** (*) HTTP Content-Type Header. Only available if Body is defined. If body is defined, default is form.
-* **body** Request payload. Only if the method is POST/PUT/PATCH. In json or form mode, the content must be a valid json. It is recommended to use single quotes before and after content in json.
+* **method**: HTTP method. By default GET.
+* **content-type** (*): HTTP Content-Type Header. Only available if Body is defined. If body is defined, default is form.
+* **body**: Request payload. Only if the method is POST/PUT/PATCH. In json or form mode, the content must be a valid json. It is recommended to use single quotes before and after content in json.
 
 (*) Content type aliases: `form = application/x-www-form-urlencoded`. `json = application/json`. `plain = text/plain`.
 
