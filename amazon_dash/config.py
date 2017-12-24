@@ -41,6 +41,12 @@ SCHEMA = {
                         "cmd": {
                             "type": "string"
                         },
+                        "user": {
+                            "type": "string",
+                        },
+                        "cwd": {
+                            "type": "string",
+                        },
                         "url": {
                             "type": "string"
                         },
