@@ -1,5 +1,10 @@
 import os
 
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
+
 
 class AmazonDashException(Exception):
     pass

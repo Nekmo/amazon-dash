@@ -12,6 +12,12 @@ __dir__ = os.path.abspath(os.path.dirname(__file__))
 config_data = open(os.path.join(__dir__, 'fixtures', 'config.yml')).read()
 
 
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
+
+
 class TestConfig(unittest.TestCase):
 
     @patch('os.path.lexists', return_value=False)

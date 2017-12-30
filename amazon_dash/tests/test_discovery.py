@@ -19,7 +19,7 @@ class TestDiscovery(unittest.TestCase):
         device = Device('11:22:33:44:55:66')
         self.assertIn(device.src, pkt_text(device))
 
-    @patch('sys.stdout.write')
+    @patch('sys.stdout')
     def test_discovery_print(self, write_patch):
         mac = '11:22:33:44:55:66'
         with patch('amazon_dash.discovery.pkt_text') as pkt_text_mock:
