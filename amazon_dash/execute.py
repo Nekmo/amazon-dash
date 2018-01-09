@@ -69,7 +69,10 @@ class ExecuteCmd(Execute):
 
     def execute(self, root_allowed=False):
         if self.user == ROOT_USER and not root_allowed:
-            raise SecurityException('For security, execution as root is not allowed.')
+            raise SecurityException('For security, execute commands as root is not allowed. '
+                                    'Use --root-allowed to allow executing commands as root. '
+                                    ' It is however recommended to add a user to the configuration '
+                                    'of the device (device: {})'.format(self.name))
         cmd = run_as_cmd(self.data['cmd'], self.user)
         execute_cmd(cmd, self.data.get('cwd'))
 
