@@ -203,7 +203,7 @@ for module in modules:
 
 # Descripción larga si existe un archivo README
 try:
-    long_description = open(readme_path, 'rt').read()
+    long_description = open(readme_path, 'r').read()
 except IOError:
     long_description = ''
 
