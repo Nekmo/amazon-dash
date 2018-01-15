@@ -87,9 +87,9 @@ few resources.
 
     sudo amazon-dash[ --config amazon-dash.yml] run
 
-By default, `amazon-dash` will use the `amazon-dash.yml` file in the current directory with `sudo amazon-dash run`.
-However, you can set the path to the file (for example, `/etc/amazon-dash.yml`) with `--config` parameter.
-Please note that `--config` must be before `run`.
+By default, ``amazon-dash`` will use the ``amazon-dash.yml`` file in the current directory with
+``sudo amazon-dash run``. However, you can set the path to the file (for example, ``/etc/amazon-dash.yml``) with
+``--config`` parameter. Please note that ``--config`` must be before ``run``.
 
 
 Contents
