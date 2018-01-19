@@ -179,7 +179,8 @@ The syntax of the configuration file is yaml. The configuration file has 2 main 
 
 The following options are available in **settings**:
 
-* **delay** (optional): by default, 10. Minimum time that must pass between pulsations of the Amazon Dash button.
+* **delay** (optional): On seconds. By default, 10 seconds. Minimum time that must pass between pulsations of the
+  Amazon Dash button.
 
 Each device is identified by the button **mac**. The mac can be obtained with the discovery command.
 In the configuration of each button, there may be a way of execution. Only one execution method is allowed
