@@ -91,6 +91,13 @@ By default, ``amazon-dash`` will use the ``amazon-dash.yml`` file in the current
 ``sudo amazon-dash run``. However, you can set the path to the file (for example, ``/etc/amazon-dash.yml``) with
 ``--config`` parameter. Please note that ``--config`` must be before ``run``.
 
+The default level logging is ``INFO`` but you can change it using the ``--warning``, ``--quiet``, ``--debug`` and
+``--verbose`` options. To see on screen every time a button is pressed you need to set the ``--debug`` option.
+
+By default it is forbidden to execute commands as root in your configuration file. This is a security measure to
+avoid escalation privileges. If you are going to run amazon-dash as root it is highly recommended to define a
+user by each cmd config device. You can disable this security measure using ``--root-allowed``.
+
 
 Contents
 ========
