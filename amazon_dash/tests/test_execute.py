@@ -183,3 +183,10 @@ class TestExecuteHomeAssistant(unittest.TestCase):
         assis = ExecuteHomeAssistant('key', self.default_data('https://localhost:7123'))
         self.assertIn('url', assis.data)
         self.assertEqual(assis.data['url'], 'https://localhost:7123' + self.path)
+
+    def test_execute(self):
+        with requests_mock.mock() as m:
+            m.post(self.url, text='success')
+            assis = ExecuteHomeAssistant('key', self.default_data())
+            assis.execute()
+            self.assertTrue(m.called_once)
