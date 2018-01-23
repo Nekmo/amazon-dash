@@ -69,16 +69,17 @@ few resources.
         name: Hero
         user: nekmo
         cmd: spotify
-      44:65:0D:48:FA:88:
-        name: Pompadour
-        user: nekmo
-        cmd: /opt/open-door kitcken
       AC:63:BE:67:B2:F1:
         name: Kit Kat
         url: 'http://domain.com/path/to/webhook'
         method: post
         content-type: json
         body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'
+      40:B4:CD:67:A2:E1:
+        name: Fairy
+        homeassistant: hassio.local
+        event: toggle_kitchen_light
+
 
 
 4. Run the daemon:
@@ -188,6 +189,8 @@ for each device. The available exection methods are:
 
 * **cmd**: local command line command. Arguments can be placed after the command.
 * **url**: Call a url.
+* **homeassistant**: send event to Homeassistant. This argument must be the address to the hass server (protocol and
+  port are optional. By default http and 8123, respectively).
 
 When the **cmd execution method** is used, the following options are available.
 
@@ -201,6 +204,11 @@ When the **url execution method** is used, the following options are available.
 * **body**: Request payload. Only if the method is POST/PUT/PATCH. In json or form mode, the content must be a valid json. It is recommended to use single quotes before and after content in json.
 
 (*) Content type aliases: `form = application/x-www-form-urlencoded`. `json = application/json`. `plain = text/plain`.
+
+When the **homeassistant execution method** is used, the following options are available.
+
+* **event** (required): Event name to send.
+* **data**: Event data to send. Use json as string.
 
 An example of a configuration file can be found at the beginning of the documentation.
 

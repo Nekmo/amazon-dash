@@ -8,7 +8,7 @@ import getpass
 from requests import request, RequestException
 from amazon_dash._compat import JSONDecodeError
 from amazon_dash.exceptions import SecurityException, InvalidConfig
-
+from ._compat import urlparse
 
 EXECUTE_SHELL_PARAM = '-c'
 ROOT_USER = 'root'
@@ -109,3 +109,52 @@ class ExecuteUrl(Execute):
             return
         if resp.status_code >= 400:
             logger.warning('"{}" return code {}.'.format(self.data['url'], resp.status_code))
+
+
+class ExecuteUrlServiceBase(ExecuteUrl):
+    default_url = None
+    default_content_type = 'application/json'
+    default_method = 'GET'
+    default_body = None
+
+    def __init__(self, name, data):
+        super(ExecuteUrlServiceBase, self).__init__(name, data)
+        self.data['url'] = self.get_url()
+        self.data['content_type'] = self.get_content_type()
+        self.data['method'] = self.get_method()
+        self.data['body'] = self.get_body()
+
+    def get_url(self):
+        return self.default_url
+
+    def get_method(self):
+        return self.default_method
+
+    def get_content_type(self):
+        return self.default_content_type
+
+    def get_body(self):
+        return self.default_body
+
+
+class ExecuteHomeAssistant(ExecuteUrlServiceBase):
+    """Send Home Assistant event
+
+    https://home-assistant.io/developers/rest_api/#post-apieventsltevent_type
+    """
+    default_method = 'POST'
+
+    def get_url(self):
+        url = self.data['homeassistant']
+        parsed = urlparse(url)
+        if not parsed.scheme:
+            url = 'http://{}'.format(url)
+        if not url.split(':')[-1].isalnum():
+            url += ':8123'
+        if not self.data.get('event'):
+            raise InvalidConfig(extra_body='Event option is required for HomeAsistant on {} device.'.format(self.name))
+        url += '/api/events/{}'.format(self.data['event'])
+        return url
+
+    def get_body(self):
+        return self.data.get('data')
