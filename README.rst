@@ -213,37 +213,6 @@ When the **homeassistant execution method** is used, the following options are a
 An example of a configuration file can be found at the beginning of the documentation.
 
 
-Changelog
-=========
-
-v0.3.0
-------
-
-- Unit testing.
-- Travis CI.
-- Config validation.
-- Help messages.
-- Request to URL.
-- Distinguish Amazon devices in discovery mode.
-
-
-v0.2.0
-------
-
-- Securize config file.
-- Systemd config file example.
-- Refactor imports.
-- Updated README.
-
-v0.1.0
-------
-
-- Execute commands.
-- Discovery mode.
-- Setup.py
-- README.
-
-
 Troubleshooting
 ===============
 
@@ -269,6 +238,7 @@ system::
     setcap cap_net_raw=eip /usr/bin/tcpdump
 
 http://stackoverflow.com/questions/36215201/python-scapy-sniff-without-root
+
 
 References
 ==========

@@ -16,6 +16,8 @@
 import sys
 import os
 
+__dir__ = os.path.dirname(__file__)
+
 # If extensions (or modules to document with autodoc) are in another
 # directory, add these directories to sys.path here. If the directory is
 # relative to the documentation root, use os.path.abspath to make it
@@ -23,8 +25,7 @@ import os
 #sys.path.insert(0, os.path.abspath('.'))
 
 # Get the project root dir, which is the parent dir of this
-cwd = os.getcwd()
-project_root = os.path.dirname(cwd)
+project_root = os.path.dirname(__dir__)
 
 # Insert the project root dir as the first element in the PYTHONPATH.
 # This lets us ensure that the source package is imported, and that its
