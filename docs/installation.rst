@@ -13,6 +13,7 @@ To install amazon-dash, run this command in your terminal:
 .. code-block:: console
 
     $ pip install amazon_dash
+    $ sudo python -m amazon_dash.install
 
 This is the preferred method to install amazon-dash, as it will always install the most recent stable release.
 

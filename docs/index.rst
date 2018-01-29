@@ -9,6 +9,9 @@ Contents:
    readme
    installation
    usage
+   avoid_purchase
+   config_file
+   troubleshooting
    modules
    contributing
    authors
