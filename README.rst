@@ -39,9 +39,9 @@ Hack your Amazon Dash to run what you want. Without welders. For the entire fami
 
 This program written in Python runs in daemon mode waiting for someone in the same
 network to press a configured Amazon Dash button. It is not necessary to know
-programming to use this program. Amazon-Dash executes **commands by command line
-or calls a url**. This program works well on a **Raspberry PI** or on computers with
-few resources.
+programming to use this program. Amazon-Dash executes **commands by command line,
+calls a url and more**. This program works well on a **Raspberry PI** or on computers
+with few resources.
 
 
 1. **Install** Amazon Dash:
@@ -62,7 +62,7 @@ Also available on AUR. See other installation methods
     $ sudo amazon-dash discovery
 
 
-3. Create a **config file** (``amazon-dash.yml``):
+3. Edit **config file** (``/etc/amazon-dash.yml``):
 
 .. code:: yaml
 
@@ -93,7 +93,7 @@ For more information see
 
 4. Run the **daemon**:
 
-If you use a **Systemd** system (Debian 8+, Fedora 15+, Ubuntu 15.04+, Arch Linux 2012+, OpenSUSE 12.1+, and more),
+If you use a **Systemd** system (Debian 8+, Fedora 15+, Ubuntu 15.04+, Arch Linux 2012+, OpenSUSE 12.1+, and more)
 execute::
 
     $ sudo systemctl start amazon-dash
