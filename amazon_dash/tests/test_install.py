@@ -1,10 +1,9 @@
 import unittest
-importnecessarym subprocess import check_output
+import os
 
-import sys
 from click.testing import CliRunner
 
-from ._compat import patch, mock_open
+from ._compat import patch
 
 from pyfakefs.fake_filesystem_unittest import Patcher
 
