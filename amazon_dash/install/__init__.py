@@ -111,8 +111,9 @@ SERVICES = [
 
 
 @click.group(cls=DefaultGroup, default='all', default_if_no_args=True)
-def cli():
-    if os.getuid():
+@click.option('--root-required/--root-not-required', default=True)
+def cli(root_required):
+    if os.getuid() and root_required:
         click.echo('The installation must be done as root. Maybe you forgot sudo?', err=True)
         sys.exit(1)
 
