@@ -6,6 +6,7 @@ import logging
 
 import sys
 
+from amazon_dash.config import check_config
 from amazon_dash.exceptions import AmazonDashException
 from amazon_dash.listener import Listener
 
@@ -63,6 +64,8 @@ argparse.ArgumentParser.set_default_subparser = set_default_subparser
 def execute_args(args):
     if not getattr(args, 'which', None) or args.which == 'run':
         Listener(args.config).run(root_allowed=args.root_allowed)
+    elif args.which == 'check-config':
+        check_config(args.config)
     elif args.which == 'discovery':
         from amazon_dash.discovery import discover
         discover()
@@ -89,6 +92,9 @@ def execute_from_command_line(argv=None):
 
     parse_service = parser.sub.add_parser('discovery', help='Discover Amazon Dash device on network.')
     parse_service.set_defaults(which='discovery')
+
+    parse_service = parser.sub.add_parser('check-config', help='Validate the configuration file.')
+    parse_service.set_defaults(which='check-config')
 
     parse_oneshot = parser.sub.add_parser('run', help='Run server')
     parse_oneshot.set_defaults(which='run')

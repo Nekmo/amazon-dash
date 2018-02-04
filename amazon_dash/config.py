@@ -140,3 +140,8 @@ class Config(dict):
         except ValidationError as e:
             raise InvalidConfig(self.file, e)
         self.update(data)
+
+
+def check_config(file):
+    Config(file).read()
+    print('The configuration file "{}" is correct'.format(file))

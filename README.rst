@@ -51,7 +51,7 @@ with few resources.
     $ sudo pip install amazon-dash  # and after:
     $ sudo python -m amazon_dash.install
 
-Also available on AUR. See other installation methods
+Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. See other installation methods
 `in the documentation <http://docs.nekmo.org/amazon-dash/installation.html>`_.
 
 
