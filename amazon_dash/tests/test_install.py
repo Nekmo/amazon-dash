@@ -75,8 +75,10 @@ class TestClickAll(unittest.TestCase):
     def test_no_services(self, mock_check_output):
         with Patcher() as patcher:
             patcher.fs.CreateFile(CONFIG_PATH)
-            runner = CliRunner()
-            result = runner.invoke(cli, ['--root-not-required', 'all'])
+            args = ['--root-not-required', 'all']
+            with patch.object(sys, 'argv', ['prog'] + args):
+                runner = CliRunner()
+                result = runner.invoke(cli,)
             self.assertIn('You must run Amazon-dash manually', result.output)
 
     @patch('amazon_dash.install.get_pid', return_value=1000)
@@ -85,6 +87,8 @@ class TestClickAll(unittest.TestCase):
             patcher.fs.CreateFile(CONFIG_PATH)
             path = os.path.join(SYSTEMD_PATHS[0], os.path.split(SYSTEMD_SERVICE)[1])
             patcher.fs.CreateFile(path)
-            runner = CliRunner()
-            result = runner.invoke(cli, ['--root-not-required', 'all'])
+            args = ['--root-not-required', 'all']
+            with patch.object(sys, 'argv', ['prog'] + args):
+                runner = CliRunner()
+                result = runner.invoke(cli, args)
             self.assertIn('Systemd service is already installed', result.output)
