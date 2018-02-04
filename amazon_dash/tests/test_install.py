@@ -3,12 +3,14 @@ import os
 
 from subprocess import check_output
 
+from click.testing import CliRunner
+
 from ._compat import patch, mock_open
 
 from pyfakefs.fake_filesystem_unittest import Patcher
 
 from amazon_dash.install import InstallConfig, IsInstallableException, CONFIG_PATH, IsNecessaryException, \
-    CONFIG_EXAMPLE, SYSTEMD_PATHS, InstallSystemd, SYSTEMD_SERVICE
+    CONFIG_EXAMPLE, SYSTEMD_PATHS, InstallSystemd, SYSTEMD_SERVICE, all as all_click
 
 
 class TestInstallConfig(unittest.TestCase):
@@ -65,3 +67,23 @@ class TestInstallSystemd(unittest.TestCase):
             self.assertEqual(stat.st_mode, 0o100600)
             self.assertEqual(stat.st_uid, 0)
             self.assertEqual(stat.st_gid, 0)
+
+
+class TestClickAll(unittest.TestCase):
+    @patch('amazon_dash.install.get_pid', return_value=1000)
+    def test_no_services(self, mock_check_output):
+        with Patcher() as patcher:
+            patcher.fs.CreateFile(CONFIG_PATH)
+            runner = CliRunner()
+            result = runner.invoke(all_click, [])
+            self.assertIn('You must run Amazon-dash manually', result.output)
+
+    @patch('amazon_dash.install.get_pid', return_value=1000)
+    def test_is_not_necessary(self, mock_check_output):
+        with Patcher() as patcher:
+            patcher.fs.CreateFile(CONFIG_PATH)
+            path = os.path.join(SYSTEMD_PATHS[0], os.path.split(SYSTEMD_SERVICE)[1])
+            patcher.fs.CreateFile(path)
+            runner = CliRunner()
+            result = runner.invoke(all_click, [])
+            self.assertIn('Systemd service is already installed', result.output)
