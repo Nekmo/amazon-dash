@@ -3,7 +3,7 @@ from collections import defaultdict
 
 
 from amazon_dash.config import Config
-from amazon_dash.exceptions import InvalidConfig
+from amazon_dash.exceptions import InvalidConfig, InvalidDevice
 from amazon_dash.execute import logger, ExecuteCmd, ExecuteUrl, ExecuteHomeAssistant
 from amazon_dash.scan import scan_devices
 
@@ -71,3 +71,11 @@ class Listener(object):
     def run(self, root_allowed=False):
         self.root_allowed = root_allowed
         scan_devices(self.on_push, lambda d: d.src.lower() in self.devices)
+
+
+def test_device(device, file, root_allowed=False):
+    config = Config(file)
+    config.read()
+    if not device in config['devices']:
+        raise InvalidDevice('Device {} is not in config file.'.format(device))
+    Device(device, config['devices'][device]).execute(root_allowed)

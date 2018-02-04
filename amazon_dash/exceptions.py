@@ -38,3 +38,7 @@ class SocketPermissionError(AmazonDashException):
               'The easy way to run this program is to use root. To use a normal user,' \
               ' consult the documentation.'
         super(SocketPermissionError, self).__init__(msg)
+
+
+class InvalidDevice(AmazonDashException):
+    pass

@@ -8,7 +8,7 @@ import sys
 
 from amazon_dash.config import check_config
 from amazon_dash.exceptions import AmazonDashException
-from amazon_dash.listener import Listener
+from amazon_dash.listener import Listener, test_device
 
 CONFIG_FILE = 'amazon-dash.yml'
 
@@ -66,6 +66,8 @@ def execute_args(args):
         Listener(args.config).run(root_allowed=args.root_allowed)
     elif args.which == 'check-config':
         check_config(args.config)
+    elif args.which == 'test-device':
+        test_device(args.device, args.config, args.root_allowed)
     elif args.which == 'discovery':
         from amazon_dash.discovery import discover
         discover()
@@ -95,6 +97,11 @@ def execute_from_command_line(argv=None):
 
     parse_service = parser.sub.add_parser('check-config', help='Validate the configuration file.')
     parse_service.set_defaults(which='check-config')
+
+    parse_service = parser.sub.add_parser('test-device', help='Validate the configuration file.')
+    parse_service.set_defaults(which='test-device')
+    parse_service.add_argument('device', help='MAC address')
+    parse_service.add_argument('--root-allowed', action='store_true')
 
     parse_oneshot = parser.sub.add_parser('run', help='Run server')
     parse_oneshot.set_defaults(which='run')
