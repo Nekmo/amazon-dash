@@ -68,7 +68,7 @@ class InstallConfig(InstallBase):
     def is_installable(self):
         directory = os.path.dirname(CONFIG_PATH)
         if not os.path.lexists(directory):
-            raise IsInstallableException('/{} does not exists'.format(directory))
+            raise IsInstallableException('{} does not exists'.format(directory))
 
     def is_necessary(self):
         if os.path.lexists(CONFIG_PATH):
@@ -92,7 +92,7 @@ class InstallSystemd(InstallBase):
         return os.path.join(path, self.service_name)
 
     def is_installable(self):
-        if not get_pid('systemd') and get_systemd_services_path():
+        if not get_pid('systemd') or not get_systemd_services_path():
             raise IsInstallableException('Systemd is not available')
 
     def is_necessary(self):
