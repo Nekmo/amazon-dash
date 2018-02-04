@@ -133,7 +133,7 @@ def systemd():
 @cli.command()
 def all():
     click.echo('Executing all install scripts for Amazon-Dash')
-    catch(config)()
+    catch(InstallConfig().install)() and install_success('config')
     has_service = False
     for service in SERVICES:
         try:
