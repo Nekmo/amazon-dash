@@ -14,6 +14,12 @@ CONFIG_FILE = 'amazon-dash.yml'
 
 
 def create_logger(name, level=logging.INFO):
+    """Create a Logger and set handler and formatter
+
+    :param name: logger name
+    :param level: logging level
+    :return: None
+    """
     # create logger
     logger = logging.getLogger(name)
     logger.setLevel(level)
@@ -38,6 +44,9 @@ def set_default_subparser(self, name, args=None):
     args: if set is the argument list handed to parse_args()
     , tested with 2.7, 3.2, 3.3, 3.4
     it works with 2.6 assuming argparse is installed
+
+    :param str name: default command
+    :param list args: defaults args for default command
     """
     subparser_found = False
     for arg in sys.argv[1:]:
@@ -62,6 +71,11 @@ argparse.ArgumentParser.set_default_subparser = set_default_subparser
 
 
 def execute_args(args):
+    """Execute args.which command
+
+    :param args: argparse args
+    :return: None
+    """
     if not getattr(args, 'which', None) or args.which == 'run':
         Listener(args.config).run(root_allowed=args.root_allowed)
     elif args.which == 'check-config':
@@ -74,8 +88,7 @@ def execute_args(args):
 
 
 def execute_from_command_line(argv=None):
-    """
-    A simple method that runs a ManagementUtility.
+    """A simple method that runs a ManagementUtility.
     """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', default=CONFIG_FILE, help='Path to config file.')
@@ -98,7 +111,7 @@ def execute_from_command_line(argv=None):
     parse_service = parser.sub.add_parser('check-config', help='Validate the configuration file.')
     parse_service.set_defaults(which='check-config')
 
-    parse_service = parser.sub.add_parser('test-device', help='Validate the configuration file.')
+    parse_service = parser.sub.add_parser('test-device', help='Test a configured device without press button.')
     parse_service.set_defaults(which='test-device')
     parse_service.add_argument('device', help='MAC address')
     parse_service.add_argument('--root-allowed', action='store_true')

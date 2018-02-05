@@ -25,6 +25,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
+	@echo "  watch       Browser Sync watcher for build HTML files on real time"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  singlehtml to make a single large HTML file"
 	@echo "  pickle     to make pickle files"
@@ -55,6 +56,11 @@ html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
+
+watch:
+	gulp watch
+	@echo
+	@echo "Finished."
 
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
@@ -87,17 +93,17 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/amazon_dash.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/amazon-dash.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/amazon_dash.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/amazon-dash.qhc"
 
 devhelp:
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/amazon_dash"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/amazon_dash"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/amazon-dash"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/amazon-dash"
 	@echo "# devhelp"
 
 epub:

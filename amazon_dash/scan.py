@@ -14,6 +14,12 @@ except NameError:
 
 
 def scan_devices(fn, lfilter):
+    """Sniff packages
+
+    :param fn: callback on packet
+    :param lfilter: filter packages
+    :return: loop
+    """
     try:
         sniff(prn=fn, store=0, filter="udp", lfilter=lfilter)
     except PermissionError:

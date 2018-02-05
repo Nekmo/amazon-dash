@@ -7,6 +7,11 @@ v0.4.0
 
 - Native Home Assistant support.
 - docs.nekmo.org documentation.
+- Arch Linux package
+- Check config file command
+- Test execution command
+- Install systemd service
+- Install config file on ``/etc/amazon-dash.yml``
 
 
 v0.3.0 (2017-12-24)

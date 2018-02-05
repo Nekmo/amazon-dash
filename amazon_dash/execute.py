@@ -24,16 +24,36 @@ logger = logging.getLogger('amazon-dash')
 
 
 def get_shell(name):
+    """Absolute path to command
+
+    :param str name: command
+    :return: command args
+    :rtype: list
+    """
     if name.startswith('/'):
         return [name]
     return ['/usr/bin/env', name]
 
 
 def run_as_cmd(cmd, user, shell='bash'):
+    """Get the arguments to execute a command as a user
+
+    :param str cmd: command to execute
+    :param user: User for use
+    :param shell: Bash, zsh, etc.
+    :return: arguments
+    :rtype: list
+    """
     return ['sudo', '-s', '--set-home', '-u', user] + get_shell(shell) + [EXECUTE_SHELL_PARAM, cmd]
 
 
 def check_execution_success(cmd, cwd):
+    """Execute a command and show error on fail
+
+    :param str cmd: command
+    :param str cwd: current working directory
+    :return: None
+    """
     p = subprocess.Popen(cmd, cwd=cwd, stderr=subprocess.PIPE)
     stdout, stderr = p.communicate()
     if p.returncode:
@@ -41,33 +61,73 @@ def check_execution_success(cmd, cwd):
 
 
 def execute_cmd(cmd, cwd=None):
+    """Excecute command on thread
+
+    :param cmd: Command to execute
+    :param cwd: current working directory
+    :return: None
+    """
     l = threading.Thread(target=check_execution_success, args=(cmd, cwd))
     l.daemon = True
     l.start()
 
 
 class Execute(object):
+    """Execute base class
+
+    """
     def __init__(self, name, data):
+        """
+
+        :param str name: name or mac address
+        :param data: data on device section
+        """
         self.name = name
         self.data = data
 
     def validate(self):
+        """Check self.data. Raise InvalidConfig on error
+
+        :return: None
+        """
         raise NotImplementedError
 
     def execute(self, root_allowed=False):
+        """Execute using self.data
+
+        :param bool root_allowed: Only used for ExecuteCmd
+        :return:
+        """
         raise NotImplementedError
 
 
 class ExecuteCmd(Execute):
+    """Execute systemd command
+    """
+
     def __init__(self, name, data):
+        """
+
+        :param str name: name or mac address
+        :param data: data on device section
+        """
         super(ExecuteCmd, self).__init__(name, data)
         self.user = data.get('user', getpass.getuser())
         self.cwd = data.get('cwd')
 
     def validate(self):
+        """Check self.data. Raise InvalidConfig on error
+
+        :return: None
+        """
         return
 
     def execute(self, root_allowed=False):
+        """Execute using self.data
+
+        :param bool root_allowed: Allow execute as root commands
+        :return:
+        """
         if self.user == ROOT_USER and not root_allowed:
             raise SecurityException('For security, execute commands as root is not allowed. '
                                     'Use --root-allowed to allow executing commands as root. '
@@ -78,7 +138,14 @@ class ExecuteCmd(Execute):
 
 
 class ExecuteUrl(Execute):
+    """Call a url
+    """
+
     def validate(self):
+        """Check self.data. Raise InvalidConfig on error
+
+        :return: None
+        """
         if (self.data.get('content-type') or self.data.get('body')) and \
                         self.data.get('method', '').lower() not in CONTENT_TYPE_METHODS:
             raise InvalidConfig(
@@ -97,6 +164,11 @@ class ExecuteUrl(Execute):
                 )
 
     def execute(self, root_allowed=False):
+        """Execute using self.data
+
+        :param bool root_allowed: Only used for ExecuteCmd
+        :return:
+        """
         kwargs = {}
         if self.data.get('content-type'):
             kwargs['headers'] = {'content-type': self.data['content-type']}
@@ -112,12 +184,19 @@ class ExecuteUrl(Execute):
 
 
 class ExecuteUrlServiceBase(ExecuteUrl):
-    default_url = None
-    default_content_type = 'application/json'
-    default_method = 'GET'
-    default_body = None
+    """Base class to create services execute classes
+    """
+    default_url = None  #: default url to call
+    default_content_type = 'application/json'  #: default content type to send
+    default_method = 'GET'  #: default HTTP method
+    default_body = None  #: default body to send
 
     def __init__(self, name, data):
+        """
+
+        :param str name: name or mac address
+        :param data: data on device section
+        """
         super(ExecuteUrlServiceBase, self).__init__(name, data)
         self.data['url'] = self.get_url()
         self.data['content_type'] = self.get_content_type()
@@ -125,15 +204,35 @@ class ExecuteUrlServiceBase(ExecuteUrl):
         self.data['body'] = self.get_body()
 
     def get_url(self):
+        """Get url to call. By default default_url
+
+        :return: url
+        :rtype: str
+        """
         return self.default_url
 
     def get_method(self):
+        """Get HTTP method. By default default_method
+
+        :return: HTTP method
+        :rtype: str
+        """
         return self.default_method
 
     def get_content_type(self):
+        """Get HTTP content type to send. By default default_content_type
+
+        :return: HTTP content type
+        :rtype: str
+        """
         return self.default_content_type
 
     def get_body(self):
+        """Get body to send. By default default_body
+
+        :return: body content
+        :rtype: str
+        """
         return self.default_body
 
 
@@ -145,6 +244,11 @@ class ExecuteHomeAssistant(ExecuteUrlServiceBase):
     default_method = 'POST'
 
     def get_url(self):
+        """Home assistant url
+
+        :return: url
+        :rtype: str
+        """
         url = self.data['homeassistant']
         parsed = urlparse(url)
         if not parsed.scheme:
@@ -157,4 +261,9 @@ class ExecuteHomeAssistant(ExecuteUrlServiceBase):
         return url
 
     def get_body(self):
+        """Return "data" value on self.data
+
+        :return: data to send
+        :rtype: str
+        """
         return self.data.get('data')
