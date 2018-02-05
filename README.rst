@@ -88,10 +88,10 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
 
 The following execution methods are supported with your Amazon Dash button with this program:
 
-=====================  =====================  =====================
-https://goo.gl/bq5QSK  https://goo.gl/k4DJmf  https://goo.gl/Gqo8W3
-`System command`_      `Call url`_            `Homeassistant`_
-=====================  =====================  =====================
+================================  ================================  ================================
+.. image:: https://goo.gl/bq5QSK  .. image:: https://goo.gl/k4DJmf  .. image:: https://goo.gl/Gqo8W3
+`System command`_                 `Call url`_                       `Homeassistant`_
+================================  ================================  ================================
 
 For more information see
 `the documentation of the configuration file <http://docs.nekmo.org/amazon-dash/config_file.html>`_.
