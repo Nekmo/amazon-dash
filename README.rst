@@ -99,7 +99,7 @@ For more information see
 
 4. Run the **daemon**:
 
-If you use a **Systemd** system (Debian 8+, Fedora 15+, Ubuntu 15.04+, Arch Linux 2012+, OpenSUSE 12.1+, and more)
+If you use a **Systemd** system *(Debian 8+, Fedora 15+, Ubuntu 15.04+, Arch Linux 2012+, OpenSUSE 12.1+, and more)*
 execute::
 
     $ sudo systemctl start amazon-dash

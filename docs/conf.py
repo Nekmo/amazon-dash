@@ -112,15 +112,37 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+    'logo': 'logo.png',
+    'description': 'Hack your Amazon Dash to run what you want',
+    'github_user': 'Nekmo',
+    'github_repo': 'amazon-dash',
+    'github_type': 'star',
+    'github_banner': True,
+    'travis_button': True,
+    'codecov_button': True,
+    'analytics_id': 'UA-62276079-1',
+    'canonical_url': 'http://docs.nekmo.org/amazon-dash/'
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
+
+html_sidebars = {
+    '**': [
+        'about.html',
+        'navigation.html',
+        'relations.html',
+        'searchbox.html',
+        'donate.html',
+    ]
+}
+
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
