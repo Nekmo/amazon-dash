@@ -24,9 +24,29 @@ you through the process.
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 
 
+Other releases
+--------------
+You can install other versions from Pypi using::
+
+    $ pip install amazon-dash==<version>
+    $ sudo python -m amazon_dash.install
+
+For versions that are not in Pypi (it is a development version)::
+
+    $ pip install git+https://github.com/Nekmo/amazon-dash.git@<branch>#egg=amazon-dash
+    $ sudo python -m amazon_dash.install
+
+
 Distro packages
 ---------------
-AUR
+
+Arch Linux
+``````````
+If you use Arch Linux or an Arch Linux derivative, you can install Amazon Dash from
+`AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. For example if you use yaourt::
+
+    $ yaourt -S amazon-dash-git
+
 
 From sources
 ------------
