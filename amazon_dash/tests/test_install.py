@@ -85,3 +85,11 @@ class TestClickAll(unittest.TestCase):
             runner = CliRunner()
             result = runner.invoke(cli, ['--root-not-required', 'all'])
             self.assertIn('Systemd service is already installed', result.output)
+
+
+class TestCli(unittest.TestCase):
+    @patch('amazon_dash.install.get_pid', return_value=1000)
+    def test_root_required(self, mock_check_output):
+        runner = CliRunner()
+        result = runner.invoke(cli, [])
+        self.assertIn('Maybe you forgot sudo?', result.output)

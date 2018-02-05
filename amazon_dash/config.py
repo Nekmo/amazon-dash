@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import stat
 from grp import getgrgid
@@ -142,6 +143,6 @@ class Config(dict):
         self.update(data)
 
 
-def check_config(file):
+def check_config(file, printfn=print):
     Config(file).read()
-    print('The configuration file "{}" is correct'.format(file))
+    printfn('The configuration file "{}" is correct'.format(file))

@@ -1,4 +1,4 @@
-.. highlight:: shell
+.. highlight:: console
 
 ============
 Installation
@@ -8,7 +8,7 @@ Installation
 Stable release
 --------------
 
-To install amazon-dash, run this command in your terminal:
+To install amazon-dash, run these commands in your terminal:
 
 .. code-block:: console
 
@@ -23,6 +23,10 @@ you through the process.
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 
+
+Distro packages
+---------------
+AUR
 
 From sources
 ------------
@@ -46,6 +50,7 @@ Once you have a copy of the source, you can install it with:
 .. code-block:: console
 
     $ python setup.py install
+    $ sudo python -m amazon_dash.install
 
 
 .. _Github repo: https://github.com/Nekmo/amazon-dash

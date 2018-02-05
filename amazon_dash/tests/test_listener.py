@@ -3,8 +3,8 @@ import unittest
 import os
 from amazon_dash.tests._compat import patch
 
-from amazon_dash.exceptions import InvalidConfig
-from amazon_dash.listener import Listener, Device, last_execution, logger
+from amazon_dash.exceptions import InvalidConfig, InvalidDevice
+from amazon_dash.listener import Listener, Device, last_execution, logger, test_device
 from amazon_dash.tests.base import ConfigFileMockBase, ExecuteMockBase
 
 __dir__ = os.path.abspath(os.path.dirname(__file__))
@@ -66,3 +66,15 @@ class TestDevice(ExecuteMockBase, unittest.TestCase):
         device = Device('key')
         device2 = Device(device)
         self.assertEqual(device.src, device2.src)
+
+
+class TestTestListener(ExecuteMockBase, ConfigFileMockBase, unittest.TestCase):
+    contents = config_data
+
+    def test_invalid_device(self):
+        with self.assertRaises(InvalidDevice):
+            test_device('00:11:22:33:44:55', self.file)
+
+    def test_success(self):
+        test_device('44:65:0D:48:FA:88', self.file)
+        self.execute_mock_req.assert_called_once()

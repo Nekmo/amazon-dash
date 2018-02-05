@@ -4,7 +4,7 @@ from ._compat import patch
 
 from pyfakefs.fake_filesystem_unittest import Patcher
 
-from amazon_dash.config import Config, only_root_write, oth_w_perm
+from amazon_dash.config import Config, only_root_write, oth_w_perm, check_config
 from amazon_dash.exceptions import SecurityException, InvalidConfig
 from amazon_dash.tests.base import FileMockBase
 
@@ -124,3 +124,21 @@ class TestOnlyRootWrite(FileMockBase, unittest.TestCase):
         os.chmod(self.file, 0o660)
         self.assertFalse(only_root_write(self.file))
 
+
+class TestCheckConfig(unittest.TestCase):
+    def test_fail(self):
+        file = 'amazon-dash.yml'
+        with Patcher() as patcher:
+            patcher.fs.CreateFile(file, contents='invalid config')
+            os.chown(file, 0, 0)
+            os.chmod(file, 0o600)
+            with self.assertRaises(InvalidConfig):
+                check_config(file)
+
+    def test_success(self):
+        file = 'amazon-dash.yml'
+        with Patcher() as patcher:
+            patcher.fs.CreateFile(file, contents=config_data)
+            os.chown(file, 0, 0)
+            os.chmod(file, 0o600)
+            check_config(file, lambda x: x)

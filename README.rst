@@ -55,7 +55,7 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
 `in the documentation <http://docs.nekmo.org/amazon-dash/installation.html>`_.
 
 
-2. Use *discovery mode* **to know the mac of your Dash** (Run the program, and then press the button):
+2. Use *discovery mode* **to know the mac of your Dash** (Run the program, and then press any button):
 
 .. code::
 
