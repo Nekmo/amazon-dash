@@ -128,6 +128,8 @@ Examples
 Here are some examples of how to use your Amazon Dash button:
 
 * **Random Episode**: Play a random chapter of your favorite series, like *The Simpsons*, *Futurama*, *Friends*... https://github.com/Nekmo/random-episode
+* **Gkeep**: Add tasks to Google Keep (buy milk, beer...). The notes can be associated with a place to run a reminder.
+  https://github.com/Nekmo/gkeep
 
 
 References
