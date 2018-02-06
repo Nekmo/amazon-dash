@@ -1,4 +1,3 @@
-.. highlight:: console
 
 
 .. image:: https://raw.githubusercontent.com/Nekmo/amazon-dash/master/amazon-dash.png
@@ -46,7 +45,7 @@ with few resources.
 
 1. **Install** Amazon Dash:
 
-.. code::
+.. code:: console
 
     $ sudo pip install amazon-dash  # and after:
     $ sudo python -m amazon_dash.install
@@ -57,14 +56,14 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
 
 2. Use *discovery mode* **to know the mac of your Dash** (Run the program, and then press any button):
 
-.. code::
+.. code-block:: console
 
     $ sudo amazon-dash discovery
 
 
 3. Edit **config file** (``/etc/amazon-dash.yml``):
 
-.. code:: yaml
+.. code-block:: yaml
 
     # amazon-dash.yml
     # ---------------
@@ -89,7 +88,7 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
 The following execution methods are supported with your Amazon Dash button with this program:
 
 ================================  ================================  ================================
-.. image:: https://goo.gl/bq5QSK  .. image:: https://goo.gl/k4DJmf  .. image:: https://goo.gl/Gqo8W3
+.. image:: https://goo.gl/VqgMZJ  .. image:: https://goo.gl/a6TS7X  .. image:: https://goo.gl/zrjisq
 `System command`_                 `Call url`_                       `Homeassistant`_
 ================================  ================================  ================================
 
@@ -100,11 +99,15 @@ For more information see
 4. Run the **daemon**:
 
 If you use a **Systemd** system *(Debian 8+, Fedora 15+, Ubuntu 15.04+, Arch Linux 2012+, OpenSUSE 12.1+, and more)*
-execute::
+execute:
+
+.. code-block:: console
 
     $ sudo systemctl start amazon-dash
 
-To run Amazon-dash at startup::
+To run Amazon-dash at startup:
+
+.. code-block:: console
 
     $ sudo systemctl enable amazon-dash
 
@@ -120,7 +123,7 @@ The easiest way to avoid making a purchase is to reconfigure the button using th
 want to associate with the button)*. If Amazon does not know what product you want, they can not charge anything on
 your credit card.
 
-There are two more methods `in the documentation <http://docs.nekmo.org/amazon-dash/avoid_purchase.html>`_.
+There are two more methods `in the documentation. <http://docs.nekmo.org/amazon-dash/avoid_purchase.html>`_.
 
 
 Examples
