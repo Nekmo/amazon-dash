@@ -1,9 +1,5 @@
 from amazon_dash.scan import scan_devices
 
-# https://standards.ieee.org/develop/regauth/oui/oui.csv
-# import csv
-# print('\n'.join([':'.join([row[1][i:i+2] for i in range(0, len(row[1]), 2)])
-#     for row in csv.reader(open('oui.csv')) if row[2] == 'Amazon Technologies Inc.']))
 AMAZON_DEVICES = [
     'F0:D2:F1',
     '88:71:E5',
@@ -34,7 +30,20 @@ AMAZON_DEVICES = [
     'B4:7C:9C',
     'F0:81:73',
 ]
+"""Amazon Dash Mac Devices. Source: https://standards.ieee.org/develop/regauth/oui/oui.csv
+
+Snippet for Re-generate this list:
+
+>>> import csv
+>>> print('\n'.join([':'.join([row[1][i:i+2] for i in range(0, len(row[1]), 2)])
+        for row in csv.reader(open('oui.csv')) if row[2] == 'Amazon Technologies Inc.']))
+"""
+
+
 BANNED_DEVICES = ['00:00:00:00:00:00']
+"""These mac addresses will not be considered valid results on discovery.
+"""
+
 HELP = """\
 The discovery command lists the devices that are connected in your network. \
 Each device will only be listed once. After executing this command wait approximately \
@@ -44,9 +53,17 @@ able to create the configuration file.\
 """
 
 mac_id_list = []
+"""Mac addresses already known. Mac addresses only appear once.
+"""
 
 
 def pkt_text(pkt):
+    """Return source mac address for this Scapy Packet
+
+    :param scapy.packet.Packet pkt: Scapy Packet
+    :return: Mac address. Include (Amazon Device) for these devices
+    :rtype: str
+    """
     if pkt.src.upper() in BANNED_DEVICES:
         body = ''
     elif pkt.src.upper()[:8] in AMAZON_DEVICES:
@@ -57,6 +74,12 @@ def pkt_text(pkt):
 
 
 def discovery_print(pkt):
+    """Scandevice callback. Register src mac to avoid src repetition.
+    Print device on screen.
+
+    :param scapy.packet.Packet pkt: Scapy Packet
+    :return: None
+    """
     if pkt.src in mac_id_list:
         return
     mac_id_list.append(pkt.src)
@@ -64,5 +87,9 @@ def discovery_print(pkt):
 
 
 def discover():
+    """Print help and scan devices on screen.
+
+    :return: None
+    """
     print(HELP)
     scan_devices(discovery_print, lfilter=lambda d: d.src not in mac_id_list)

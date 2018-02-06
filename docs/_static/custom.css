@@ -1,0 +1,9 @@
+#welcome-to-amazon-dash-s-documentation table, #python-amazon-dash table {
+    border: 0;
+    box-shadow: none;
+}
+
+#welcome-to-amazon-dash-s-documentation table td, #python-amazon-dash table td {
+    border: 0;
+    text-align: center;
+}

@@ -7,7 +7,8 @@ from requests_mock import NoMockAddress
 from amazon_dash.tests._compat import patch as mock_patch, Mock
 
 from amazon_dash.exceptions import SecurityException, InvalidConfig
-from amazon_dash.execute import ExecuteCmd, ExecuteUrl, logger, execute_cmd, check_execution_success, get_shell
+from amazon_dash.execute import ExecuteCmd, ExecuteUrl, logger, execute_cmd, check_execution_success, get_shell, \
+    ExecuteHomeAssistant
 from amazon_dash.tests.base import ExecuteMockBase
 
 import requests_mock
@@ -144,7 +145,48 @@ class TestExecuteUrl(unittest.TestCase):
             execute_url.execute()
             warning_mock.assert_called_once()
 
-
     def tearDown(self):
         super(TestExecuteUrl, self).tearDown()
         self.session_mock.stop()
+
+
+class TestExecuteHomeAssistant(unittest.TestCase):
+    path = '/api/events/test'
+    url = 'http://localhost:8123' + path
+
+    def default_data(self, address='localhost', event='test'):
+        return {
+            'homeassistant': address,
+            'event': event,
+        }
+
+    def test_no_event(self):
+        with self.assertRaises(InvalidConfig):
+            ExecuteHomeAssistant('key', self.default_data(event=''))
+
+    def test_only_address(self):
+        assis = ExecuteHomeAssistant('key', self.default_data())
+        self.assertIn('url', assis.data)
+        self.assertEqual(assis.data['url'], self.url)
+
+    def test_include_address_protocol(self):
+        assis = ExecuteHomeAssistant('key', self.default_data('https://localhost'))
+        self.assertIn('url', assis.data)
+        self.assertEqual(assis.data['url'], 'https://localhost:8123' + self.path)
+
+    def test_include_address_port(self):
+        assis = ExecuteHomeAssistant('key', self.default_data('localhost:7123'))
+        self.assertIn('url', assis.data)
+        self.assertEqual(assis.data['url'], 'http://localhost:7123' + self.path)
+
+    def test_full_address(self):
+        assis = ExecuteHomeAssistant('key', self.default_data('https://localhost:7123'))
+        self.assertIn('url', assis.data)
+        self.assertEqual(assis.data['url'], 'https://localhost:7123' + self.path)
+
+    def test_execute(self):
+        with requests_mock.mock() as m:
+            m.post(self.url, text='success')
+            assis = ExecuteHomeAssistant('key', self.default_data())
+            assis.execute()
+            self.assertTrue(m.called_once)

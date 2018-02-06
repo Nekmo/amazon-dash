@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import stat
 from grp import getgrgid
@@ -14,6 +15,7 @@ try:
 except ImportError:
     from yaml import Loader, Dumper
 
+#: Json-schema validation
 SCHEMA = {
     "title": "Config",
     "type": "object",
@@ -69,6 +71,12 @@ SCHEMA = {
                         },
                         "body": {
                             "type": "string"
+                        },
+                        "homeassistant": {
+                            "type": "string"
+                        },
+                        "event": {
+                            "type": "string"
                         }
                     },
                 }
@@ -82,14 +90,34 @@ SCHEMA = {
 
 
 def get_file_owner(file):
+    """Get file owner id
+
+    :param str file: Path to file
+    :return: user id
+    :rtype: int
+    """
     return getpwuid(os.stat(file).st_uid)[0]
 
 
 def get_file_group(file):
+    """Get file group id
+
+    :param file: Path to file
+    :return: group id
+    :rtype: int
+    """
     return getgrgid(os.stat(file).st_uid)[0]
 
 
 def bitperm(s, perm, pos):
+    """Returns zero if there are no permissions for a bit of the perm. of a file. Otherwise it returns a positive value
+
+    :param os.stat_result s: os.stat(file) object
+    :param str perm: R (Read) or W (Write) or X (eXecute)
+    :param str pos: USR (USeR) or GRP (GRouP) or OTH (OTHer)
+    :return: mask value
+    :rtype: int
+    """
     perm = perm.upper()
     pos = pos.upper()
     assert perm in ['R', 'W', 'X']
@@ -98,22 +126,41 @@ def bitperm(s, perm, pos):
 
 
 def oth_w_perm(file):
+    """Returns True if others have write permission to the file
+
+    :param str file: Path to file
+    :return: True if others have permits
+    :rtype: bool
+    """
     return bitperm(os.stat(file), 'w', 'oth')
 
 
 def only_root_write(path):
+    """File is only writable by root
+
+    :param str path: Path to file
+    :return: True if only root can write
+    :rtype: bool
+    """
     s = os.stat(path)
     for ug, bp in [(s.st_uid, bitperm(s, 'w', 'usr')), (s.st_gid, bitperm(s, 'w', 'grp'))]:
         # User id (is not root) and bit permission
         if ug and bp:
-             return False
+            return False
     if bitperm(s, 'w', 'oth'):
         return False
     return True
 
 
 class Config(dict):
+    """Parse and validate yaml Amazon-dash file config. The instance behaves like a dictionary
+    """
     def __init__(self, file, **kwargs):
+        """Set the config file and validate file permissions
+
+        :param str file: path to file
+        :param kwargs: default values in dict
+        """
         super(Config, self).__init__(**kwargs)
         if not os.path.lexists(file):
             raise ConfigFileNotFoundError(file)
@@ -131,6 +178,10 @@ class Config(dict):
         self.read()
 
     def read(self):
+        """Parse and validate the config file. The read data is accessible as a dictionary in this instance
+
+        :return: None
+        """
         try:
             data = load(open(self.file), Loader)
         except (UnicodeDecodeError, YAMLError) as e:
@@ -140,3 +191,14 @@ class Config(dict):
         except ValidationError as e:
             raise InvalidConfig(self.file, e)
         self.update(data)
+
+
+def check_config(file, printfn=print):
+    """Command to check configuration file. Raises InvalidConfig on error
+
+    :param str file: path to config file
+    :param printfn: print function for success message
+    :return: None
+    """
+    Config(file).read()
+    printfn('The configuration file "{}" is correct'.format(file))
