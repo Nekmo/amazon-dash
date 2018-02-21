@@ -9,26 +9,21 @@ To see the available help run::
 
 Example::
 
-    usage: amazon-dash [-h] [--config CONFIG] [--warning] [--quiet] [--debug]
-                       [--verbose]
-                       {discovery,check-config,test-device,run} ...
+    Usage: amazon-dash [OPTIONS] COMMAND [ARGS]...
 
-    Amazon Dash.
+    Options:
+      --info     set logging to info
+      --warning  set logging to warning
+      --quiet    set logging to ERROR
+      --debug    set logging to DEBUG
+      --verbose  set logging to COMM
+      --help     Show this message and exit.
 
-    positional arguments:
-      {discovery,check-config,test-device,run}
-        discovery           Discover Amazon Dash device on network.
-        check-config        Validate the configuration file.
-        test-device         Test a configured device without press button.
-        run                 Run server
-
-    optional arguments:
-      -h, --help            show this help message and exit
-      --config CONFIG       Path to config file.
-      --warning             set logging to warning
-      --quiet               set logging to ERROR
-      --debug               set logging to DEBUG
-      --verbose             set logging to COMM
+    Commands:
+      run*          Run server
+      check-config  Validate the configuration file.
+      discovery     Discover Amazon Dash device on network.
+      test-device   Test a configured device without press...
 
 
 To see the help of a command::
@@ -39,12 +34,14 @@ For example::
 
     $ amazon-dash run --help
 
+    Usage: amazon-dash run [OPTIONS]
 
-    usage: amazon-dash run [-h] [--root-allowed]
+      Run server
 
-    optional arguments:
-      -h, --help      show this help message and exit
-      --root-allowed
+    Options:
+      --config PATH   Path to config file.
+      --root-allowed  Allow execute commands on config file as root
+      --help          Show this message and exit.
 
 
 Discovery mode
@@ -73,7 +70,7 @@ To check if it has been executed correctly::
     $ sudo systemctl status amazon-dash
 
 .. hint::
-    Run ``$ sudo amazon-dash --config /etc/amazon-dash.yml check-config``  to verify that the configuration is correct
+    Run ``$ sudo amazon-dash check-config --config /etc/amazon-dash.yml`` to verify that the configuration is correct
     before running amazon-dash
 
 To restart amazon-dash after modifying the configuration file to apply the changes::
@@ -94,12 +91,12 @@ Manually
 ````````
 If your system does not have Systemd or you want to run it manually::
 
-    sudo amazon-dash[ --config amazon-dash.yml] run[ --root-allowed]
+    sudo amazon-dash run[ --root-allowed][ --config amazon-dash.yml]
 
 
 By default, ``amazon-dash`` will use the ``amazon-dash.yml`` file in the current directory with
 ``sudo amazon-dash run``. However, you can set the path to the file (for example, ``/etc/amazon-dash.yml``) with
-``--config`` parameter. Please note that ``--config`` must be before ``run``.
+``--config`` parameter. Please note that ``--config`` must be after ``run``.
 
 The default level logging is ``INFO`` but you can change it using the ``--warning``, ``--quiet``, ``--debug`` and
 ``--verbose`` options. To see on screen every time a button is pressed you need to set the ``--debug`` option.
@@ -113,7 +110,7 @@ Check config
 ------------
 If you have edited the configuration file you can check that the file is ok before starting the program::
 
-    $ sudo amazon-dash --config /etc/amazon-dash.yml check-config
+    $ sudo amazon-dash check-config --config /etc/amazon-dash.yml
 
 
 Test device
@@ -121,9 +118,9 @@ Test device
 Sometimes you may want to test the execution of a device without pressing the associated button. This is useful for
 testing and debugging::
 
-    $ sudo amazon-dash --config <config file> test-device <device mac address>[ --root-allowed]
+    $ sudo amazon-dash test-device <device mac address>[ --root-allowed][ --config <config file>]
 
 For example::
 
-    $ sudo amazon-dash --config /etc/amazon-dash.yml test-device 00:11:22:33:44:55
+    $ sudo amazon-dash test-device 00:11:22:33:44:55 --config /etc/amazon-dash.yml
 

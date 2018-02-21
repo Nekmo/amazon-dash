@@ -3,7 +3,7 @@ Description=Amazon Dash service
 
 [Service]
 User=root
-ExecStart=/usr/bin/env amazon-dash --config /etc/amazon-dash.yml run
+ExecStart=/usr/bin/env amazon-dash run --config /etc/amazon-dash.yml
 Restart=always
 RestartSec=3
 

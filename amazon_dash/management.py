@@ -53,7 +53,8 @@ def cli(loglevel):
 
 @cli.command(help='Run server')
 @click.option('--config', type=click.Path(), help='Path to config file.', default=CONFIG_FILE)
-@click.option('--root-allowed', is_flag=True, default=False)
+@click.option('--root-allowed', is_flag=True, default=False,
+              help='Allow execute commands on config file as root')
 def run(config, root_allowed):
     click.echo('Listening for events. Amazon-dash will execute the events associated with '
                'the registered buttons.')
@@ -71,7 +72,8 @@ def check_config(config):
 @cli.command('test-device', help='Test a configured device without press button.')
 @click.argument('device', type=str)
 @click.option('--config', type=click.Path(), help='Path to config file.', default=CONFIG_FILE)
-@click.option('--root-allowed', is_flag=True, default=False)
+@click.option('--root-allowed', is_flag=True, default=False,
+              help='Allow execute commands on config file as root')
 def test_device(device, config, root_allowed):
     from amazon_dash.listener import test_device
     test_device(device, config, root_allowed)
