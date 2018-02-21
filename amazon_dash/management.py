@@ -3,6 +3,7 @@
 
 import logging
 import click
+import sys
 from click_default_group import DefaultGroup
 
 CONFIG_FILE = 'amazon-dash.yml'
@@ -45,6 +46,8 @@ def create_logger(name, level=logging.INFO):
 @click.option('--verbose', 'loglevel', help='set logging to COMM',
               flag_value=5)
 def cli(loglevel):
+    from amazon_dash import __version__
+    click.echo('Welcome to Amazon-dash v{} using Python {}'.format(__version__, sys.version.split()[0]))
     create_logger('amazon-dash', loglevel)
 
 
@@ -52,6 +55,8 @@ def cli(loglevel):
 @click.option('--config', type=click.Path(), help='Path to config file.', default=CONFIG_FILE)
 @click.option('--root-allowed', is_flag=True, default=False)
 def run(config, root_allowed):
+    click.echo('Listening for events. Amazon-dash will execute the events associated with '
+               'the registered buttons.')
     from amazon_dash.listener import Listener
     Listener(config).run(root_allowed=root_allowed)
 
