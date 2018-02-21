@@ -1,14 +1,9 @@
 """Amazon Dash.
 """
 
-import argparse
 import logging
-
-import sys
-
-from amazon_dash.config import check_config
-from amazon_dash.exceptions import AmazonDashException
-from amazon_dash.listener import Listener, test_device
+import click
+from click_default_group import DefaultGroup
 
 CONFIG_FILE = 'amazon-dash.yml'
 
@@ -38,94 +33,46 @@ def create_logger(name, level=logging.INFO):
     logger.addHandler(ch)
 
 
-def set_default_subparser(self, name, args=None):
-    """default subparser selection. Call after setup, just before parse_args()
-    name: is the name of the subparser to call by default
-    args: if set is the argument list handed to parse_args()
-    , tested with 2.7, 3.2, 3.3, 3.4
-    it works with 2.6 assuming argparse is installed
-
-    :param str name: default command
-    :param list args: defaults args for default command
-    """
-    subparser_found = False
-    for arg in sys.argv[1:]:
-        if arg in ['-h', '--help']:  # global help if no subparser
-            break
-    else:
-        for x in self._subparsers._actions:
-            if not isinstance(x, argparse._SubParsersAction):
-                continue
-            for sp_name in x._name_parser_map.keys():
-                if sp_name in sys.argv[1:]:
-                    subparser_found = True
-        if not subparser_found:
-            # insert default in first position, this implies no
-            # global options without a sub_parsers specified
-            if args is None:
-                sys.argv.insert(1, name)
-            else:
-                args.insert(0, name)
-
-argparse.ArgumentParser.set_default_subparser = set_default_subparser
+@click.group(cls=DefaultGroup, default='run', default_if_no_args=True)
+@click.option('--info', 'loglevel', help='set logging to info', default=True,
+              flag_value=logging.INFO)
+@click.option('--warning', 'loglevel', help='set logging to warning',
+              flag_value=logging.WARNING)
+@click.option('--quiet', 'loglevel', help='set logging to ERROR',
+              flag_value=logging.ERROR)
+@click.option('--debug', 'loglevel', help='set logging to DEBUG',
+              flag_value=logging.DEBUG)
+@click.option('--verbose', 'loglevel', help='set logging to COMM',
+              flag_value=5)
+def cli(loglevel):
+    create_logger('amazon-dash', loglevel)
 
 
-def execute_args(args):
-    """Execute args.which command
-
-    :param args: argparse args
-    :return: None
-    """
-    if not getattr(args, 'which', None) or args.which == 'run':
-        Listener(args.config).run(root_allowed=args.root_allowed)
-    elif args.which == 'check-config':
-        check_config(args.config)
-    elif args.which == 'test-device':
-        test_device(args.device, args.config, args.root_allowed)
-    elif args.which == 'discovery':
-        from amazon_dash.discovery import discover
-        discover()
+@cli.command(help='Run server')
+@click.option('--config', type=click.Path(), help='Path to config file.', default=CONFIG_FILE)
+@click.option('--root-allowed', is_flag=True, default=False)
+def run(config, root_allowed):
+    from amazon_dash.listener import Listener
+    Listener(config).run(root_allowed=root_allowed)
 
 
-def execute_from_command_line(argv=None):
-    """A simple method that runs a ManagementUtility.
-    """
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config', default=CONFIG_FILE, help='Path to config file.')
-
-    parser.add_argument('--warning', help='set logging to warning', action='store_const', dest='loglevel',
-                        const=logging.WARNING, default=logging.INFO)
-    parser.add_argument('--quiet', help='set logging to ERROR', action='store_const', dest='loglevel',
-                        const=logging.ERROR, default=logging.INFO)
-    parser.add_argument('--debug', help='set logging to DEBUG',
-                        action='store_const', dest='loglevel',
-                        const=logging.DEBUG, default=logging.INFO)
-    parser.add_argument('--verbose', help='set logging to COMM',
-                        action='store_const', dest='loglevel',
-                        const=5, default=logging.INFO)
-    parser.sub = parser.add_subparsers()
-
-    parse_service = parser.sub.add_parser('discovery', help='Discover Amazon Dash device on network.')
-    parse_service.set_defaults(which='discovery')
-
-    parse_service = parser.sub.add_parser('check-config', help='Validate the configuration file.')
-    parse_service.set_defaults(which='check-config')
-
-    parse_service = parser.sub.add_parser('test-device', help='Test a configured device without press button.')
-    parse_service.set_defaults(which='test-device')
-    parse_service.add_argument('device', help='MAC address')
-    parse_service.add_argument('--root-allowed', action='store_true')
-
-    parse_oneshot = parser.sub.add_parser('run', help='Run server')
-    parse_oneshot.set_defaults(which='run')
-    parse_oneshot.add_argument('--root-allowed', action='store_true')
+@cli.command('check-config', help='Validate the configuration file.')
+@click.option('--config', type=click.Path(), help='Path to config file.', default=CONFIG_FILE)
+def check_config(config):
+    from amazon_dash.config import check_config
+    check_config(config)
 
 
-    parser.set_default_subparser('run')
-    args = parser.parse_args(argv[1:])
+@cli.command('test-device', help='Test a configured device without press button.')
+@click.argument('device', type=str)
+@click.option('--config', type=click.Path(), help='Path to config file.', default=CONFIG_FILE)
+@click.option('--root-allowed', is_flag=True, default=False)
+def test_device(device, config, root_allowed):
+    from amazon_dash.listener import test_device
+    test_device(device, config, root_allowed)
 
-    create_logger('amazon-dash', args.loglevel)
-    try:
-        execute_args(args)
-    except AmazonDashException as e:
-        sys.stderr.write('[Error] Amazon Dash Exception:\n{}\n'.format(e))
+
+@cli.command(help='Discover Amazon Dash device on network.')
+def discovery():
+    from amazon_dash.discovery import discover
+    discover()

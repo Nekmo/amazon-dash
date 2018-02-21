@@ -1,5 +1,7 @@
 import os
 
+import click
+
 try:
     FileNotFoundError
 except NameError:
@@ -61,3 +63,14 @@ class InvalidDevice(AmazonDashException):
     """Used on test-device command. The mac address device is not in config file
     """
     pass
+
+
+def catch(fn, exception_cls=None):
+    exception_cls = exception_cls or AmazonDashException
+
+    def wrap(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except exception_cls as e:
+            click.echo('[Error] Amazon Dash Exception:\n{}\n'.format(e), err=True)
+    return wrap

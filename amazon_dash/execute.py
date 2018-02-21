@@ -67,9 +67,9 @@ def execute_cmd(cmd, cwd=None):
     :param cwd: current working directory
     :return: None
     """
-    l = threading.Thread(target=check_execution_success, args=(cmd, cwd))
-    l.daemon = True
-    l.start()
+    thread = threading.Thread(target=check_execution_success, args=(cmd, cwd))
+    thread.daemon = True
+    thread.start()
 
 
 class Execute(object):
@@ -147,7 +147,7 @@ class ExecuteUrl(Execute):
         :return: None
         """
         if (self.data.get('content-type') or self.data.get('body')) and \
-                        self.data.get('method', '').lower() not in CONTENT_TYPE_METHODS:
+                self.data.get('method', '').lower() not in CONTENT_TYPE_METHODS:
             raise InvalidConfig(
                 extra_body='The body/content-type option only can be used with the {} methods. The device is {}. '
                            'Check the configuration file.'.format(', '.join(CONTENT_TYPE_METHODS), self.name)
