@@ -77,6 +77,9 @@ SCHEMA = {
                         },
                         "event": {
                             "type": "string"
+                        },
+                        "confirmation": {
+                            "type": "string",
                         }
                     },
                 }
@@ -84,6 +87,32 @@ SCHEMA = {
             "additionalProperties": False,
 
         },
+        "confirmations": {
+            "type": "object",
+            "properties": {
+                "/": {}
+            },
+            "patternProperties": {
+                "^.+$": {
+                    "type": "object",
+                    "properties": {
+                        "service": {
+                            "enum": ['telegram']
+                        },
+                        "token": {
+                            "type": "string",
+                        },
+                        "is_default": {
+                            "type": "boolean",
+                        },
+                        "to": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["service"],
+                }
+            },
+        }
     },
     "required": ["devices"]
 }
