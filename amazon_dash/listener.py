@@ -3,6 +3,7 @@ from collections import defaultdict
 
 
 from amazon_dash.config import Config
+from amazon_dash.confirmations import get_confirmation
 from amazon_dash.exceptions import InvalidConfig, InvalidDevice
 from amazon_dash.execute import logger, ExecuteCmd, ExecuteUrl, ExecuteHomeAssistant
 from amazon_dash.scan import scan_devices
@@ -32,7 +33,7 @@ class Device(object):
     """
     execute_instance = None  #: Execute cls instance
 
-    def __init__(self, src, data=None):
+    def __init__(self, src, data=None, confirmation=None):
         """
 
         :param str src: Mac address
@@ -51,6 +52,7 @@ class Device(object):
         elif len(execs):
             self.execute_instance = execs[0]
             self.execute_instance.validate()
+        self.confirmation = confirmation
 
     @property
     def name(self):
@@ -73,6 +75,11 @@ class Device(object):
             return
         self.execute_instance.execute(root_allowed)
 
+    def send_confirmation(self, message, success=True):
+        if not self.confirmation:
+            return
+        self.confirmation.send()
+
 
 class Listener(object):
     """Start listener daemon for execute on button press
@@ -87,7 +94,9 @@ class Listener(object):
         """
         self.config = Config(config_path)
         self.settings = self.config.get('settings', {})
-        self.devices = {key.lower(): Device(key, value) for key, value in self.config['devices'].items()}
+        confirmations = self.config.get('confirmations', {})
+        self.devices = {key.lower(): Device(key, value, get_confirmation(key, value, confirmations))
+                                     for key, value in self.config['devices'].items()}
         assert len(self.devices) == len(self.config['devices']), "Duplicate(s) MAC(s) on devices config."
 
     def on_push(self, device):
@@ -134,4 +143,5 @@ def test_device(device, file, root_allowed=False):
     config.read()
     if not device in config['devices']:
         raise InvalidDevice('Device {} is not in config file.'.format(device))
-    Device(device, config['devices'][device]).execute(root_allowed)
+    confirmation = get_confirmation(device, config['devices'][device], config.get('confirmations', {}))
+    Device(device, config['devices'][device], confirmation).execute(root_allowed)

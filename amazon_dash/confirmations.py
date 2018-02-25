@@ -5,9 +5,13 @@ class ConfirmationBase(object):
     def __init__(self, data):
         self.data = data
 
+    def send(self):
+        raise NotImplementedError
+
 
 class DisabledConfirmation(ConfirmationBase):
-    pass
+    def send(self):
+        pass
 
 
 class TelegramConfirmation(ConfirmationBase):
@@ -21,6 +25,7 @@ CONFIRMATIONS = {
 
 
 def get_confirmation_instance(confirmation_data):
+    confirmation_data = confirmation_data.copy()
     if confirmation_data.get('service') not in CONFIRMATIONS:
         raise InvalidConfig(extra_body='{} is a invalid confirmation service')
     return CONFIRMATIONS[confirmation_data.pop('service')](confirmation_data)
