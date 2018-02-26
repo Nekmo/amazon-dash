@@ -169,9 +169,9 @@ class ExecuteUrl(Execute):
         :param bool root_allowed: Only used for ExecuteCmd
         :return:
         """
-        kwargs = {}
+        kwargs = {'headers': self.data.get('headers', {})}
         if self.data.get('content-type'):
-            kwargs['headers'] = {'content-type': self.data['content-type']}
+            kwargs['headers']['content-type'] = self.data['content-type']
         if self.data.get('body'):
             kwargs['data'] = self.data['body']
         try:

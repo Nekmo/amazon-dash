@@ -45,6 +45,7 @@ Call url
 When the **url execution method** is used, the following options are available.
 
 * **method**: HTTP method. By default GET.
+* **headers**: Headers to send to server. Content-Type will be overwritten if it is defined later.
 * **content-type** (*): HTTP Content-Type Header. Only available if Body is defined. If body is defined, default is form.
 * **body**: Request payload. Only if the method is POST/PUT/PATCH. In json or form mode, the content must be a valid json. It is recommended to use single quotes before and after content in json.
 

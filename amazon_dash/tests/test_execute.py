@@ -103,6 +103,18 @@ class TestExecuteUrl(unittest.TestCase):
         execute_url.execute()
         self.assertTrue(self.get_mock.called_once)
 
+    def test_execute_headers(self):
+        self.session_mock.post(self.url, request_headers={'authorization': 'foo'})
+        execute_url = ExecuteUrl('key', dict(self.get_default_data(), method='post',
+                                             **{'headers': {'authorization': 'foo'}}))
+        execute_url.validate()
+        execute_url.execute()
+        execute_url2 = ExecuteUrl('key', dict(self.get_default_data(), method='post',
+                                             **{'headers': {'authorization': 'bar'}}))
+        execute_url2.validate()
+        with self.assertRaises(NoMockAddress):
+            execute_url2.execute()
+
     def test_execute_content_type(self):
         self.session_mock.post(self.url, request_headers={'content-type': 'foo'})
         execute_url = ExecuteUrl('key', dict(self.get_default_data(), method='post',

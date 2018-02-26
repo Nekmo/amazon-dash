@@ -15,6 +15,7 @@ devices:
 #    name: Kit Kat
 #    url: 'http://domain.com/path/to/webhook'  # Url to execute
 #    method: post  # HTTP method. By default GET
+#    headers: {"authorization": "key"}
 #    content-type: json  # Only available if Body is defined
 #    body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'  # Request payload. Remember the quotes
 
