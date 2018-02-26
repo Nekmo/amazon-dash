@@ -66,6 +66,9 @@ SCHEMA = {
                                 {"pattern": "PATCH|patch"},
                             ]
                         },
+                        "headers": {
+                            "type": "object",
+                        },
                         "content-type": {
                             "type": "string"
                         },
