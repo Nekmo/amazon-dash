@@ -33,13 +33,15 @@ class Device(object):
     """
     execute_instance = None  #: Execute cls instance
 
-    def __init__(self, src, data=None, confirmation=None):
+    def __init__(self, src, data=None, config=None):
         """
 
         :param str src: Mac address
         :param data: device data
         """
         data = data or {}
+        config = config or {}
+
         if isinstance(src, Device):
             src = src.src
         self.src = src.lower()
@@ -52,7 +54,7 @@ class Device(object):
         elif len(execs):
             self.execute_instance = execs[0]
             self.execute_instance.validate()
-        self.confirmation = confirmation
+        self.confirmation = get_confirmation(src, data, config.get('confirmations', {}))
 
     @property
     def name(self):
@@ -71,9 +73,17 @@ class Device(object):
         """
         logger.debug('%s device executed (mac %s)', self.name, self.src)
         if not self.execute_instance:
-            logger.warning('%s: There is not execution method in device conf.', self.name)
+            msg = '%s: There is not execution method in device conf.'
+            logger.warning(msg, self.name)
+            self.send_confirmation(msg % self.name, False)
             return
-        self.execute_instance.execute(root_allowed)
+        try:
+            self.execute_instance.execute(root_allowed)
+        except Exception as e:
+            self.send_confirmation('Error executing the device {}: {}'.format(self.name, e), False)
+            raise
+        else:
+            self.send_confirmation('The {} device has been executed successfully'.format(self.name))
 
     def send_confirmation(self, message, success=True):
         if not self.confirmation:
@@ -94,8 +104,7 @@ class Listener(object):
         """
         self.config = Config(config_path)
         self.settings = self.config.get('settings', {})
-        confirmations = self.config.get('confirmations', {})
-        self.devices = {key.lower(): Device(key, value, get_confirmation(key, value, confirmations))
+        self.devices = {key.lower(): Device(key, value, self.config)
                                      for key, value in self.config['devices'].items()}
         assert len(self.devices) == len(self.config['devices']), "Duplicate(s) MAC(s) on devices config."
 
