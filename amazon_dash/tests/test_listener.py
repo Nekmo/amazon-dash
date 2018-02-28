@@ -1,6 +1,9 @@
 import unittest
 
 import os
+
+from amazon_dash.confirmations import DisabledConfirmation
+from amazon_dash.execute import ExecuteCmd
 from amazon_dash.tests._compat import patch
 
 from amazon_dash.exceptions import InvalidConfig, InvalidDevice
@@ -53,6 +56,36 @@ class TestDevice(ExecuteMockBase, unittest.TestCase):
         with patch.object(logger, 'warning') as warning_mock:
             device.execute()
             warning_mock.assert_called_once()
+        with patch.object(Device, 'send_confirmation') as send_confirmation_mock:
+            device.execute()
+            send_confirmation_mock.assert_called_once()
+
+    def test_send_confirmation(self):
+        device = Device('key', {'confirmation': 'tg'}, {'confirmations': {
+            'tg': {'service': 'disabled'},
+        }})
+        with patch.object(DisabledConfirmation, 'send') as send_mock:
+            device.execute()
+            send_mock.assert_called_once()
+
+    def test_execute_error(self):
+        device = Device(
+            'key', {
+                'cmd': "command",
+                'user': "test",
+                'cwd': "/dir",
+                'name': "Command Name",
+            }, {'confirmations': {'tg': {'service': 'disabled'}}}
+        )
+        with patch.object(Device, 'send_confirmation') as send_confirmation_mock:
+            self.execute_mock.stop()
+            execute_mock = patch.object(ExecuteCmd, 'execute', side_effect=Exception())
+            execute_mock.start()
+            with self.assertRaises(Exception):
+                device.execute()
+            send_confirmation_mock.assert_called_once()
+            execute_mock.stop()
+            self.execute_mock.start()
 
     def test_multiple_executes(self):
         data = {
