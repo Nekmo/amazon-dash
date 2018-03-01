@@ -65,6 +65,18 @@ class InvalidDevice(AmazonDashException):
     pass
 
 
+class ConfirmationError(AmazonDashException):
+    """A An error occurred while sending the confirmation
+    """
+    pass
+
+
+class ExecuteError(AmazonDashException):
+    """A An error occurred while executing a device
+    """
+    pass
+
+
 def catch(fn, exception_cls=None):
     exception_cls = exception_cls or AmazonDashException
 

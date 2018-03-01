@@ -1,21 +1,51 @@
-from amazon_dash.exceptions import InvalidConfig
+import requests
+from json import JSONDecodeError
+
+from requests import RequestException
+
+from amazon_dash.exceptions import InvalidConfig, ConfirmationError
 
 
 class ConfirmationBase(object):
+    name = None
+    required_fields = ()
+
     def __init__(self, data):
+        for key in self.required_fields:
+            if key not in data:
+                raise InvalidConfig(extra_body='{} is a required parameter for {} confirmation'.format(key, self.name))
         self.data = data
 
-    def send(self):
+    def send(self, message, success=True):
         raise NotImplementedError
 
 
 class DisabledConfirmation(ConfirmationBase):
-    def send(self):
+    name = 'disabled'
+
+    def send(self, message, success=True):
         pass
 
 
 class TelegramConfirmation(ConfirmationBase):
-    pass
+    name = 'telegram'
+    required_fields = ('token', 'to')
+
+    def send(self, message, success=True):
+        try:
+            r = requests.post('https://api.telegram.org/bot{}/sendMessage'.format(self.data['token']), dict(
+                text=message, chat_id=self.data['to'],
+            ))
+        except RequestException as e:
+            raise ConfirmationError('Unable to connect to Telegram servers on telegram confirmation: {}'.format(e))
+        try:
+            data = r.json()
+        except JSONDecodeError:
+            raise ConfirmationError('Invalid JSON response in telegram confirmation (server error?)')
+        if not data.get('ok'):
+            raise ConfirmationError('Error on telegram confirmation. Error code: {}. Error message: {}'.format(
+                data.get('error_code'), data.get('description')
+            ))
 
 
 CONFIRMATIONS = {

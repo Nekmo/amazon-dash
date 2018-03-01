@@ -106,7 +106,7 @@ SCHEMA = {
                             "type": "boolean",
                         },
                         "to": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     },
                     "required": ["service"],

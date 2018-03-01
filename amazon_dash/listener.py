@@ -78,17 +78,21 @@ class Device(object):
             self.send_confirmation(msg % self.name, False)
             return
         try:
-            self.execute_instance.execute(root_allowed)
+            result = self.execute_instance.execute(root_allowed)
         except Exception as e:
             self.send_confirmation('Error executing the device {}: {}'.format(self.name, e), False)
             raise
         else:
-            self.send_confirmation('The {} device has been executed successfully'.format(self.name))
+            result = result or 'The {} device has been executed successfully'.format(self.name)
+            self.send_confirmation(result)
 
     def send_confirmation(self, message, success=True):
         if not self.confirmation:
             return
-        self.confirmation.send()
+        try:
+            self.confirmation.send(message, success)
+        except Exception as e:
+            logger.warning('Error sending confirmation on device {}: {}'.format(self.name, e))
 
 
 class Listener(object):
