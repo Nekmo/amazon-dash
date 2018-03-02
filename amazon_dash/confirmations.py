@@ -26,12 +26,13 @@ class DisabledConfirmation(ConfirmationBase):
 
 
 class TelegramConfirmation(ConfirmationBase):
+    url_base = 'https://api.telegram.org/bot{}/sendMessage'
     name = 'telegram'
     required_fields = ('token', 'to')
 
     def send(self, message, success=True):
         try:
-            r = requests.post('https://api.telegram.org/bot{}/sendMessage'.format(self.data['token']), dict(
+            r = requests.post(self.url_base.format(self.data['token']), dict(
                 text=message, chat_id=self.data['to'],
             ))
         except RequestException as e:
