@@ -1,2 +1,3 @@
 scapy
+subprocess32
 -r common-requirements.txt

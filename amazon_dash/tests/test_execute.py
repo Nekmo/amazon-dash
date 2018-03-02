@@ -3,15 +3,56 @@ import unittest
 from threading import Thread
 
 import requests
+import sys
 from requests_mock import NoMockAddress
+from amazon_dash._compat import subprocess
 from amazon_dash.tests._compat import patch as mock_patch, Mock
 
-from amazon_dash.exceptions import SecurityException, InvalidConfig
-from amazon_dash.execute import ExecuteCmd, ExecuteUrl, logger, execute_cmd, check_execution_success, get_shell, \
+from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
+from amazon_dash.execute import ExecuteCmd, ExecuteUrl, logger, execute_cmd, get_shell, \
     ExecuteHomeAssistant
 from amazon_dash.tests.base import ExecuteMockBase
 
 import requests_mock
+
+
+def io_out(text):
+    if sys.version_info >= (3, 0):
+        from io import BytesIO
+        return BytesIO(bytes(text, 'utf-8'))
+    else:
+        from StringIO import StringIO
+        return StringIO('foo')
+
+
+class TestExecuteCmdFunction(unittest.TestCase):
+
+    @mock_patch.object(subprocess, 'Popen')
+    def test_success(self, m):
+        process_mock = Mock()
+        process_mock.configure_mock(**{'returncode': 0, 'stdout': io_out('foo')})
+        m.return_value = process_mock
+        out = execute_cmd(['ls'])
+        self.assertEqual(out[0], 'foo')
+
+    @mock_patch.object(subprocess, 'Popen')
+    def test_error(self, m):
+        process_mock = Mock()
+        process_mock.configure_mock(**{'returncode': 1})
+        m.return_value = process_mock
+        with self.assertRaises(ExecuteError):
+            execute_cmd(['ls'])
+
+    @mock_patch.object(subprocess, 'Popen')
+    def test_timeout(self, m):
+        def side_effect(timeout=None):
+            raise subprocess.TimeoutExpired('', timeout)
+
+        process_mock = Mock()
+        process_mock.configure_mock(**{'wait.side_effect': side_effect})
+        m.return_value = process_mock
+        self.assertEqual(execute_cmd(['ls']), None)
+
 
 class TestExecuteCmd(ExecuteMockBase, unittest.TestCase):
 
@@ -31,21 +72,21 @@ class TestExecuteCmd(ExecuteMockBase, unittest.TestCase):
             device.execute(False)
         self.execute_mock_req.assert_not_called()
 
-    def test_execute_cmd_start(self):
-        with mock_patch.object(Thread, 'start') as start_mock:
-            execute_cmd('ls', '/tmp')
-            start_mock.assert_called_once()
+    # def test_execute_cmd_start(self):
+    #     with mock_patch.object(Thread, 'start') as start_mock:
+    #         execute_cmd('ls', '/tmp')
+    #         start_mock.assert_called_once()
 
-    @mock_patch('subprocess.Popen', autospec=True)
-    def test_check_execution_success(self, popen_mock):
-        popen_mock.return_value = Mock()
-        popen_mock_obj = popen_mock.return_value
-
-        popen_mock_obj.communicate.return_value = ("OUT", "ERR")
-        popen_mock_obj.returncode = 1
-        with mock_patch.object(logger, 'error') as logger_error:
-            check_execution_success('ls', '/tmp')
-            logger_error.assert_called_once()
+    # @mock_patch('subprocess.Popen', autospec=True)
+    # def test_check_execution_success(self, popen_mock):
+    #     popen_mock.return_value = Mock()
+    #     popen_mock_obj = popen_mock.return_value
+    #
+    #     popen_mock_obj.communicate.return_value = ("OUT", "ERR")
+    #     popen_mock_obj.returncode = 1
+    #     with mock_patch.object(logger, 'error') as logger_error:
+    #         check_execution_success('ls', '/tmp')
+    #         logger_error.assert_called_once()
 
     def test_get_shell(self):
         self.assertEqual(get_shell('/usr/bin/command'), ['/usr/bin/command'])

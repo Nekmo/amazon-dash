@@ -1,14 +1,14 @@
 import json
 import logging
-import subprocess
 import threading
 
 import getpass
 
+import sys
 from requests import request, RequestException
 from amazon_dash._compat import JSONDecodeError
-from amazon_dash.exceptions import SecurityException, InvalidConfig
-from ._compat import urlparse
+from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
+from ._compat import urlparse, subprocess
 
 EXECUTE_SHELL_PARAM = '-c'
 ROOT_USER = 'root'
@@ -47,29 +47,28 @@ def run_as_cmd(cmd, user, shell='bash'):
     return ['sudo', '-s', '--set-home', '-u', user] + get_shell(shell) + [EXECUTE_SHELL_PARAM, cmd]
 
 
-def check_execution_success(cmd, cwd):
-    """Execute a command and show error on fail
-
-    :param str cmd: command
-    :param str cwd: current working directory
-    :return: None
-    """
-    p = subprocess.Popen(cmd, cwd=cwd, stderr=subprocess.PIPE)
-    stdout, stderr = p.communicate()
-    if p.returncode:
-        logger.error('%i return code on "%s" command. Stderr: %s', p.returncode, ' '.join(cmd), stderr)
-
-
-def execute_cmd(cmd, cwd=None):
+def execute_cmd(cmd, cwd=None, timeout=5):
     """Excecute command on thread
 
     :param cmd: Command to execute
     :param cwd: current working directory
     :return: None
     """
-    thread = threading.Thread(target=check_execution_success, args=(cmd, cwd))
-    thread.daemon = True
-    thread.start()
+    p = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        p.wait(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return None
+    else:
+        stdout, stderr = p.stdout.read(), p.stderr.read()
+        if sys.version_info >= (3,):
+            stdout, stderr = stdout.decode('utf-8', errors='ignore'), stderr.decode('utf-8', errors='ignore')
+        if p.returncode:
+            raise ExecuteError('Error running command {}: The error code {} has returned. Stderr: {}'.format(
+                ' '.join(cmd), p.returncode, stderr
+            ))
+        else:
+            return stdout, stderr
 
 
 class Execute(object):
@@ -134,7 +133,9 @@ class ExecuteCmd(Execute):
                                     ' It is however recommended to add a user to the configuration '
                                     'of the device (device: {})'.format(self.name))
         cmd = run_as_cmd(self.data['cmd'], self.user)
-        execute_cmd(cmd, self.data.get('cwd'))
+        output = execute_cmd(cmd, self.data.get('cwd'))
+        if output:
+            return output[0]
 
 
 class ExecuteUrl(Execute):
