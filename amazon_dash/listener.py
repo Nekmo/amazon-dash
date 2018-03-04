@@ -83,6 +83,8 @@ class Device(object):
             self.send_confirmation('Error executing the device {}: {}'.format(self.name, e), False)
             raise
         else:
+            result = 'The {} device has been started and is running right now'.format(self.name) if result is None \
+                else result
             result = result or 'The {} device has been executed successfully'.format(self.name)
             self.send_confirmation(result)
 
@@ -156,5 +158,4 @@ def test_device(device, file, root_allowed=False):
     config.read()
     if not device in config['devices']:
         raise InvalidDevice('Device {} is not in config file.'.format(device))
-    confirmation = get_confirmation(device, config['devices'][device], config.get('confirmations', {}))
-    Device(device, config['devices'][device], confirmation).execute(root_allowed)
+    Device(device, config['devices'][device], config).execute(root_allowed)
