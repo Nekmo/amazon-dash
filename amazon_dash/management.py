@@ -4,6 +4,8 @@
 import logging
 import click
 import sys
+
+import os
 from click_default_group import DefaultGroup
 
 CONFIG_FILE = 'amazon-dash.yml'
@@ -34,6 +36,39 @@ def create_logger(name, level=logging.INFO):
     logger.addHandler(ch)
 
 
+def latest_release(package):
+    if sys.version_info > (3,):
+        from xmlrpc import client
+    else:
+        import xmlrpclib as client
+    pypi = client.ServerProxy('https://pypi.python.org/pypi')
+    available = pypi.package_releases(package)
+    if not available:
+        # Try to capitalize pkg name
+        available = pypi.package_releases(package.capitalize())
+
+    if not available:
+        return
+    return available[0]
+
+
+def print_version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    import amazon_dash
+    from amazon_dash import __version__
+    latest = latest_release('amazon-dash')
+    release = ('You are running the latest release' if latest == __version__
+               else 'There is a new version available: {}. Upgrade it using: '
+                    'sudo pip install -U amazon-dash'.format(latest))
+    click.echo('You are running Amazon-dash v{} using Python {}.\n{}\n'
+               'Installation path: {}\n'
+               'Current path: {}\n'.format(
+        __version__, sys.version.split()[0], release, os.path.dirname(amazon_dash.__file__), os.getcwd()
+    ))
+    ctx.exit()
+
+
 @click.group(cls=DefaultGroup, default='run', default_if_no_args=True)
 @click.option('--info', 'loglevel', help='set logging to info', default=True,
               flag_value=logging.INFO)
@@ -45,6 +80,8 @@ def create_logger(name, level=logging.INFO):
               flag_value=logging.DEBUG)
 @click.option('--verbose', 'loglevel', help='set logging to COMM',
               flag_value=5)
+@click.option('--version', is_flag=True, callback=print_version,
+              expose_value=False, is_eager=True)
 def cli(loglevel):
     from amazon_dash import __version__
     click.echo('Welcome to Amazon-dash v{} using Python {}'.format(__version__, sys.version.split()[0]))
