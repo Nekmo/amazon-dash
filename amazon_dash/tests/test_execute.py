@@ -173,18 +173,16 @@ class TestExecuteUrl(unittest.TestCase):
         execute_url = ExecuteUrl('key', dict(self.get_default_data(), method='post', body='foo',
                                              **{'content-type': 'plain'}))
         execute_url.validate()
-        with mock_patch.object(logger, 'warning') as warning_mock:
+        with self.assertRaises(ExecuteError):
             execute_url.execute()
-            warning_mock.assert_called_once()
 
     def test_execute_400(self):
         self.session_mock.post(self.url, status_code=400)
         execute_url = ExecuteUrl('key', dict(self.get_default_data(), method='post',
                                              **{'content-type': 'plain'}))
         execute_url.validate()
-        with mock_patch.object(logger, 'warning') as warning_mock:
+        with self.assertRaises(ExecuteError):
             execute_url.execute()
-            warning_mock.assert_called_once()
 
     def tearDown(self):
         super(TestExecuteUrl, self).tearDown()
