@@ -83,8 +83,8 @@ class Device(object):
             self.send_confirmation('Error executing the device {}: {}'.format(self.name, e), False)
             raise
         else:
-            result = 'The {} device has been started and is running right now'.format(self.name) if result is None \
-                else result
+            result = 'The {} device has been started and is running right now'.format(self.name) \
+                if result is None else result
             result = result or 'The {} device has been executed successfully'.format(self.name)
             self.send_confirmation(result)
 
