@@ -80,10 +80,18 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
         method: post
         content-type: json
         body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'
+        confirmation: send-tg
       40:B4:CD:67:A2:E1:
         name: Fairy
         homeassistant: hassio.local
         event: toggle_kitchen_light
+    confirmations:
+      send-tg:
+        service: telegram
+        token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
+        to: 24291592
+        is_default: false
+
 
 The following execution methods are supported with your Amazon Dash button with this program:
 
@@ -91,6 +99,11 @@ The following execution methods are supported with your Amazon Dash button with 
 .. image:: https://goo.gl/VqgMZJ  .. image:: https://goo.gl/a6TS7X  .. image:: https://goo.gl/zrjisq
 `System command`_                 `Call url`_                       `Homeassistant`_
 ================================  ================================  ================================
+
+
+Amazon-dash also allows you to **send a confirmation** after pressing a button. You will also receive a message in
+case of failure. Currently only **Telegram** is supported.
+
 
 For more information see
 `the documentation of the configuration file <http://docs.nekmo.org/amazon-dash/config_file.html>`_.
@@ -105,7 +118,7 @@ execute:
 
     $ sudo systemctl start amazon-dash
 
-To run Amazon-dash at startup:
+To run Amazon-dash at **startup**:
 
 .. code-block:: console
 

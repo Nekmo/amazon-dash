@@ -89,6 +89,7 @@ class Device(object):
             self.send_confirmation(result)
 
     def send_confirmation(self, message, success=True):
+        message = message.strip()
         if not self.confirmation:
             return
         try:
