@@ -47,6 +47,7 @@ are the types of errors:
 .. automodule:: amazon_dash.exceptions
     :members:
 
+
 Cli errors
 ----------
 The command line will return an error if unknown or misused options are used. For example::

@@ -4,13 +4,14 @@ settings:
   # On seconds. Minimum time that must pass between pulsations.
   delay: 10
 devices:
-## Example of how to execute a system command
-#  0C:47:C9:98:4A:12:  # You can know the mac of your device with the discovery command
-#    name: Kitcken button  # You can put the name you want
-#    user: nekmo  # System user. Necessary if it is executed as root
-#    cmd: spotify  # Command to execute
+  ## Example of how to execute a system command
+  0C:47:C9:98:4A:12:  # You can know the mac of your device with the discovery command
+    name: Kitcken button  # You can put the name you want
+    user: your-user  # System user. Necessary if it is executed as root
+    cmd: spotify  # Command to execute
 
-## Example of how to execute a url
+
+   ## Example of how to execute a url
 #  AC:63:BE:67:B2:F1:
 #    name: Kit Kat
 #    url: 'http://domain.com/path/to/webhook'  # Url to execute
@@ -18,7 +19,7 @@ devices:
 #    content-type: json  # Only available if Body is defined
 #    body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'  # Request payload. Remember the quotes
 
-## Example of how to execute a Homeassistant event
+   ## Example of how to execute a Homeassistant event
 #  40:B4:CD:67:A2:E1:
 #    name: Fairy
 #    homeassistant: hassio.local  # Address to the hass server
@@ -26,7 +27,7 @@ devices:
 
 ## Uncomment this for use confirmations
 # confirmations:
-## Example of how to send a Telegram confirmation on execution success or failure
+   ## Example of how to send a Telegram confirmation on execution success or failure
 #  send-tg:  # Confirmation name. Set your own confirmation name
 #    service: telegram  # Confirmation service. Currently only Telegram
 #    token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'  # Telegram token. Get it from Bothfather

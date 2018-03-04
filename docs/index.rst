@@ -32,6 +32,8 @@ Contents
    avoid_purchase
    config_file
    troubleshooting
+   community
+
    modules
    contributing
    authors
