@@ -11,19 +11,19 @@ except NameError:
 class AmazonDashException(Exception):
     """Amazon Dash base exception. All the exceptions that use this base are captured by the command line.
     """
-    error_code = 1  #: Error code to return
+    error_code = 3  #: Error code to return
 
 
 class SecurityException(AmazonDashException):
     """A configuration fault has been found that puts the system at risk
     """
-    error_code = 2  #: Error code to return
+    error_code = 4  #: Error code to return
 
 
 class ConfigFileNotFoundError(AmazonDashException, FileNotFoundError):
     """The configuration file was not found
     """
-    error_code = 3  #: Error code to return
+    error_code = 5  #: Error code to return
 
     def __init__(self, file):
         """
@@ -36,7 +36,7 @@ class ConfigFileNotFoundError(AmazonDashException, FileNotFoundError):
 class InvalidConfig(AmazonDashException):
     """The configuration file has not passed the yaml validation or json-schema validation or exec. class validation
     """
-    error_code = 4  #: Error code to return
+    error_code = 6  #: Error code to return
 
     def __init__(self, file=None, extra_body=''):
         """
@@ -56,7 +56,7 @@ class InvalidConfig(AmazonDashException):
 class SocketPermissionError(AmazonDashException):
     """The program must be run as root or the user needs permissions to sniff the traffic
     """
-    error_code = 5  #: Error code to return
+    error_code = 7  #: Error code to return
 
     def __init__(self):
         msg = 'This program needs permission to open raw sockets on your system. ' \
@@ -68,19 +68,19 @@ class SocketPermissionError(AmazonDashException):
 class InvalidDevice(AmazonDashException):
     """Used on test-device command. The mac address device is not in config file
     """
-    error_code = 6  #: Error code to return
+    error_code = 8  #: Error code to return
 
 
 class ConfirmationError(AmazonDashException):
     """A An error occurred while sending the confirmation
     """
-    error_code = 7  #: Error code to return
+    error_code = 9  #: Error code to return
 
 
 class ExecuteError(AmazonDashException):
     """A An error occurred while executing a device
     """
-    error_code = 8  #: Error code to return
+    error_code = 10  #: Error code to return
 
 
 def catch(fn, exception_cls=None, raises=True):
@@ -90,7 +90,10 @@ def catch(fn, exception_cls=None, raises=True):
         try:
             return fn(*args, **kwargs)
         except exception_cls as e:
-            click.echo('[Error] Amazon Dash Exception ({}):\n{}\n'.format(
-                e.__class__.__name__ if isinstance(e, exception_cls) else e, e), err=True)
-            exit(getattr(e, 'error_code', 99))
+            click.secho('[Error] Amazon Dash Exception ({}):\n{}\n'.format(
+                e.__class__.__name__ if isinstance(e, exception_cls) else e, e),
+                err=True, fg='red',
+            )
+            if raises:
+                exit(getattr(e, 'error_code', 99))
     return wrap

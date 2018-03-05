@@ -67,6 +67,10 @@ The problem is the same with the options. For example::
     Welcome to Amazon-dash v0.4.1-1 using Python 3.6.3
     Error: no such option: --foo
 
+The command line exceptions (like abort) on Click return an ``1`` error code. Errors due to misuse of the options
+return an error code ``2``.
+
+
 
 Installation errors
 -------------------

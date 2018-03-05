@@ -84,7 +84,8 @@ def print_version(ctx, param, value):
               expose_value=False, is_eager=True)
 def cli(loglevel):
     from amazon_dash import __version__
-    click.echo('Welcome to Amazon-dash v{} using Python {}'.format(__version__, sys.version.split()[0]))
+    click.secho('Welcome to Amazon-dash v{} using Python {}'.format(__version__, sys.version.split()[0]),
+                fg='cyan')
     create_logger('amazon-dash', loglevel)
 
 
@@ -93,8 +94,8 @@ def cli(loglevel):
 @click.option('--root-allowed', is_flag=True, default=False,
               help='Allow execute commands on config file as root')
 def run(config, root_allowed):
-    click.echo('Listening for events. Amazon-dash will execute the events associated with '
-               'the registered buttons.')
+    click.secho('Listening for events. Amazon-dash will execute the events associated with '
+               'the registered buttons.', fg='yellow')
     from amazon_dash.listener import Listener
     Listener(config).run(root_allowed=root_allowed)
 

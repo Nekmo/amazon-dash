@@ -33,7 +33,6 @@ Contents
    config_file
    troubleshooting
    community
-
    modules
    contributing
    authors

@@ -1,3 +1,5 @@
+import click
+
 from amazon_dash.scan import scan_devices
 
 AMAZON_DEVICES = [
@@ -83,7 +85,8 @@ def discovery_print(pkt):
     if pkt.src in mac_id_list:
         return
     mac_id_list.append(pkt.src)
-    print(pkt_text(pkt))
+    text = pkt_text(pkt)
+    click.secho(text, fg='magenta') if 'Amazon' in text else click.echo(text)
 
 
 def discover():
@@ -91,5 +94,5 @@ def discover():
 
     :return: None
     """
-    print(HELP)
+    click.secho(HELP, fg='yellow')
     scan_devices(discovery_print, lfilter=lambda d: d.src not in mac_id_list)
