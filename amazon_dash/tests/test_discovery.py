@@ -22,8 +22,8 @@ class TestDiscovery(unittest.TestCase):
     @patch('sys.stdout')
     def test_discovery_print(self, write_patch):
         mac = '11:22:33:44:55:66'
-        with patch('amazon_dash.discovery.pkt_text') as pkt_text_mock:
+        with patch('click.echo') as echo:
             discovery_print(Device(mac))
             discovery_print(Device(mac))
-            pkt_text_mock.assert_called_once()
+            echo.assert_called_once()
         mac_id_list.remove(mac)
