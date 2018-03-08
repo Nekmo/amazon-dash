@@ -170,9 +170,10 @@ class ExecuteUrl(Execute):
         :param bool root_allowed: Only used for ExecuteCmd
         :return:
         """
-        kwargs = {'stream': True, 'timeout': 15}
+        kwargs = {'stream': True, 'timeout': 15,
+                  'headers': self.data.get('headers', {})}
         if self.data.get('content-type'):
-            kwargs['headers'] = {'content-type': self.data['content-type']}
+            kwargs['headers']['content-type'] = self.data['content-type']
         if self.data.get('body'):
             kwargs['data'] = self.data['body']
         try:
