@@ -240,12 +240,34 @@ class ExecuteUrlServiceBase(ExecuteUrl):
         return self.default_body
 
 
-class ExecuteHomeAssistant(ExecuteUrlServiceBase):
+class ExecuteOwnApiBase(ExecuteUrlServiceBase):
+    execute_name = None
+    default_protocol = 'http'
+    default_port = 0
+    default_method = 'POST'
+
+    def get_url(self):
+        """API url
+
+        :return: url
+        :rtype: str
+        """
+        url = self.data[self.execute_name]
+        parsed = urlparse(url)
+        if not parsed.scheme:
+            url = '{}://{}'.format(self.default_protocol, url)
+        if not url.split(':')[-1].isalnum():
+            url += ':{}'.format(self.default_port)
+        return url
+
+
+class ExecuteHomeAssistant(ExecuteOwnApiBase):
     """Send Home Assistant event
 
     https://home-assistant.io/developers/rest_api/#post-apieventsltevent_type
     """
-    default_method = 'POST'
+    execute_name = 'homeassistant'
+    default_port = 8123
 
     def get_url(self):
         """Home assistant url
@@ -253,12 +275,7 @@ class ExecuteHomeAssistant(ExecuteUrlServiceBase):
         :return: url
         :rtype: str
         """
-        url = self.data['homeassistant']
-        parsed = urlparse(url)
-        if not parsed.scheme:
-            url = 'http://{}'.format(url)
-        if not url.split(':')[-1].isalnum():
-            url += ':8123'
+        url = super(ExecuteHomeAssistant, self).get_url()
         if not self.data.get('event'):
             raise InvalidConfig(extra_body='Event option is required for HomeAsistant on {} device.'.format(self.name))
         url += '/api/events/{}'.format(self.data['event'])
