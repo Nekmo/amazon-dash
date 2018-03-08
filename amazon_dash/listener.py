@@ -5,7 +5,7 @@ from collections import defaultdict
 from amazon_dash.config import Config
 from amazon_dash.confirmations import get_confirmation
 from amazon_dash.exceptions import InvalidConfig, InvalidDevice
-from amazon_dash.execute import logger, ExecuteCmd, ExecuteUrl, ExecuteHomeAssistant
+from amazon_dash.execute import logger, ExecuteCmd, ExecuteUrl, ExecuteHomeAssistant, ExecuteOpenHab
 from amazon_dash.scan import scan_devices
 
 DEFAULT_DELAY = 10
@@ -17,6 +17,7 @@ EXECUTE_CLS = {
     'cmd': ExecuteCmd,
     'url': ExecuteUrl,
     'homeassistant': ExecuteHomeAssistant,
+    'openhab': ExecuteOpenHab,
 }
 """
 Execute classes registered.

@@ -10,7 +10,7 @@ from amazon_dash.tests._compat import patch as mock_patch, Mock
 
 from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
 from amazon_dash.execute import ExecuteCmd, ExecuteUrl, logger, execute_cmd, get_shell, \
-    ExecuteHomeAssistant
+    ExecuteHomeAssistant, ExecuteOpenHab
 from amazon_dash.tests.base import ExecuteMockBase
 
 import requests_mock
@@ -239,5 +239,24 @@ class TestExecuteHomeAssistant(unittest.TestCase):
         with requests_mock.mock() as m:
             m.post(self.url, text='success')
             assis = ExecuteHomeAssistant('key', self.default_data())
+            assis.execute()
+            self.assertTrue(m.called_once)
+
+
+class TestExecuteOpenHab(unittest.TestCase):
+    path = '/rest/items/test'
+    url = 'http://localhost:8080' + path
+
+    def default_data(self, address='localhost', item='test'):
+        return {
+            'openhab': address,
+            'item': item,
+        }
+
+    def test_execute(self):
+        with requests_mock.mock() as m:
+            m.post(self.url, text='success',
+                   request_headers={'Content-Type': 'text/plain', 'Accept': 'application/json'})
+            assis = ExecuteOpenHab('key', self.default_data())
             assis.execute()
             self.assertTrue(m.called_once)

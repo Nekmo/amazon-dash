@@ -204,7 +204,7 @@ class ExecuteUrlServiceBase(ExecuteUrl):
         """
         super(ExecuteUrlServiceBase, self).__init__(name, data)
         self.data['url'] = self.get_url()
-        self.data['content_type'] = self.get_content_type()
+        self.data['content-type'] = self.get_content_type()
         self.data['method'] = self.get_method()
         self.data['body'] = self.get_body()
 
@@ -289,3 +289,31 @@ class ExecuteHomeAssistant(ExecuteOwnApiBase):
         :rtype: str
         """
         return self.data.get('data')
+
+
+class ExecuteOpenHab(ExecuteOwnApiBase):
+    """Send Open Hab event
+
+    """
+    default_content_type = 'text/plain'
+    execute_name = 'openhab'
+    default_port = 8080
+
+    def __init__(self, name, data):
+        super(ExecuteOpenHab, self).__init__(name, data)
+        self.data['headers'] = {'Accept': 'application/json'}
+
+    def get_url(self):
+        """Open Hab url
+
+        :return: url
+        :rtype: str
+        """
+        url = super(ExecuteOpenHab, self).get_url()
+        if not self.data.get('item'):
+            raise InvalidConfig(extra_body='Item option is required for Open Hab on {} device.'.format(self.name))
+        url += '/rest/items/{}'.format(self.data['item'])
+        return url
+
+    def get_body(self):
+        return self.data.get('state', 'TOGGLE')
