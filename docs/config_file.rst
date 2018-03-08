@@ -136,6 +136,9 @@ Real example::
         name: Fairy
         homeassistant: hassio.local
         event: toggle_kitchen_light
+      18:74:2E:87:01:F2:
+        name: Doritos
+        openhab: 192.168.1.140
     confirmations:
       send-tg:
         service: telegram
