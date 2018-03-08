@@ -68,7 +68,7 @@ class Device(object):
     def execute(self, root_allowed=False):
         """Execute this device
 
-        :param root_allowed: Only used for ExecuteCmd
+        :param bool root_allowed: Only used for ExecuteCmd
         :return: None
         """
         logger.debug('%s device executed (mac %s)', self.name, self.src)
@@ -89,6 +89,12 @@ class Device(object):
             self.send_confirmation(result)
 
     def send_confirmation(self, message, success=True):
+        """Send success or error message to configured confirmation
+
+        :param str message: Body message to send
+        :param bool success: Device executed successfully to personalize message
+        :return: None
+        """
         message = message.strip()
         if not self.confirmation:
             return
