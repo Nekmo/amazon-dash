@@ -26,6 +26,13 @@ devices:
 #    homeassistant: hassio.local  # Address to the hass server
 #    event: toggle_kitchen_light  # Event name to send
 
+   ## Example of how to execute a Openhab event
+#  18:74:2E:87:01:F2:
+#    name: Doritos
+#    openhab: 192.168.1.140  # Address to the openhab server
+#    item: open_door  # Openhab item. Required
+#    state: ON  # item state to send. TOGGLE by default
+
 ## Uncomment this for use confirmations
 # confirmations:
    ## Example of how to send a Telegram confirmation on execution success or failure

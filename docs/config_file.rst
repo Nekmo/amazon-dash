@@ -69,6 +69,13 @@ When the **homeassistant execution method** is used, the following options are a
 * **event** (required): Event name to send.
 * **data**: Event data to send. Use json as string.
 
+Open Hab
+~~~~~~~~
+When the **openhab execution method** is used, the following options are available.
+
+* **item** (required): Open Hab item to send.
+* **state**: State to send. On switch items ON/OFF/TOGGLE. TOGGLE by default.
+
 
 Confirmations
 -------------
@@ -139,6 +146,8 @@ Real example::
       18:74:2E:87:01:F2:
         name: Doritos
         openhab: 192.168.1.140
+        item: open_door
+        state: ON
     confirmations:
       send-tg:
         service: telegram
