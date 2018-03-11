@@ -98,6 +98,8 @@ The following execution methods are supported with your Amazon Dash button with 
 ================================  ================================  ================================
 .. image:: https://goo.gl/VqgMZJ  .. image:: https://goo.gl/a6TS7X  .. image:: https://goo.gl/zrjisq
 `System command`_                 `Call url`_                       `Homeassistant`_
+.. image:: https://goo.gl/Cq4bYC
+`OpenHAB`_
 ================================  ================================  ================================
 
 
@@ -147,4 +149,4 @@ Community and examples
 .. _System command: http://docs.nekmo.org/amazon-dash/config_file.html#execute-cmd
 .. _Call url: http://docs.nekmo.org/amazon-dash/config_file.html#call-url
 .. _Homeassistant: http://docs.nekmo.org/amazon-dash/config_file.html#homeassistant-event
-
+.. _OpenHAB: http://docs.nekmo.org/amazon-dash/config_file.html#openhab-event

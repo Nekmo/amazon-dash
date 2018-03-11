@@ -11,21 +11,72 @@ To change the permissions::
     sudo chmod 600 amazon-dash.yml
     sudo chown root:root amazon-dash.yml
 
+The amazon-dash system configuration file is located in: ``/etc/amazon-dash.yml``
+
+.. important::
+    Remember to restart the service whenever you make a change to apply it.
+    If you are using systemd, restart the service using ``systemctl restart amazon-dash``
+
+Example
+-------
+The following example is available in ``/etc/amazon-dash.yml`` when installed:
+
+.. literalinclude:: ../amazon_dash/install/amazon-dash.yml
+
+Real example::
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      0C:47:C9:98:4A:12:
+        name: Hero
+        user: nekmo
+        cmd: spotify
+      AC:63:BE:67:B2:F1:
+        name: Kit Kat
+        url: 'http://domain.com/path/to/webhook'
+        method: post
+        content-type: json
+        body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'
+        confirmation: send-tg
+      40:B4:CD:67:A2:E1:
+        name: Fairy
+        homeassistant: hassio.local
+        event: toggle_kitchen_light
+      18:74:2E:87:01:F2:
+        name: Doritos
+        openhab: 192.168.1.140
+        item: open_door
+        state: ON
+    confirmations:
+      send-tg:
+        service: telegram
+        token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
+        to: 24291592
+        is_default: false
+
 
 Common options
 --------------
-The syntax of the configuration file is yaml. The configuration file has 2 main sections:
+The syntax of the configuration file is yaml. The configuration file has 3 main sections:
 
 * **settings** (optional): common options.
 * **devices** (required): The amazon dash devices.
 * **confirmations** (optional): confirmation on device executed.
 
+
+settings section
+~~~~~~~~~~~~~~~~
 The following options are available in **settings**:
 
 * **delay** (optional): On seconds. By default, 10 seconds. Minimum time that must pass between pulsations of the
   Amazon Dash button.
 
-Each device is identified by the button **mac**. The mac can be obtained with the discovery command.
+Device section
+~~~~~~~~~~~~~~
+Each **device** is identified by the button **mac**. The mac can be obtained with the discovery command.
 In the configuration of each button, there may be a way of execution. Only one execution method is allowed
 for each device. The available exection methods are:
 
@@ -33,16 +84,47 @@ for each device. The available exection methods are:
 * **url**: Call a url.
 * **homeassistant**: send event to Homeassistant. This argument must be the address to the hass server (protocol and
   port are optional. By default http and 8123, respectively).
+* **openhab**: send event to OpenHAB. This argument must be the address to the hass server (protocol and
+  port are optional. By default http and 8080, respectively).
 
 The devices can also have **these common options**:
 
 * **name**: device name for log messages.
 * **confirmation**: confirmation to use on device execution.
 
+Confirmation section
+~~~~~~~~~~~~~~~~~~~~
+Send a **confirmation after running a device**. Send a message whether the execution is successful or if it fails. If
+the execution returns an output this will be the message that is sent.
+
+Each confirmation has **a name** to be able to use it on the devices (on the example ``confirmation-name``)::
+
+    confirmations:
+      confirmation-name:
+        service: telegram
+        token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
+        to: 24291592
+    devices:
+      AC:63:BE:67:B2:F1:
+        name: Kit Kat
+        url: 'http://domain.com/path/to/webhook'
+        confirmation: confirmation-name
+
+For run a confirmation for all devices by default using ``is_default: true``::
+
+    confirmations:
+      confirmation-name:
+        service: telegram
+        token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
+        to: 24291592
+        is_default: true
+
 
 Execution
 ---------
 The devices section allows you to perform an action when you press an Amazon dash button.
+The following execution methods are available.
+
 
 Execute cmd
 ~~~~~~~~~~~
@@ -69,8 +151,8 @@ When the **homeassistant execution method** is used, the following options are a
 * **event** (required): Event name to send.
 * **data**: Event data to send. Use json as string.
 
-Open Hab
-~~~~~~~~
+OpenHAB event
+~~~~~~~~~~~~~
 When the **openhab execution method** is used, the following options are available.
 
 * **item** (required): Open Hab item to send.
@@ -79,31 +161,7 @@ When the **openhab execution method** is used, the following options are availab
 
 Confirmations
 -------------
-Send a **confirmation after running a device**. Send a message whether the execution is successful or if it fails. If
-the execution returns an output this will be the message that is sent.
-
-Each confirmation has **a name** to be able to use it on the devices (on the example ``confirmation-name``)::
-
-    confirmations:
-      confirmation-name:
-        service: telegram
-        token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
-        to: 24291592
-    devices:
-      AC:63:BE:67:B2:F1:
-        name: Kit Kat
-        url: 'http://domain.com/path/to/webhook'
-        confirmation: confirmation-name
-
-For run a confirmation for all devices by default using ``is_default: true``::
-
-    confirmations:
-      confirmation-name:
-        service: telegram
-        token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
-        to: 24291592
-        is_default: true
-
+The following **services** are supported to send confirmation messages.
 
 Telegram
 ~~~~~~~~
