@@ -85,6 +85,11 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
         name: Fairy
         homeassistant: hassio.local
         event: toggle_kitchen_light
+      18:74:2E:87:01:F2:
+        name: Doritos
+        openhab: 192.168.1.140
+        item: open_door
+        state: ON
     confirmations:
       send-tg:
         service: telegram
@@ -140,7 +145,7 @@ The easiest way to avoid making a purchase is to reconfigure the button using th
 want to associate with the button)*. If Amazon does not know what product you want, they can not charge anything on
 your credit card.
 
-There are two more methods `in the documentation. <http://docs.nekmo.org/amazon-dash/avoid_purchase.html>`_.
+There are two more methods `in the documentation. <http://docs.nekmo.org/amazon-dash/avoid_purchase.html>`_
 
 
 Join the community
