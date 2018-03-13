@@ -22,8 +22,8 @@ EMAIL = 'contacto@nekmo.com'
 PACKAGE_NAME = 'amazon-dash'
 PACKAGE_DOWNLOAD_URL = 'https://github.com/Nekmo/amazon-dash/archive/master.zip'  # .tar.gz
 URL = 'https://github.com/Nekmo/amazon-dash'
-STATUS_LEVEL = 3  # 1:Planning 2:Pre-Alpha 3:Alpha 4:Beta 5:Production/Stable 6:Mature 7:Inactive
-KEYWORDS = ['amazon', 'dash', 'hack']  # Palabras clave
+STATUS_LEVEL = 5  # 1:Planning 2:Pre-Alpha 3:Alpha 4:Beta 5:Production/Stable 6:Mature 7:Inactive
+KEYWORDS = ['amazon', 'dash', 'hack', 'amazon-dash', 'home-assistant', 'iot', 'amazon-dash-button', 'openhab']
 # https://github.com/github/choosealicense.com/tree/gh-pages/_licenses
 CLASSIFIERS = [
     # Common licenses
