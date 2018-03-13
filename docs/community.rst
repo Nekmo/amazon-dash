@@ -16,7 +16,7 @@ Tell us how you use Amazon Dash and **join the community**. Send a email to ``de
 The Simpsons Random Episode
 ---------------------------
 
-.. image:: https://raw.githubusercontent.com/Nekmo/amazon-dash/master/images/simpsons.png
+.. image:: https://raw.githubusercontent.com/Nekmo/amazon-dash/master/images/simpsons.jpg
     :width: 100%
 
 
@@ -73,7 +73,7 @@ This is the configuration for Amazon-dash:
 Shopping list in Google Keep
 ----------------------------
 
-.. image:: https://raw.githubusercontent.com/Nekmo/amazon-dash/master/images/pepsi.png
+.. image:: https://raw.githubusercontent.com/Nekmo/amazon-dash/master/images/pepsi.jpg
     :width: 100%
 
 
