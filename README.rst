@@ -163,4 +163,4 @@ See all the examples `in the community`_.
 .. _Call url: http://docs.nekmo.org/amazon-dash/config_file.html#call-url
 .. _Homeassistant: http://docs.nekmo.org/amazon-dash/config_file.html#homeassistant-event
 .. _OpenHAB: http://docs.nekmo.org/amazon-dash/config_file.html#openhab-event
-.. _in the community: http://docs.nekmo.org/amazon-dash/config_file.html#openhab-event
+.. _in the community: http://docs.nekmo.org/amazon-dash/community.html
