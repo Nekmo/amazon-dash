@@ -93,6 +93,8 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
         is_default: false
 
 
+**UPGRADE** from `previous versions <http://docs.nekmo.org/amazon-dash/installation.html>`_
+
 The following execution methods are supported with your Amazon Dash button with this program:
 
 ================================  ================================  ================================
@@ -141,12 +143,19 @@ your credit card.
 There are two more methods `in the documentation. <http://docs.nekmo.org/amazon-dash/avoid_purchase.html>`_.
 
 
-Community and examples
-======================
-...
+Join the community
+==================
+Do you need ideas on how to use Amazon Dash? See what the community does with this project. Some examples:
+
+* `The Simpsons Random Episode <http://docs.nekmo.org/amazon-dash/community.html#the-simpsons-random-episode>`_
+* `Shopping list in Google Keep <http://docs.nekmo.org/amazon-dash/community.html#shopping-list-in-google-keep>`_
+* `Play a audio <http://docs.nekmo.org/amazon-dash/community.html#play-a-audio>`_
+
+See all the examples `in the community`_.
 
 
 .. _System command: http://docs.nekmo.org/amazon-dash/config_file.html#execute-cmd
 .. _Call url: http://docs.nekmo.org/amazon-dash/config_file.html#call-url
 .. _Homeassistant: http://docs.nekmo.org/amazon-dash/config_file.html#homeassistant-event
 .. _OpenHAB: http://docs.nekmo.org/amazon-dash/config_file.html#openhab-event
+.. _in the community: http://docs.nekmo.org/amazon-dash/config_file.html#openhab-event

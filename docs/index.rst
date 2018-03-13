@@ -17,6 +17,8 @@ Actions supported in this project for your Amazon Dash buttons:
 ================================  ================================  ================================
 .. image:: https://goo.gl/bq5QSK  .. image:: https://goo.gl/k4DJmf  .. image:: https://goo.gl/Gqo8W3
 `System command`_                 `Call url`_                       `Homeassistant`_
+.. image:: https://goo.gl/Cq4bYC
+`OpenHAB`_
 ================================  ================================  ================================
 
 
@@ -31,12 +33,14 @@ Contents
    usage
    avoid_purchase
    config_file
+   upgrade
    troubleshooting
    community
    modules
    contributing
    authors
    history
+   references
 
 Indices and tables
 ==================
@@ -48,4 +52,4 @@ Indices and tables
 .. _System command: http://docs.nekmo.org/amazon-dash/config_file.html#execute-cmd
 .. _Call url: http://docs.nekmo.org/amazon-dash/config_file.html#call-url
 .. _Homeassistant: http://docs.nekmo.org/amazon-dash/config_file.html#homeassistant-event
-
+.. _OpenHAB: http://docs.nekmo.org/amazon-dash/config_file.html#openhab-event

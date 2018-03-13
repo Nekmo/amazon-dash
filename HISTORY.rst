@@ -2,8 +2,21 @@
 History
 =======
 
-v0.4.0
-------
+v1.0.0 (2018-03-13)
+-------------------
+
+- Terminal colors and different error return codes
+- Confirmations config
+- Telegram confirmation
+- Execution output for confirmation message
+- Migrate from argparse to click
+- Native Openhab support
+- Amazon Dash Community
+- Changed ``--config`` parameter order
+
+
+v0.4.0 (2018-02-06)
+-------------------
 
 - Native Home Assistant support.
 - docs.nekmo.org documentation.

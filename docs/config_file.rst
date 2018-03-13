@@ -1,3 +1,5 @@
+.. highlight:: console
+
 ===========
 Config file
 ===========
@@ -23,7 +25,9 @@ The following example is available in ``/etc/amazon-dash.yml`` when installed:
 
 .. literalinclude:: ../amazon_dash/install/amazon-dash.yml
 
-Real example::
+Real example:
+
+.. code-block:: yaml
 
     # amazon-dash.yml
     # ---------------
@@ -92,26 +96,56 @@ The devices can also have **these common options**:
 * **name**: device name for log messages.
 * **confirmation**: confirmation to use on device execution.
 
+
+A device example:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      0C:47:C9:98:4A:12:
+        name: Hero
+        user: nekmo
+        cmd: spotify
+
+
 Confirmation section
 ~~~~~~~~~~~~~~~~~~~~
 Send a **confirmation after running a device**. Send a message whether the execution is successful or if it fails. If
 the execution returns an output this will be the message that is sent.
 
-Each confirmation has **a name** to be able to use it on the devices (on the example ``confirmation-name``)::
+Each confirmation has **a name** to be able to use it on the devices (on the example ``confirmation-name``):
 
-    confirmations:
-      confirmation-name:
-        service: telegram
-        token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
-        to: 24291592
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
     devices:
       AC:63:BE:67:B2:F1:
         name: Kit Kat
         url: 'http://domain.com/path/to/webhook'
         confirmation: confirmation-name
+    confirmations:
+      confirmation-name:
+        service: telegram
+        token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
+        to: 24291592
 
-For run a confirmation for all devices by default using ``is_default: true``::
+For run a confirmation for all devices by default using ``is_default: true``:
 
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      # ...
     confirmations:
       confirmation-name:
         service: telegram
@@ -133,6 +167,21 @@ When the **cmd execution method** is used, the following options are available.
 * **user**: System user that will execute the command. This option can only be used if Amazon-Dash is running as root.
 * **cwd**: Directory in which the command will be executed.
 
+Example:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      0C:47:C9:98:4A:12:
+        name: Hero
+        user: nekmo
+        cmd: spotify
+
+
 Call url
 ~~~~~~~~
 When the **url execution method** is used, the following options are available.
@@ -144,6 +193,25 @@ When the **url execution method** is used, the following options are available.
 
 (*) Content type aliases: `form = application/x-www-form-urlencoded`. `json = application/json`. `plain = text/plain`.
 
+
+Example:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      AC:63:BE:67:B2:F1:
+        name: Kit Kat
+        url: 'http://domain.com/path/to/webhook'
+        method: post
+        content-type: json
+        body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'
+        confirmation: send-tg
+
+
 Homeassistant event
 ~~~~~~~~~~~~~~~~~~~
 When the **homeassistant execution method** is used, the following options are available.
@@ -151,12 +219,43 @@ When the **homeassistant execution method** is used, the following options are a
 * **event** (required): Event name to send.
 * **data**: Event data to send. Use json as string.
 
+Example:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      40:B4:CD:67:A2:E1:
+        name: Fairy
+        homeassistant: hassio.local
+        event: toggle_kitchen_light
+
+
 OpenHAB event
 ~~~~~~~~~~~~~
 When the **openhab execution method** is used, the following options are available.
 
 * **item** (required): Open Hab item to send.
 * **state**: State to send. On switch items ON/OFF/TOGGLE. TOGGLE by default.
+
+
+Example:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      18:74:2E:87:01:F2:
+        name: Doritos
+        openhab: 192.168.1.140
+        item: open_door
+        state: ON
 
 
 Confirmations
@@ -173,39 +272,14 @@ For use a telegram service you need to define:
 After create a bot, you need to start a conversation with your bot. Bots can not send messages to users if people
 have not started a conversation before.
 
-Example
--------
-The following example is available in /etc/amazon-dash.yml when installed:
-
-.. literalinclude:: ../amazon_dash/install/amazon-dash.yml
-
-Real example::
+.. code-block:: yaml
 
     # amazon-dash.yml
     # ---------------
     settings:
       delay: 10
     devices:
-      0C:47:C9:98:4A:12:
-        name: Hero
-        user: nekmo
-        cmd: spotify
-      AC:63:BE:67:B2:F1:
-        name: Kit Kat
-        url: 'http://domain.com/path/to/webhook'
-        method: post
-        content-type: json
-        body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'
-        confirmation: send-tg
-      40:B4:CD:67:A2:E1:
-        name: Fairy
-        homeassistant: hassio.local
-        event: toggle_kitchen_light
-      18:74:2E:87:01:F2:
-        name: Doritos
-        openhab: 192.168.1.140
-        item: open_door
-        state: ON
+      # ...
     confirmations:
       send-tg:
         service: telegram
