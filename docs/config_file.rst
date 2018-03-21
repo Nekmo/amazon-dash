@@ -53,7 +53,7 @@ Real example:
         name: Doritos
         openhab: 192.168.1.140
         item: open_door
-        state: ON
+        state: "ON"
     confirmations:
       send-tg:
         service: telegram
@@ -239,7 +239,7 @@ OpenHAB event
 When the **openhab execution method** is used, the following options are available.
 
 * **item** (required): Open Hab item to send.
-* **state**: State to send. On switch items ON/OFF/TOGGLE. TOGGLE by default.
+* **state**: State to send. On switch items ON/OFF. ON by default. The state must be between quotes.
 
 
 Example:
@@ -255,7 +255,7 @@ Example:
         name: Doritos
         openhab: 192.168.1.140
         item: open_door
-        state: ON
+        state: "ON"
 
 
 Confirmations

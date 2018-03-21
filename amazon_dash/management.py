@@ -58,7 +58,7 @@ def print_version(ctx, param, value):
     import amazon_dash
     from amazon_dash import __version__
     latest = latest_release('amazon-dash')
-    release = ('You are running the latest release' if latest == __version__
+    release = ('This is the latest release' if latest == __version__
                else 'There is a new version available: {}. Upgrade it using: '
                     'sudo pip install -U amazon-dash'.format(latest))
     click.echo('You are running Amazon-dash v{} using Python {}.\n{}\n'

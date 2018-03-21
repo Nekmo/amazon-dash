@@ -89,7 +89,7 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
         name: Doritos
         openhab: 192.168.1.140
         item: open_door
-        state: ON
+        state: "ON"
     confirmations:
       send-tg:
         service: telegram

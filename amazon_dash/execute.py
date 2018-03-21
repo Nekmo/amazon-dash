@@ -316,4 +316,4 @@ class ExecuteOpenHab(ExecuteOwnApiBase):
         return url
 
     def get_body(self):
-        return self.data.get('state', 'TOGGLE')
+        return self.data.get('state', 'ON')

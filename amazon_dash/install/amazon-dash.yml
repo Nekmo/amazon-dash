@@ -31,7 +31,7 @@ devices:
 #    name: Doritos
 #    openhab: 192.168.1.140  # Address to the openhab server
 #    item: open_door  # Openhab item. Required
-#    state: ON  # item state to send. TOGGLE by default
+#    state: "ON"  # item state to send. TOGGLE by default
 
 ## Uncomment this for use confirmations
 # confirmations:
