@@ -5,6 +5,8 @@ import threading
 import getpass
 
 import sys
+
+import copy
 from requests import request, RequestException
 from amazon_dash._compat import JSONDecodeError
 from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
@@ -192,6 +194,7 @@ class ExecuteUrlServiceBase(ExecuteUrl):
     """Base class to create services execute classes
     """
     default_url = None  #: default url to call
+    default_headers = None  #: default HTTP headers to send
     default_content_type = 'application/json'  #: default content type to send
     default_method = 'GET'  #: default HTTP method
     default_body = None  #: default body to send
@@ -204,6 +207,7 @@ class ExecuteUrlServiceBase(ExecuteUrl):
         """
         super(ExecuteUrlServiceBase, self).__init__(name, data)
         self.data['url'] = self.get_url()
+        self.data['headers'] = self.get_headers()
         self.data['content-type'] = self.get_content_type()
         self.data['method'] = self.get_method()
         self.data['body'] = self.get_body()
@@ -231,6 +235,14 @@ class ExecuteUrlServiceBase(ExecuteUrl):
         :rtype: str
         """
         return self.default_content_type
+
+    def get_headers(self):
+        """Get HTTP Headers to send. By default default_headers
+
+        :return: HTTP Headers
+        :rtype: dict
+        """
+        return copy.copy(self.default_headers or {})
 
     def get_body(self):
         """Get body to send. By default default_body
@@ -281,6 +293,11 @@ class ExecuteHomeAssistant(ExecuteOwnApiBase):
             raise InvalidConfig(extra_body='Event option is required for HomeAsistant on {} device.'.format(self.name))
         url += '/api/events/{}'.format(self.data['event'])
         return url
+
+    def get_headers(self):
+        return {
+            'x-ha-access': self.data['access']
+        } if 'access' in self.data else {}
 
     def get_body(self):
         """Return "data" value on self.data

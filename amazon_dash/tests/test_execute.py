@@ -205,11 +205,11 @@ class TestExecuteHomeAssistant(unittest.TestCase):
     path = '/api/events/test'
     url = 'http://localhost:8123' + path
 
-    def default_data(self, address='localhost', event='test'):
-        return {
+    def default_data(self, address='localhost', event='test', extra_data=None):
+        return dict({
             'homeassistant': address,
             'event': event,
-        }
+        }, **extra_data or {})
 
     def test_no_event(self):
         with self.assertRaises(InvalidConfig):
@@ -239,6 +239,13 @@ class TestExecuteHomeAssistant(unittest.TestCase):
         with requests_mock.mock() as m:
             m.post(self.url, text='success')
             assis = ExecuteHomeAssistant('key', self.default_data())
+            assis.execute()
+            self.assertTrue(m.called_once)
+
+    def test_execute_with_access(self):
+        with requests_mock.mock() as m:
+            m.post(self.url, text='success', request_headers={'x-ha-access': 'password'})
+            assis = ExecuteHomeAssistant('key', self.default_data(extra_data={'access': 'password'}))
             assis.execute()
             self.assertTrue(m.called_once)
 
