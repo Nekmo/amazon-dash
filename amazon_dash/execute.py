@@ -178,6 +178,8 @@ class ExecuteUrl(Execute):
             kwargs['headers']['content-type'] = self.data['content-type']
         if self.data.get('body'):
             kwargs['data'] = self.data['body']
+        if self.data.get('auth'):
+            kwargs['auth'] = tuple(self.data['auth'].split(':', 1))
         try:
             resp = request(self.data.get('method', 'get').lower(), self.data['url'], **kwargs)
         except RequestException as e:

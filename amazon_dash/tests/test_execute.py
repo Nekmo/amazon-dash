@@ -1,3 +1,4 @@
+import base64
 import json
 import unittest
 from threading import Thread
@@ -195,6 +196,14 @@ class TestExecuteUrl(unittest.TestCase):
         execute_url.validate()
         with self.assertRaises(ExecuteError):
             execute_url.execute()
+
+    def test_authorization(self):
+        auth = b'Basic ' + base64.b64encode(b'foo:bar')
+        auth = auth.decode('utf-8') if sys.version_info > (3,) else auth
+        self.session_mock.post(self.url, request_headers={'Authorization': auth})
+        execute_url = ExecuteUrl('key', dict(self.get_default_data(), method='post', auth='foo:bar'))
+        execute_url.validate()
+        execute_url.execute()
 
     def tearDown(self):
         super(TestExecuteUrl, self).tearDown()
