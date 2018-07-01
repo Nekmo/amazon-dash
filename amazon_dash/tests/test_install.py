@@ -38,7 +38,7 @@ class TestInstallConfig(unittest.TestCase):
 
 
 class TestInstallSystemd(unittest.TestCase):
-    @patch('amazon_dash.install.get_pid', return_value=1000)
+    @patch('amazon_dash.install.get_init_system', return_value='systemd')
     def test_is_installable(self, mock_check_output):
         with Patcher() as patcher:
             with self.assertRaises(IsInstallableException):
@@ -68,7 +68,7 @@ class TestInstallSystemd(unittest.TestCase):
 
 
 class TestClickAll(unittest.TestCase):
-    @patch('amazon_dash.install.get_pid', return_value=1000)
+    @patch('amazon_dash.install.get_init_system', return_value='systemd')
     def test_no_services(self, mock_check_output):
         with Patcher() as patcher:
             patcher.fs.CreateFile(CONFIG_PATH)
@@ -76,7 +76,7 @@ class TestClickAll(unittest.TestCase):
             result = runner.invoke(cli, ['--root-not-required', 'all'])
             self.assertIn('You must run Amazon-dash manually', result.output)
 
-    @patch('amazon_dash.install.get_pid', return_value=1000)
+    @patch('amazon_dash.install.get_init_system', return_value='systemd')
     def test_is_not_necessary(self, mock_check_output):
         with Patcher() as patcher:
             patcher.fs.CreateFile(CONFIG_PATH)
@@ -85,11 +85,3 @@ class TestClickAll(unittest.TestCase):
             runner = CliRunner()
             result = runner.invoke(cli, ['--root-not-required', 'all'])
             self.assertIn('Systemd service is already installed', result.output)
-
-
-class TestCli(unittest.TestCase):
-    @patch('amazon_dash.install.get_pid', return_value=1000)
-    def test_root_required(self, mock_check_output):
-        runner = CliRunner()
-        result = runner.invoke(cli, [])
-        self.assertIn('Maybe you forgot sudo?', result.output)
