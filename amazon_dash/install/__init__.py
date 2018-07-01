@@ -17,6 +17,10 @@ CONFIG_EXAMPLE = os.path.join(__dir__, 'amazon-dash.yml')
 SYSTEMD_SERVICE = os.path.join(__dir__, 'services', 'amazon-dash.service')
 
 
+def get_pid(name):
+    return check_output(["pidof", name])
+
+
 def get_init_system():
     return check_output(['ps', '--no-headers', '-o', 'comm', '1']).strip(b'\n ').decode('utf-8')
 
