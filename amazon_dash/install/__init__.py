@@ -17,8 +17,8 @@ CONFIG_EXAMPLE = os.path.join(__dir__, 'amazon-dash.yml')
 SYSTEMD_SERVICE = os.path.join(__dir__, 'services', 'amazon-dash.service')
 
 
-def get_pid(name):
-    return check_output(["pidof", name])
+def get_init_system():
+    return check_output(['ps', '--no-headers', '-o', 'comm', '1']).strip(b'\n ').decode('utf-8')
 
 
 def get_systemd_services_path():
@@ -92,7 +92,7 @@ class InstallSystemd(InstallBase):
         return os.path.join(path, self.service_name)
 
     def is_installable(self):
-        if not get_pid('systemd') or not get_systemd_services_path():
+        if get_init_system() != 'systemd' or not get_systemd_services_path():
             raise IsInstallableException('Systemd is not available')
 
     def is_necessary(self):
