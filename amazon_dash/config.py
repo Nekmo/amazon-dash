@@ -25,7 +25,10 @@ SCHEMA = {
             "properties": {
                 "delay": {
                     "type": "integer"
-                }
+                },
+                "interface": {
+                    "type": "string"
+                },
             }
         },
         "devices": {

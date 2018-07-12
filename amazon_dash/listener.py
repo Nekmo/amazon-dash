@@ -151,7 +151,7 @@ class Listener(object):
         :return: loop
         """
         self.root_allowed = root_allowed
-        scan_devices(self.on_push, lambda d: d.src.lower() in self.devices)
+        scan_devices(self.on_push, lambda d: d.src.lower() in self.devices, self.settings.get('interface'))
 
 
 def test_device(device, file, root_allowed=False):

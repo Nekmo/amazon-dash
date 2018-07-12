@@ -118,6 +118,7 @@ def test_device(device, config, root_allowed):
 
 
 @cli.command(help='Discover Amazon Dash device on network.')
-def discovery():
+@click.option('--interface', help='Network interface.', default=None)
+def discovery(interface):
     from amazon_dash.discovery import discover
-    discover()
+    discover(interface)

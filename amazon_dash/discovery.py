@@ -89,10 +89,10 @@ def discovery_print(pkt):
     click.secho(text, fg='magenta') if 'Amazon' in text else click.echo(text)
 
 
-def discover():
+def discover(interface=None):
     """Print help and scan devices on screen.
 
     :return: None
     """
     click.secho(HELP, fg='yellow')
-    scan_devices(discovery_print, lfilter=lambda d: d.src not in mac_id_list)
+    scan_devices(discovery_print, lfilter=lambda d: d.src not in mac_id_list, iface=interface)
