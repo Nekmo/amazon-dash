@@ -275,6 +275,19 @@ class ExecuteOwnApiBase(ExecuteUrlServiceBase):
             url += ':{}'.format(self.default_port)
         return url
 
+    def get_body(self):
+        """Return "data" value on self.data
+
+        :return: data to send
+        :rtype: str
+        """
+        if self.default_body:
+            return self.default_body
+        data = self.data.get('data')
+        if isinstance(data, dict):
+            return json.dumps(data)
+        return data
+
 
 class ExecuteHomeAssistant(ExecuteOwnApiBase):
     """Send Home Assistant event
@@ -300,14 +313,6 @@ class ExecuteHomeAssistant(ExecuteOwnApiBase):
         return {
             'x-ha-access': self.data['access']
         } if 'access' in self.data else {}
-
-    def get_body(self):
-        """Return "data" value on self.data
-
-        :return: data to send
-        :rtype: str
-        """
-        return self.data.get('data')
 
 
 class ExecuteOpenHab(ExecuteOwnApiBase):
@@ -336,3 +341,26 @@ class ExecuteOpenHab(ExecuteOwnApiBase):
 
     def get_body(self):
         return self.data.get('state', 'ON')
+
+
+class ExecuteIFTTT(ExecuteOwnApiBase):
+    """Send IFTTT Webhook event.
+    """
+    execute_name = 'ifttt'
+    url_pattern = 'https://maker.ifttt.com/trigger/{event}/with/key/{key}'
+
+    def get_url(self):
+        """IFTTT Webhook url
+
+        :return: url
+        :rtype: str
+        """
+        if not self.data[self.execute_name]:
+            raise InvalidConfig(extra_body='Value for IFTTT is required on {} device. Get your key here: '
+                                           'https://ifttt.com/services/maker_webhooks/settings'.format(self.name))
+        if not self.data.get('event'):
+            raise InvalidConfig(extra_body='Event option is required for IFTTT on {} device. '
+                                           'You define the event name when creating an Webhook '
+                                           'applet'.format(self.name))
+        url = self.url_pattern.format(event=self.data['event'], key=self.data[self.execute_name])
+        return url

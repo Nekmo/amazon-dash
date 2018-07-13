@@ -81,6 +81,9 @@ SCHEMA = {
                         "homeassistant": {
                             "type": "string"
                         },
+                        "ifttt": {
+                            "type": "string"
+                        },
                         "event": {
                             "type": "string"
                         },
