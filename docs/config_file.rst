@@ -54,6 +54,11 @@ Real example:
         openhab: 192.168.1.140
         item: open_door
         state: "ON"
+      44:65:0D:75:A7:B2:
+        name: Pompadour
+        ifttt: cdxxx-_gEJ3wdU04yyyzzz
+        event: pompadour_button
+        data: {"value1": "Pompadour button"}
     confirmations:
       send-tg:
         service: telegram
@@ -256,6 +261,37 @@ Example:
         openhab: 192.168.1.140
         item: open_door
         state: "ON"
+
+
+IFTTT event
+~~~~~~~~~~~
+When the **IFTTT execution method** is used, the following options are available.
+
+* **event** (required): Event name to send. You define the event name when creating a Webhook applet.
+* **data**: dictionary with the "ingredients" (variables) for IFTTT.
+
+To use IFTTT:
+
+#. Create the applet by selecting the webhook service: https://ifttt.com/search . You will have to define a
+   **event name**.
+#. Get your IFTTT Webhook **key**: https://ifttt.com/services/maker_webhooks/settings
+#. Put the *event name* and the *key* in the **Amazon-dash configuration**.
+
+
+Example:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      44:65:0D:75:A7:B2:
+        name: Pompadour
+        ifttt: cdxxx-_gEJ3wdU04yyyzzz
+        event: pompadour_button
+        data: {"value1": "Pompadour button"}
 
 
 Confirmations
