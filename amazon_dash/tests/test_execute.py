@@ -11,7 +11,7 @@ from amazon_dash.tests._compat import patch as mock_patch, Mock
 
 from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
 from amazon_dash.execute import ExecuteCmd, ExecuteUrl, logger, execute_cmd, get_shell, \
-    ExecuteHomeAssistant, ExecuteOpenHab
+    ExecuteHomeAssistant, ExecuteOpenHab, ExecuteIFTTT
 from amazon_dash.tests.base import ExecuteMockBase
 
 import requests_mock
@@ -276,3 +276,32 @@ class TestExecuteOpenHab(unittest.TestCase):
             assis = ExecuteOpenHab('key', self.default_data())
             assis.execute()
             self.assertTrue(m.called_once)
+
+
+class TestExecuteIFTTT(unittest.TestCase):
+
+    def default_data(self):
+        return {
+            'ifttt': 'foobarspam' * 5,
+            'event': 'myevent',
+        }
+
+    def test_execute(self):
+        data = self.default_data()
+        with requests_mock.mock() as m:
+            m.post(ExecuteIFTTT.url_pattern.format(key=data['ifttt'], **data))
+            assis = ExecuteIFTTT('key', data)
+            assis.execute()
+            self.assertTrue(m.called_once)
+
+    def test_key_required(self):
+        data = self.default_data()
+        data['ifttt'] = ''
+        with self.assertRaises(InvalidConfig):
+            ExecuteIFTTT('key', data)
+
+    def test_event_required(self):
+        data = self.default_data()
+        data['event'] = ''
+        with self.assertRaises(InvalidConfig):
+            ExecuteIFTTT('key', data)
