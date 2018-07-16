@@ -89,6 +89,7 @@ class Device(object):
                 if result is None else result
             result = result or 'The {} device has been executed successfully'.format(self.name)
             self.send_confirmation(result)
+        return result
 
     def send_confirmation(self, message, success=True):
         """Send success or error message to configured confirmation
@@ -167,4 +168,4 @@ def test_device(device, file, root_allowed=False):
     config.read()
     if not device in config['devices']:
         raise InvalidDevice('Device {} is not in config file.'.format(device))
-    Device(device, config['devices'][device], config).execute(root_allowed)
+    logger.info(Device(device, config['devices'][device], config).execute(root_allowed))

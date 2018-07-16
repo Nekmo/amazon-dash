@@ -10,6 +10,11 @@ devices:
     user: your-user  # System user. Necessary if it is executed as root
     cmd: spotify  # Command to execute
 
+  ## Example of how to execute a system command over SSH
+#  AC:63:BE:75:1B:6F:
+#    name: Tassimo
+#    cmd: door --open
+#    ssh: 192.168.1.23:2222
 
    ## Example of how to execute a url
 #  AC:63:BE:67:B2:F1:
@@ -32,6 +37,13 @@ devices:
 #    openhab: 192.168.1.140  # Address to the openhab server
 #    item: open_door  # Openhab item. Required
 #    state: "ON"  # item state to send. TOGGLE by default
+
+  ## Example of how to execute a IFTTT Webhook event
+#  44:65:0D:75:A7:B2:
+#    name: Pompadour
+#    ifttt: cdxxx-_gEJ3wdU04yyyzzz
+#    event: pompadour_button
+#    data: {"value1": "Pompadour button"}
 
 ## Uncomment this for use confirmations
 # confirmations:

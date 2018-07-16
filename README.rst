@@ -77,6 +77,10 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
         name: Hero
         user: nekmo
         cmd: spotify
+      AC:63:BE:75:1B:6F:
+        name: Tassimo
+        cmd: door --open
+        ssh: 192.168.1.23:2222
       AC:63:BE:67:B2:F1:
         name: Kit Kat
         url: 'http://domain.com/path/to/webhook'
@@ -93,6 +97,11 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
         openhab: 192.168.1.140
         item: open_door
         state: "ON"
+      44:65:0D:75:A7:B2:
+        name: Pompadour
+        ifttt: cdxxx-_gEJ3wdU04yyyzzz
+        event: pompadour_button
+        data: {"value1": "Pompadour button"}
     confirmations:
       send-tg:
         service: telegram

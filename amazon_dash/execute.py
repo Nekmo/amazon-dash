@@ -1,6 +1,5 @@
 import json
 import logging
-import threading
 
 import getpass
 
@@ -73,10 +72,33 @@ def execute_cmd(cmd, cwd=None, timeout=5):
             return stdout, stderr
 
 
+def execute_over_ssh(cmd, ssh, cwd=None, shell='bash'):
+    """Excecute command on remote machine using SSH
+
+    :param cmd: Command to execute
+    :param ssh: Server to connect. Port is optional
+    :param cwd: current working directory
+    :return: None
+    """
+    port = None
+    parts = ssh.split(':', 1)
+    if len(parts) > 1 and not parts[1].isdigit():
+        raise InvalidConfig(extra_body='Invalid port number on ssh config: {}'.format(parts[1]))
+    elif len(parts) > 1:
+        port = parts[1]
+    quoted_cmd = ' '.join([x.replace("'", """'"'"'""") for x in cmd.split(' ')])
+    remote_cmd = ' '.join([
+        ' '.join(get_shell(shell)), # /usr/bin/env bash
+        ' '.join([EXECUTE_SHELL_PARAM, "'", ' '.join((['cd', cwd, ';'] if cwd else []) + [quoted_cmd]), "'"])],
+    )
+    return ['ssh', parts[0]] + (['-p', port] if port else []) + ['-C'] + [remote_cmd]
+
+
 class Execute(object):
     """Execute base class
 
     """
+
     def __init__(self, name, data):
         """
 
@@ -129,13 +151,20 @@ class ExecuteCmd(Execute):
         :param bool root_allowed: Allow execute as root commands
         :return:
         """
-        if self.user == ROOT_USER and not root_allowed:
+        if self.user == ROOT_USER and not root_allowed and not self.data.get('ssh'):
             raise SecurityException('For security, execute commands as root is not allowed. '
                                     'Use --root-allowed to allow executing commands as root. '
                                     ' It is however recommended to add a user to the configuration '
                                     'of the device (device: {})'.format(self.name))
-        cmd = run_as_cmd(self.data['cmd'], self.user)
-        output = execute_cmd(cmd, self.data.get('cwd'))
+        if self.data.get('user') and self.data.get('ssh'):
+            raise InvalidConfig('User option is unsupported in ssh mode. The ssh user must be defined in '
+                                'the ssh option. For example: user@machine')
+        if self.data.get('ssh'):
+            cmd = execute_over_ssh(self.data['cmd'], self.data['ssh'], self.data.get('cwd'))
+            output = execute_cmd(cmd)
+        else:
+            cmd = run_as_cmd(self.data['cmd'], self.user)
+            output = execute_cmd(cmd, self.data.get('cwd'))
         if output:
             return output[0]
 

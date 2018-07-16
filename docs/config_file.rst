@@ -38,6 +38,10 @@ Real example:
         name: Hero
         user: nekmo
         cmd: spotify
+      AC:63:BE:75:1B:6F:
+        name: Tassimo
+        cmd: door --open
+        ssh: 192.168.1.23:2222
       AC:63:BE:67:B2:F1:
         name: Kit Kat
         url: 'http://domain.com/path/to/webhook'
@@ -171,6 +175,7 @@ When the **cmd execution method** is used, the following options are available.
 
 * **user**: System user that will execute the command. This option can only be used if Amazon-Dash is running as root.
 * **cwd**: Directory in which the command will be executed.
+* **ssh**: Optional. It allows executing the command on a remote machine.
 
 Example:
 
@@ -185,6 +190,25 @@ Example:
         name: Hero
         user: nekmo
         cmd: spotify
+
+
+It is also possible to execute a command using SSH. The value of the ssh option must be the name/IP of the machine.
+You can also specify the port. For example: ``machine:2222``.
+
+
+Example:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      AC:63:BE:75:1B:6F:
+        name: Tassimo
+        cmd: door --open
+        ssh: 192.168.1.23:2222
 
 
 Call url
