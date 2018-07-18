@@ -12,9 +12,9 @@ SYSTEMD_PATHS = [
     '/usr/lib/systemd/system',
     '/lib/systemd/system',
 ]
-__dir__ = os.path.dirname(os.path.abspath(__file__))
-CONFIG_EXAMPLE = os.path.join(__dir__, 'amazon-dash.yml')
-SYSTEMD_SERVICE = os.path.join(__dir__, 'services', 'amazon-dash.service')
+dirname = os.path.dirname(os.path.abspath(__file__))
+CONFIG_EXAMPLE = os.path.join(dirname, 'amazon-dash.yml')
+SYSTEMD_SERVICE = os.path.join(dirname, 'services', 'amazon-dash.service')
 
 
 def get_pid(name):

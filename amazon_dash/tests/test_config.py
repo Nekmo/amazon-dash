@@ -8,8 +8,8 @@ from amazon_dash.config import Config, only_root_write, oth_w_perm, check_config
 from amazon_dash.exceptions import SecurityException, InvalidConfig
 from amazon_dash.tests.base import FileMockBase
 
-__dir__ = os.path.abspath(os.path.dirname(__file__))
-config_data = open(os.path.join(__dir__, 'fixtures', 'config.yml')).read()
+dirname = os.path.abspath(os.path.dirname(__file__))
+config_data = open(os.path.join(dirname, 'fixtures', 'config.yml')).read()
 
 
 try:
