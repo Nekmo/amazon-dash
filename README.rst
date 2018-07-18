@@ -73,31 +73,31 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
     settings:
       delay: 10
     devices:
-      0C:47:C9:98:4A:12:
+      0C:47:C9:98:4A:12: # Command example
         name: Hero
         user: nekmo
         cmd: spotify
-      AC:63:BE:75:1B:6F:
+      AC:63:BE:75:1B:6F: # SSH example
         name: Tassimo
         cmd: door --open
         ssh: 192.168.1.23:2222
-      AC:63:BE:67:B2:F1:
+      AC:63:BE:67:B2:F1: # Url Webhook example
         name: Kit Kat
         url: 'http://domain.com/path/to/webhook'
         method: post
         content-type: json
         body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'
         confirmation: send-tg
-      40:B4:CD:67:A2:E1:
+      40:B4:CD:67:A2:E1: # Home Assistant example
         name: Fairy
         homeassistant: hassio.local
         event: toggle_kitchen_light
-      18:74:2E:87:01:F2:
+      18:74:2E:87:01:F2: # OpenHAB example
         name: Doritos
         openhab: 192.168.1.140
         item: open_door
         state: "ON"
-      44:65:0D:75:A7:B2:
+      44:65:0D:75:A7:B2: # IFTTT example
         name: Pompadour
         ifttt: cdxxx-_gEJ3wdU04yyyzzz
         event: pompadour_button

@@ -13,6 +13,7 @@ v1.1.0 (2018-07-18)
 - Fixed OS X compatibility
 - IFTTT support
 
+
 v1.0.0 (2018-03-13)
 -------------------
 
