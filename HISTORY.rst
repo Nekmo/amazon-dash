@@ -2,6 +2,17 @@
 History
 =======
 
+v1.1.0 (2018-07-18)
+-------------------
+
+- Home Assistant authentication
+- Improved installation process compatibility
+- Sniffing network interface
+- System Command over SSH
+- Python 3.7 compatibility
+- Fixed OS X compatibility
+- IFTTT support
+
 v1.0.0 (2018-03-13)
 -------------------
 
