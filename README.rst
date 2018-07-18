@@ -117,7 +117,7 @@ The following execution methods are supported with your Amazon Dash button with 
 ================================  ================================  ================================
 .. image:: https://goo.gl/VqgMZJ  .. image:: https://goo.gl/a6TS7X  .. image:: https://goo.gl/zrjisq
 `System command`_                 `Call url`_                       `Homeassistant`_
-.. image:: https://goo.gl/Cq4bYC  .. image:: https://goo.gl/QFZ3xj
+.. image:: https://goo.gl/Cq4bYC  .. image:: https://goo.gl/L7ng8k
 `OpenHAB`_                        `IFTTT`_
 ================================  ================================  ================================
 
