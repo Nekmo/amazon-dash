@@ -31,6 +31,10 @@
      :alt: Requirements Status
 
 
+**DEVELOPMENT BRANCH**: The current branch is a development version. Go to the stable release by clicking
+on `the master branch <https://github.com/Nekmo/amazon-dash/tree/master>`_.
+
+
 Python Amazon Dash
 ##################
 Hack your Amazon Dash to run what you want. Without welders. For the entire family.
