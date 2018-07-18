@@ -12,9 +12,13 @@ SYSTEMD_PATHS = [
     '/usr/lib/systemd/system',
     '/lib/systemd/system',
 ]
-__dir__ = os.path.dirname(os.path.abspath(__file__))
-CONFIG_EXAMPLE = os.path.join(__dir__, 'amazon-dash.yml')
-SYSTEMD_SERVICE = os.path.join(__dir__, 'services', 'amazon-dash.service')
+dirname = os.path.dirname(os.path.abspath(__file__))
+CONFIG_EXAMPLE = os.path.join(dirname, 'amazon-dash.yml')
+SYSTEMD_SERVICE = os.path.join(dirname, 'services', 'amazon-dash.service')
+
+
+if sys.version_info < (3,0):
+    FileNotFoundError = OSError
 
 
 def get_pid(name):
@@ -22,7 +26,11 @@ def get_pid(name):
 
 
 def get_init_system():
-    return check_output(['ps', '--no-headers', '-o', 'comm', '1']).strip(b'\n ').decode('utf-8')
+    try:
+        return check_output(['ps', '--no-headers', '-o', 'comm', '1']).strip(b'\n ').decode('utf-8')
+    except FileNotFoundError:
+        raise IsInstallableException('"ps" command is unavailable on your OS. systemd.'
+                                     'The systemd check could not be finalized.')
 
 
 def get_systemd_services_path():

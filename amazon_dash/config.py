@@ -25,7 +25,10 @@ SCHEMA = {
             "properties": {
                 "delay": {
                     "type": "integer"
-                }
+                },
+                "interface": {
+                    "type": "string"
+                },
             }
         },
         "devices": {
@@ -76,6 +79,9 @@ SCHEMA = {
                             "type": "string"
                         },
                         "homeassistant": {
+                            "type": "string"
+                        },
+                        "ifttt": {
                             "type": "string"
                         },
                         "event": {
@@ -138,7 +144,10 @@ def get_file_group(file):
     :return: group id
     :rtype: int
     """
-    return getgrgid(os.stat(file).st_uid)[0]
+    try:
+        return getgrgid(os.stat(file).st_uid)[0]
+    except KeyError:
+        return '???'
 
 
 def bitperm(s, perm, pos):

@@ -73,26 +73,35 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
     settings:
       delay: 10
     devices:
-      0C:47:C9:98:4A:12:
+      0C:47:C9:98:4A:12: # Command example
         name: Hero
         user: nekmo
         cmd: spotify
-      AC:63:BE:67:B2:F1:
+      AC:63:BE:75:1B:6F: # SSH example
+        name: Tassimo
+        cmd: door --open
+        ssh: 192.168.1.23:2222
+      AC:63:BE:67:B2:F1: # Url Webhook example
         name: Kit Kat
         url: 'http://domain.com/path/to/webhook'
         method: post
         content-type: json
         body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'
         confirmation: send-tg
-      40:B4:CD:67:A2:E1:
+      40:B4:CD:67:A2:E1: # Home Assistant example
         name: Fairy
         homeassistant: hassio.local
         event: toggle_kitchen_light
-      18:74:2E:87:01:F2:
+      18:74:2E:87:01:F2: # OpenHAB example
         name: Doritos
         openhab: 192.168.1.140
         item: open_door
         state: "ON"
+      44:65:0D:75:A7:B2: # IFTTT example
+        name: Pompadour
+        ifttt: cdxxx-_gEJ3wdU04yyyzzz
+        event: pompadour_button
+        data: {"value1": "Pompadour button"}
     confirmations:
       send-tg:
         service: telegram
@@ -108,8 +117,8 @@ The following execution methods are supported with your Amazon Dash button with 
 ================================  ================================  ================================
 .. image:: https://goo.gl/VqgMZJ  .. image:: https://goo.gl/a6TS7X  .. image:: https://goo.gl/zrjisq
 `System command`_                 `Call url`_                       `Homeassistant`_
-.. image:: https://goo.gl/Cq4bYC
-`OpenHAB`_
+.. image:: https://goo.gl/Cq4bYC  .. image:: https://goo.gl/L7ng8k
+`OpenHAB`_                        `IFTTT`_
 ================================  ================================  ================================
 
 
@@ -166,4 +175,5 @@ See all the examples `in the community`_.
 .. _Call url: http://docs.nekmo.org/amazon-dash/config_file.html#call-url
 .. _Homeassistant: http://docs.nekmo.org/amazon-dash/config_file.html#homeassistant-event
 .. _OpenHAB: http://docs.nekmo.org/amazon-dash/config_file.html#openhab-event
+.. _IFTTT: http://docs.nekmo.org/amazon-dash/config_file.html#ifttt-event
 .. _in the community: http://docs.nekmo.org/amazon-dash/community.html

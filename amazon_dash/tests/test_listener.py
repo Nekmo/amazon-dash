@@ -10,8 +10,8 @@ from amazon_dash.exceptions import InvalidConfig, InvalidDevice
 from amazon_dash.listener import Listener, Device, last_execution, logger, test_device
 from amazon_dash.tests.base import ConfigFileMockBase, ExecuteMockBase
 
-__dir__ = os.path.abspath(os.path.dirname(__file__))
-config_data = open(os.path.join(__dir__, 'fixtures', 'config.yml')).read()
+dirname = os.path.abspath(os.path.dirname(__file__))
+config_data = open(os.path.join(dirname, 'fixtures', 'config.yml')).read()
 
 
 class TestListener(ExecuteMockBase, ConfigFileMockBase, unittest.TestCase):

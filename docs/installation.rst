@@ -37,6 +37,12 @@ For versions that are not in Pypi (it is a development version)::
     $ sudo python -m amazon_dash.install
 
 
+If you do not have git installed:
+
+    $ pip install https://github.com/Nekmo/amazon-dash/archive/<branch>.zip
+    $ sudo python -m amazon_dash.install
+
+
 Distro packages
 ---------------
 
@@ -75,3 +81,19 @@ Once you have a copy of the source, you can install it with:
 
 .. _Github repo: https://github.com/Nekmo/amazon-dash
 .. _tarball: https://github.com/Nekmo/amazon-dash/tarball/master
+
+
+Other OS that Linux
+-------------------
+At the moment only Linux is officially supported by the Amazon-dash project. However Amazon-dash should work on
+unix-like systems. Microsoft Windows is not supported and it is unknown if it works. Please do not open issues
+requesting support for Windows, I have no chance to try Amazon-dash on Windows.
+
+OS X
+````
+The configuration file must use these permissions::
+
+    chmod 600 <config file>
+    chown root <config file>
+
+OS X is not officially supported. But I've read that it works without problems.

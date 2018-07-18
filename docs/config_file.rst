@@ -38,6 +38,10 @@ Real example:
         name: Hero
         user: nekmo
         cmd: spotify
+      AC:63:BE:75:1B:6F:
+        name: Tassimo
+        cmd: door --open
+        ssh: 192.168.1.23:2222
       AC:63:BE:67:B2:F1:
         name: Kit Kat
         url: 'http://domain.com/path/to/webhook'
@@ -54,6 +58,11 @@ Real example:
         openhab: 192.168.1.140
         item: open_door
         state: "ON"
+      44:65:0D:75:A7:B2:
+        name: Pompadour
+        ifttt: cdxxx-_gEJ3wdU04yyyzzz
+        event: pompadour_button
+        data: {"value1": "Pompadour button"}
     confirmations:
       send-tg:
         service: telegram
@@ -166,6 +175,7 @@ When the **cmd execution method** is used, the following options are available.
 
 * **user**: System user that will execute the command. This option can only be used if Amazon-Dash is running as root.
 * **cwd**: Directory in which the command will be executed.
+* **ssh**: Optional. It allows executing the command on a remote machine.
 
 Example:
 
@@ -180,6 +190,25 @@ Example:
         name: Hero
         user: nekmo
         cmd: spotify
+
+
+It is also possible to execute a command using SSH. The value of the ssh option must be the name/IP of the machine.
+You can also specify the port. For example: ``machine:2222``.
+
+
+Example:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      AC:63:BE:75:1B:6F:
+        name: Tassimo
+        cmd: door --open
+        ssh: 192.168.1.23:2222
 
 
 Call url
@@ -218,6 +247,11 @@ When the **homeassistant execution method** is used, the following options are a
 
 * **event** (required): Event name to send.
 * **data**: Event data to send. Use json as string.
+* **access**: HomeAssistant password for API (``x-ha-access`` header).
+
+The protocol and the port in the address of the Homeassistant server are optional. The syntax of the address is:
+``[<protocol>://]<server>[:<port>]. For example: ``https://hassio.local:1234``.
+
 
 Example:
 
@@ -241,6 +275,9 @@ When the **openhab execution method** is used, the following options are availab
 * **item** (required): Open Hab item to send.
 * **state**: State to send. On switch items ON/OFF. ON by default. The state must be between quotes.
 
+The protocol and the port in the address of the OpenHAB server are optional. The syntax of the address is:
+``[<protocol>://]<server>[:<port>]. For example: ``https://192.168.1.140:1234``.
+
 
 Example:
 
@@ -256,6 +293,37 @@ Example:
         openhab: 192.168.1.140
         item: open_door
         state: "ON"
+
+
+IFTTT event
+~~~~~~~~~~~
+When the **IFTTT execution method** is used, the following options are available.
+
+* **event** (required): Event name to send. You define the event name when creating a Webhook applet.
+* **data**: dictionary with the "ingredients" (variables) for IFTTT.
+
+To use IFTTT:
+
+#. Create the applet by selecting the webhook service: https://ifttt.com/search . You will have to define a
+   **event name**.
+#. Get your IFTTT Webhook **key**: https://ifttt.com/services/maker_webhooks/settings
+#. Put the *event name* and the *key* in the **Amazon-dash configuration**.
+
+
+Example:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      44:65:0D:75:A7:B2:
+        name: Pompadour
+        ifttt: cdxxx-_gEJ3wdU04yyyzzz
+        event: pompadour_button
+        data: {"value1": "Pompadour button"}
 
 
 Confirmations

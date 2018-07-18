@@ -11,7 +11,7 @@ from amazon_dash.tests._compat import patch as mock_patch, Mock
 
 from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
 from amazon_dash.execute import ExecuteCmd, ExecuteUrl, logger, execute_cmd, get_shell, \
-    ExecuteHomeAssistant, ExecuteOpenHab
+    ExecuteHomeAssistant, ExecuteOpenHab, ExecuteIFTTT, execute_over_ssh
 from amazon_dash.tests.base import ExecuteMockBase
 
 import requests_mock
@@ -55,6 +55,28 @@ class TestExecuteCmdFunction(unittest.TestCase):
         self.assertEqual(execute_cmd(['ls']), None)
 
 
+class TestExecuteOverSsh(unittest.TestCase):
+    def test_invalid_port(self):
+        with self.assertRaises(InvalidConfig):
+            execute_over_ssh('ls', 'machine:spam')
+
+    def test_execute_without_port(self):
+        cmd = execute_over_ssh('ls', 'machine')
+        self.assertEqual(['ssh', 'machine', '-C', "/usr/bin/env bash -c ' ls '"], cmd)
+
+    def test_execute_with_port(self):
+        cmd = execute_over_ssh('ls', 'machine:222')
+        self.assertEqual(['ssh', 'machine', '-p', '222', '-C', "/usr/bin/env bash -c ' ls '"], cmd)
+
+    def test_execute_double_quotes(self):
+        cmd = execute_over_ssh('"ls"', 'machine:222')
+        self.assertEqual(['ssh', 'machine', '-p', '222', '-C', "/usr/bin/env bash -c ' \"ls\" '"], cmd)
+
+    def test_execute_single_quotes(self):
+        cmd = execute_over_ssh('\'ls\'', 'machine:222')
+        self.assertEqual(['ssh', 'machine', '-p', '222', '-C', "/usr/bin/env bash -c ' '\"'\"'ls'\"'\"' '"], cmd)
+
+
 class TestExecuteCmd(ExecuteMockBase, unittest.TestCase):
 
     def test_execute(self):
@@ -72,6 +94,19 @@ class TestExecuteCmd(ExecuteMockBase, unittest.TestCase):
         with self.assertRaises(SecurityException):
             device.execute(False)
         self.execute_mock_req.assert_not_called()
+
+    def test_user_on_ssh(self):
+        device = ExecuteCmd('key', {'cmd': 'ls', 'user': 'root', 'ssh': 'machine'})
+        with self.assertRaises(InvalidConfig):
+            device.execute()
+        self.execute_mock_req.assert_not_called()
+
+    def test_ssh(self):
+        device = ExecuteCmd('key', {'cmd': 'ls', 'ssh': 'machine'})
+        with mock_patch('amazon_dash.execute.execute_over_ssh') as execute_over_ssh_mock:
+            device.execute()
+            execute_over_ssh_mock.assert_called_once()
+        self.execute_mock_req.assert_called_once()
 
     # def test_execute_cmd_start(self):
     #     with mock_patch.object(Thread, 'start') as start_mock:
@@ -276,3 +311,32 @@ class TestExecuteOpenHab(unittest.TestCase):
             assis = ExecuteOpenHab('key', self.default_data())
             assis.execute()
             self.assertTrue(m.called_once)
+
+
+class TestExecuteIFTTT(unittest.TestCase):
+
+    def default_data(self):
+        return {
+            'ifttt': 'foobarspam' * 5,
+            'event': 'myevent',
+        }
+
+    def test_execute(self):
+        data = self.default_data()
+        with requests_mock.mock() as m:
+            m.post(ExecuteIFTTT.url_pattern.format(key=data['ifttt'], **data))
+            assis = ExecuteIFTTT('key', data)
+            assis.execute()
+            self.assertTrue(m.called_once)
+
+    def test_key_required(self):
+        data = self.default_data()
+        data['ifttt'] = ''
+        with self.assertRaises(InvalidConfig):
+            ExecuteIFTTT('key', data)
+
+    def test_event_required(self):
+        data = self.default_data()
+        data['event'] = ''
+        with self.assertRaises(InvalidConfig):
+            ExecuteIFTTT('key', data)

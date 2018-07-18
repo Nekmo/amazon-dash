@@ -5,7 +5,7 @@ from collections import defaultdict
 from amazon_dash.config import Config
 from amazon_dash.confirmations import get_confirmation
 from amazon_dash.exceptions import InvalidConfig, InvalidDevice
-from amazon_dash.execute import logger, ExecuteCmd, ExecuteUrl, ExecuteHomeAssistant, ExecuteOpenHab
+from amazon_dash.execute import logger, ExecuteCmd, ExecuteUrl, ExecuteHomeAssistant, ExecuteOpenHab, ExecuteIFTTT
 from amazon_dash.scan import scan_devices
 
 DEFAULT_DELAY = 10
@@ -18,6 +18,7 @@ EXECUTE_CLS = {
     'url': ExecuteUrl,
     'homeassistant': ExecuteHomeAssistant,
     'openhab': ExecuteOpenHab,
+    'ifttt': ExecuteIFTTT,
 }
 """
 Execute classes registered.
@@ -88,6 +89,7 @@ class Device(object):
                 if result is None else result
             result = result or 'The {} device has been executed successfully'.format(self.name)
             self.send_confirmation(result)
+        return result
 
     def send_confirmation(self, message, success=True):
         """Send success or error message to configured confirmation
@@ -151,7 +153,7 @@ class Listener(object):
         :return: loop
         """
         self.root_allowed = root_allowed
-        scan_devices(self.on_push, lambda d: d.src.lower() in self.devices)
+        scan_devices(self.on_push, lambda d: d.src.lower() in self.devices, self.settings.get('interface'))
 
 
 def test_device(device, file, root_allowed=False):
@@ -166,4 +168,4 @@ def test_device(device, file, root_allowed=False):
     config.read()
     if not device in config['devices']:
         raise InvalidDevice('Device {} is not in config file.'.format(device))
-    Device(device, config['devices'][device], config).execute(root_allowed)
+    logger.info(Device(device, config['devices'][device], config).execute(root_allowed))
