@@ -247,6 +247,11 @@ When the **homeassistant execution method** is used, the following options are a
 
 * **event** (required): Event name to send.
 * **data**: Event data to send. Use json as string.
+* **access**: HomeAssistant password for API (``x-ha-access`` header).
+
+The protocol and the port in the address of the Homeassistant server are optional. The syntax of the address is:
+``[<protocol>://]<server>[:<port>]. For example: ``https://hassio.local:1234``.
+
 
 Example:
 
@@ -269,6 +274,9 @@ When the **openhab execution method** is used, the following options are availab
 
 * **item** (required): Open Hab item to send.
 * **state**: State to send. On switch items ON/OFF. ON by default. The state must be between quotes.
+
+The protocol and the port in the address of the OpenHAB server are optional. The syntax of the address is:
+``[<protocol>://]<server>[:<port>]. For example: ``https://192.168.1.140:1234``.
 
 
 Example:
