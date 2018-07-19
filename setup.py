@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 """Package description
 """
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, __version__ as setuptool_version
 from distutils.util import convert_path
+from distutils.version import StrictVersion
 from fnmatch import fnmatchcase
 import os
 import sys
@@ -22,8 +23,8 @@ PACKAGE_NAME = 'amazon-dash'
 PACKAGE_DOWNLOAD_URL = 'https://github.com/Nekmo/amazon-dash/archive/master.zip'  # .tar.gz
 REQUIREMENTS_FILES = [
     {'name': 'common-requirements.txt'},
-    {'name': 'py2-requirements.txt', 'marker': 'python_version<"3.0"'},
-    {'name': 'py3-requirements.txt', 'marker': 'python_version>"3.0"'},
+    {'name': 'py2-requirements.txt', 'marker': 'python_version<"3.0"', "include": sys.version_info < (3,0)},
+    {'name': 'py3-requirements.txt', 'marker': 'python_version>"3.0"', "include": sys.version_info > (3,0)},
 ]
 URL = 'https://github.com/Nekmo/amazon-dash'
 STATUS_LEVEL = 5  # 1:Planning 2:Pre-Alpha 3:Alpha 4:Beta 5:Production/Stable 6:Mature 7:Inactive
@@ -188,8 +189,12 @@ def read_requirements_file(path):
 def read_requirements_files(files):
     reqs = []
     for file in files:
-        reqs.extend([('{};{}'.format(req, file['marker']) if file.get('marker') else req)
-                     for req in read_requirements_file(file['name'])])
+        if StrictVersion(setuptool_version) >= StrictVersion('20.2'):
+            reqs.extend([('{};{}'.format(req, file['marker']) if file.get('marker') else req)
+                         for req in read_requirements_file(file['name'])])
+        elif file.get('include', True):
+            # Retrocompatibility mode for setuptools < 20.2
+            reqs.extend(list(read_requirements_file(file['name'])))
     return reqs
 
 
