@@ -1,6 +1,15 @@
 * amazon-dash version:
 * Python version:
+* Pip & Setuptools version:
 * Operating System:
+
+How to get your version:
+```
+amazon-dash --version
+python --version
+pip --version
+easy_install --version
+```
 
 ### Description
 
