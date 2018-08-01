@@ -12,10 +12,11 @@ To install amazon-dash, run these commands in your terminal:
 
 .. code-block:: console
 
-    $ pip install amazon_dash
+    $ pip install -U amazon_dash
     $ sudo python -m amazon_dash.install
 
 This is the preferred method to install amazon-dash, as it will always install the most recent stable release.
+You must execute both commands in the correct order.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -52,6 +53,19 @@ If you use Arch Linux or an Arch Linux derivative, you can install Amazon Dash f
 `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. For example if you use yaourt::
 
     $ yaourt -S amazon-dash-git
+
+
+Installation Issues
+-------------------
+There are many Linux distributions available and not all are tested. If you think there is a bug please
+`open a issue <https://github.com/Nekmo/amazon-dash/issues>`_. Before opening a issue, check the following:
+
+# Search similar issues.
+#. Your Python version (check the supported versions).
+#. Upgrade pip and setuptools (``pip install -U setuptools pip``).
+#. Check if it is a configuration error. Errors that start with ``[Error] Amazon Dash Exception`` are usually not bugs.
+#. Finally, follow the guidelines for creating issues.
+
 
 
 From sources
