@@ -1,3 +1,4 @@
+import threading
 import unittest
 
 import os
@@ -14,7 +15,7 @@ dirname = os.path.abspath(os.path.dirname(__file__))
 config_data = open(os.path.join(dirname, 'fixtures', 'config.yml')).read()
 
 
-class TestListener(ExecuteMockBase, ConfigFileMockBase, unittest.TestCase):
+class TestListener(ConfigFileMockBase, unittest.TestCase):
     contents = config_data
 
     def test_create(self):
@@ -24,15 +25,24 @@ class TestListener(ExecuteMockBase, ConfigFileMockBase, unittest.TestCase):
     def test_on_push(self):
         last_execution.clear()
         listener = Listener(self.file)
-        listener.on_push(Device('0C:47:C9:98:4A:12'))
-        self.execute_mock_req.assert_called_once()
+        with patch('threading.Thread') as thread_mock:
+            listener.on_push(Device('0C:47:C9:98:4A:12'))
+            thread_mock.assert_called_once()
         
     def test_double_called(self):
         last_execution.clear()
         listener = Listener(self.file)
-        listener.on_push(Device('0C:47:C9:98:4A:12'))
-        listener.on_push(Device('0C:47:C9:98:4A:12'))
-        self.execute_mock_req.assert_called_once()
+        with patch('threading.Thread') as thread_mock:
+            listener.on_push(Device('0C:47:C9:98:4A:12'))
+            listener.on_push(Device('0C:47:C9:98:4A:12'))
+            thread_mock.assert_called_once()
+
+    def test_thread_start(self):
+        last_execution.clear()
+        listener = Listener(self.file)
+        with patch.object(threading.Thread, 'start') as thread_start_mock:
+            listener.on_push(Device('0C:47:C9:98:4A:12'))
+            thread_start_mock.assert_called_once()
 
 
 class TestDevice(ExecuteMockBase, unittest.TestCase):

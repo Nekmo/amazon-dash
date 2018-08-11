@@ -1,6 +1,7 @@
 import time
 from collections import defaultdict
 
+import threading
 
 from amazon_dash.config import Config
 from amazon_dash.confirmations import get_confirmation
@@ -144,7 +145,9 @@ class Listener(object):
         """
         src = device.src.lower()
         device = self.devices[src]
-        device.execute(root_allowed=self.root_allowed)
+        threading.Thread(target=device.execute, kwargs={
+            'root_allowed': self.root_allowed
+        }).start()
 
     def run(self, root_allowed=False):
         """Start daemon mode
