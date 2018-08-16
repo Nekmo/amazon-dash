@@ -1,0 +1,15 @@
+*.git*
+*.png
+*.rst
+.bumpversion.cfg
+.codeclimate.yml
+.dockerignore
+.gitignore
+.travis.yml
+LICENSE.txt
+MANIFEST.in
+Makefile
+docs
+images
+tox.ini
+travis_pypi_setup.py
