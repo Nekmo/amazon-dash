@@ -21,6 +21,9 @@ def scan_devices(fn, lfilter, iface=None):
     :return: loop
     """
     try:
-        sniff(prn=fn, store=0, filter="udp", lfilter=lfilter, iface=iface)
+        sniff(prn=fn, store=0,
+              # filter="udp",
+              filter="arp or (udp and src port 68 and dst port 67 and src host 0.0.0.0)",
+              lfilter=lfilter, iface=iface)
     except PermissionError:
         raise SocketPermissionError
