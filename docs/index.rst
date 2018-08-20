@@ -34,6 +34,7 @@ Contents
    avoid_purchase
    config_file
    upgrade
+   docker
    troubleshooting
    community
    modules

@@ -134,7 +134,10 @@ def get_file_owner(file):
     :return: user id
     :rtype: int
     """
-    return getpwuid(os.stat(file).st_uid)[0]
+    try:
+        return getpwuid(os.stat(file).st_uid)[0]
+    except KeyError:
+        return '???'
 
 
 def get_file_group(file):
