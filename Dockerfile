@@ -25,4 +25,4 @@ RUN apk update \
     && apk del build-dependencies \
     && rm -rf /var/cache/apk/*
 
-RUN usermod -u 1000 nobody
+RUN usermod -u 1000 root
