@@ -25,4 +25,4 @@ RUN apk update \
     && apk del build-dependencies \
     && rm -rf /var/cache/apk/*
 
-CMD [ "/bin/sh" ]
+CMD [ "amazon-dash", "run", "--config /config/amazon-dash.yml" ]
