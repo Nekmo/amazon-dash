@@ -18,8 +18,11 @@ RUN apk update \
       procps=3.3.15-r0 \
       tcpdump=4.9.2-r3 \
       scapy=2.4.0-r0 \
+      shadow=4.5-r0 \
     && pip install --no-cache-dir -r py3-requirements.txt \
     && pip install . \
     && python -m amazon_dash.install \
     && apk del build-dependencies \
     && rm -rf /var/cache/apk/*
+
+RUN usermod -u 1000 nobody
