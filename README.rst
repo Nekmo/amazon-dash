@@ -164,15 +164,19 @@ Docker
 ======
 Using Amazon Dash within docker is easy! First, pull the Docker image:
 
-```
-$ docker pull nekmo/amazon-dash:latest
-```
+.. code-block:: console
+
+    $ docker pull nekmo/amazon-dash:latest
 
 Then, create a container and run Amazon Dash itself:
 
-```
-$ docker run -it --network=host -v <path/to/amazon-dash.yml>:/config/amazon-dash.yml nekmo/amazon-dash:latest amazon-dash run --config /config/amazon-dash.yml
-```
+.. code-block:: console
+
+    $ docker run -it --network=host \
+                 -v </full/path/path/to/amazon-dash.yml>:/config/amazon-dash.yml \
+                 nekmo/amazon-dash:latest \
+                 amazon-dash run --config /config/amazon-dash.yml
+
 
 Join the community
 ==================
