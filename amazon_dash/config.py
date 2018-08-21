@@ -199,7 +199,7 @@ def only_root_write(path):
 class Config(dict):
     """Parse and validate yaml Amazon-dash file config. The instance behaves like a dictionary
     """
-    def __init__(self, file, **kwargs):
+    def __init__(self, file, ignore_perms=False, **kwargs):
         """Set the config file and validate file permissions
 
         :param str file: path to file
@@ -208,7 +208,7 @@ class Config(dict):
         super(Config, self).__init__(**kwargs)
         if not os.path.lexists(file):
             raise ConfigFileNotFoundError(file)
-        if (not os.getuid() and not only_root_write(file)) or oth_w_perm(file):
+        if not ignore_perms and ((not os.getuid() and not only_root_write(file)) or oth_w_perm(file)):
             file = os.path.abspath(file)
             raise SecurityException(
                 'There should be no permissions for other users in the file "{file}". '

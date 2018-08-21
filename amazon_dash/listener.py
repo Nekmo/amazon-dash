@@ -114,12 +114,12 @@ class Listener(object):
 
     root_allowed = False  #: Only used for ExecuteCmd
 
-    def __init__(self, config_path):
+    def __init__(self, config_path, ignore_perms=False):
         """
 
         :param str config_path: Path to config file
         """
-        self.config = Config(config_path)
+        self.config = Config(config_path, ignore_perms)
         self.settings = self.config.get('settings', {})
         self.devices = {key.lower(): Device(key, value, self.config)
                                      for key, value in self.config['devices'].items()}

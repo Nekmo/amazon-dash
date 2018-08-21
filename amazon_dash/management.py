@@ -92,12 +92,15 @@ def cli(loglevel):
 @cli.command(help='Run server')
 @click.option('--config', type=click.Path(), help='Path to config file.', default=CONFIG_FILE)
 @click.option('--root-allowed', is_flag=True, default=False,
-              help='Allow execute commands on config file as root')
-def run(config, root_allowed):
+              help='Allow execute commands on config file as root.')
+@click.option('--ignore-perms', is_flag=True, default=False,
+              help='Do not check the permissions of the configuration file. '
+                   'Use this option at your own risk in secure environments (like Docker).')
+def run(config, root_allowed, ignore_perms):
     click.secho('Listening for events. Amazon-dash will execute the events associated with '
                'the registered buttons.', fg='yellow')
     from amazon_dash.listener import Listener
-    Listener(config).run(root_allowed=root_allowed)
+    Listener(config, ignore_perms).run(root_allowed=root_allowed)
 
 
 @cli.command('check-config', help='Validate the configuration file.')
