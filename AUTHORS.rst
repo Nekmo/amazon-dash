@@ -10,4 +10,4 @@ Development Lead
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Aaron Bach (@fourwindsinteractive) has contributed adding support for docker.
