@@ -41,6 +41,9 @@ For example::
     Options:
       --config PATH   Path to config file.
       --root-allowed  Allow execute commands on config file as root
+      --ignore-perms  Do not check the permissions of the configuration file. Use
+                      this option at your own risk in secure environments (like
+                      Docker).
       --help          Show this message and exit.
 
 
@@ -91,12 +94,21 @@ Manually
 ````````
 If your system does not have Systemd or you want to run it manually::
 
-    sudo amazon-dash run[ --root-allowed][ --config amazon-dash.yml]
+    sudo amazon-dash run[ --root-allowed][ --ignore-perms][ --config amazon-dash.yml]
 
 
 By default, ``amazon-dash`` will use the ``amazon-dash.yml`` file in the current directory with
 ``sudo amazon-dash run``. However, you can set the path to the file (for example, ``/etc/amazon-dash.yml``) with
 ``--config`` parameter. Please note that ``--config`` must be after ``run``.
+
+If you run Amazon-dash using root *(necessary to sniff network traffic)* is required to protect the
+configuration file **for security reasons)::
+
+    sudo chmod 600 amazon-dash.yml
+    sudo chown root:root amazon-dash.yml
+
+If you use Docker you can disable this security measure. using ``--ignore-perms``. It is not recommended to use
+this option if you are running Amazon-dash on your machine. It could be used to **scale privileges**.
 
 The default level logging is ``INFO`` but you can change it using the ``--warning``, ``--quiet``, ``--debug`` and
 ``--verbose`` options. To see on screen every time a button is pressed you need to set the ``--debug`` option.

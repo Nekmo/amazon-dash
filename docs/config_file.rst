@@ -6,7 +6,7 @@ Config file
 
 The configuration file can be found anywhere but if the program runs in root mode,
 it is necessary that only root can modify the file. This is a security measure to prevent
-someone from executing commands as root using the program.
+someone from executing commands as root using Amazon-dash.
 
 To change the permissions::
 
@@ -14,6 +14,9 @@ To change the permissions::
     sudo chown root:root amazon-dash.yml
 
 The amazon-dash system configuration file is located in: ``/etc/amazon-dash.yml``
+
+You can disable this security measure using ``--ignore-perms``. Use this option at your own risk only in secure
+environments (like Docker).
 
 .. important::
     Remember to restart the service whenever you make a change to apply it.

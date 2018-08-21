@@ -175,7 +175,8 @@ Then, create a container and run Amazon Dash itself:
     $ docker run -it --network=host \
                  -v </full/path/path/to/amazon-dash.yml>:/config/amazon-dash.yml \
                  nekmo/amazon-dash:latest \
-                 amazon-dash run --config /config/amazon-dash.yml
+                 amazon-dash run --ignore-perms --root-allowed \
+                                 --config /config/amazon-dash.yml
 
 
 Join the community
