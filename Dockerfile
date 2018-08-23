@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3.7-alpine
 LABEL maintainer="Nekmo Com <contacto@nekmo.com>"
 
 VOLUME /config
