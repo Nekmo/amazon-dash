@@ -1,5 +1,6 @@
 import requests
 from requests import RequestException
+from pushbullet import Pushbullet
 
 from amazon_dash.exceptions import InvalidConfig, ConfirmationError
 from amazon_dash._compat import JSONDecodeError
@@ -25,6 +26,20 @@ class DisabledConfirmation(ConfirmationBase):
         pass
 
 
+class PushbulletConfirmation(ConfirmationBase):
+    url_base        =   'https://api.pushbullet.com/v2/pushes'
+    name            =   'pushbullet'
+    required_fields =   ('token', 'to')
+
+    def send(self, message, success=True):
+        try:
+            pd  =   Pushbullet()
+            print(self.url_base.format(self.data['token']), dict(
+                text=message, chat_id=self.data['to'],))
+        except RequestException as e:
+            raise ConfirmationError('Unable to connect to Telegram servers on telegram confirmation: {}'.format(e))
+
+
 class TelegramConfirmation(ConfirmationBase):
     url_base = 'https://api.telegram.org/bot{}/sendMessage'
     name = 'telegram'
@@ -48,8 +63,9 @@ class TelegramConfirmation(ConfirmationBase):
 
 
 CONFIRMATIONS = {
-    'telegram': TelegramConfirmation,
-    'disabled': DisabledConfirmation,
+    'telegram':     TelegramConfirmation,
+    'pushbullet':   PushbulletConfirmation,
+    'disabled':     DisabledConfirmation,
 }
 
 
