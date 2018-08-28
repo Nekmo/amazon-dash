@@ -210,7 +210,9 @@ class ExecuteUrl(Execute):
         if self.data.get('auth'):
             kwargs['auth'] = tuple(self.data['auth'].split(':', 1))
         try:
-            resp = request(self.data.get('method', 'get').lower(), self.data['url'], **kwargs)
+            resp = request(self.data.get('method', 'get').lower(), self.data['url'],
+                           verify=self.data.get('verify', True),
+                           **kwargs)
         except RequestException as e:
             raise ExecuteError('Exception on request to {}: {}'.format(self.data['url'], e))
         if resp.status_code >= 400:
