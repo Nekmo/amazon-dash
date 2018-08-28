@@ -3,4 +3,4 @@ jsonschema
 requests
 click
 click-default-group
-pushbullet
+pushbullet.py
