@@ -34,12 +34,9 @@ class PushbulletConfirmation(ConfirmationBase):
     def send(self, message, success=True):
         try:
             pb      =   Pushbullet(self.data['token'])
-            resp    =   pb.push_note(self.name,message)
-#            print(self.url_base.format(self.data['token']), dict(
-#                text=message, chat_id=self.data['to'],))
-            
+            resp    =   pb.push_note(DASH-BUTTON,message)
         except RequestException as e:
-            raise ConfirmationError('Unable to connect to Telegram servers on telegram confirmation: {}'.format(e))
+            raise ConfirmationError('Unable to connect to Pushbullet servers on confirmation: {}'.format(e))
 
 
 class TelegramConfirmation(ConfirmationBase):
