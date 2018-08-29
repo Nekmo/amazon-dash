@@ -33,7 +33,7 @@ class PushbulletConfirmation(ConfirmationBase):
 
     def send(self, message, success=True):
         try:
-#            pd  =   Pushbullet(self.url_base.format(self.data['token']))
+            pd  =   Pushbullet(self.data['token']))
 #            print(self.url_base.format(self.data['token']), dict(
 #                text=message, chat_id=self.data['to'],))
             print("BUUUP!")
