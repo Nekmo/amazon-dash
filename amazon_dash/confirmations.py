@@ -34,7 +34,7 @@ class PushbulletConfirmation(ConfirmationBase):
     def send(self, message, success=True):
         try:
             pb      =   Pushbullet(self.data['token'])
-            resp    =   pb.push_note(DASH-BUTTON,message)
+            resp    =   pb.push_note('DASH-BUTTON',message)
         except RequestException as e:
             raise ConfirmationError('Unable to connect to Pushbullet servers on confirmation: {}'.format(e))
 
