@@ -240,6 +240,10 @@ class TestExecuteUrl(unittest.TestCase):
         execute_url.validate()
         execute_url.execute()
 
+    def test_verify(self):
+        ExecuteUrl('key', dict(self.get_default_data(), verify=False)).execute()
+        self.assertFalse(self.session_mock.last_request.verify)
+
     def tearDown(self):
         super(TestExecuteUrl, self).tearDown()
         self.session_mock.stop()
