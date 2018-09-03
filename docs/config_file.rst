@@ -222,8 +222,12 @@ When the **url execution method** is used, the following options are available.
 * **headers**: Headers to send to server. Content-Type will be overwritten if it is defined later.
 * **content-type** (*): HTTP Content-Type Header. Only available if Body is defined. If body is defined, default is form.
 * **body**: Request payload. Only if the method is POST/PUT/PATCH. In json or form mode, the content must be a valid json. It is recommended to use single quotes before and after content in json.
+* **verify**: By default True. Validate SSL/TLS certificate on request. To ignore errors (for example self-signed
+  certificate) put false. You can also set the path to the certificate or certificate directory (generate using
+  OpenSSL ``c_rehash`` utility).
 
-(*) Content type aliases: `form = application/x-www-form-urlencoded`. `json = application/json`. `plain = text/plain`.
+(*) Content type aliases: ``form = application/x-www-form-urlencoded``. ``json = application/json``.
+``plain =text/plain``.
 
 
 Example:
