@@ -1,12 +1,10 @@
 import threading
 import unittest
-
 import os
+from unittest.mock import patch
 
 from amazon_dash.confirmations import DisabledConfirmation
 from amazon_dash.execute import ExecuteCmd
-from amazon_dash.tests._compat import patch
-
 from amazon_dash.exceptions import InvalidConfig, InvalidDevice
 from amazon_dash.listener import Listener, Device, last_execution, logger, test_device
 from amazon_dash.tests.base import ConfigFileMockBase, ExecuteMockBase

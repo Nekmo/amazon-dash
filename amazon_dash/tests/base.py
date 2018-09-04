@@ -1,5 +1,5 @@
 import os
-from ._compat import patch
+from unittest.mock import patch
 from pyfakefs.fake_filesystem_unittest import Patcher
 
 

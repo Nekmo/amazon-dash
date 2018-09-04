@@ -1,16 +1,14 @@
 import base64
 import json
 import unittest
-from threading import Thread
-
+import subprocess
 import requests
 import sys
 from requests_mock import NoMockAddress
-from amazon_dash._compat import subprocess
-from amazon_dash.tests._compat import patch as mock_patch, Mock
+from unittest.mock import patch as mock_patch, Mock
 
 from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
-from amazon_dash.execute import ExecuteCmd, ExecuteUrl, logger, execute_cmd, get_shell, \
+from amazon_dash.execute import ExecuteCmd, ExecuteUrl, execute_cmd, get_shell, \
     ExecuteHomeAssistant, ExecuteOpenHab, ExecuteIFTTT, execute_over_ssh
 from amazon_dash.tests.base import ExecuteMockBase
 

@@ -5,7 +5,7 @@ History
 v1.2.0 (2018-09-03)
 -------------------
 
-- Concurrent options
+- Concurrent option
 - Improve CPU usage performance
 - ``--ignore-perms`` option for Docker
 - Docker support

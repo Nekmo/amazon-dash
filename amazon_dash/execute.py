@@ -1,15 +1,14 @@
 import json
 import logging
-
 import getpass
-
 import sys
-
 import copy
+import subprocess
+from json import JSONDecodeError
+from urllib.parse import urlparse
+
 from requests import request, RequestException
-from amazon_dash._compat import JSONDecodeError
 from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
-from ._compat import urlparse, subprocess
 
 EXECUTE_SHELL_PARAM = '-c'
 ROOT_USER = 'root'
