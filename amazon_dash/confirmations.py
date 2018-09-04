@@ -2,7 +2,7 @@ import requests
 from requests import RequestException
 
 from amazon_dash.exceptions import InvalidConfig, ConfirmationError
-from json import JSONDecodeError
+from ._compat import JSONDecodeError
 
 class ConfirmationBase(object):
     name = None

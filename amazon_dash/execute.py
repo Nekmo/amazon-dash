@@ -4,7 +4,7 @@ import getpass
 import sys
 import copy
 import subprocess
-from json import JSONDecodeError
+from ._compat import JSONDecodeError
 from urllib.parse import urlparse
 
 from requests import request, RequestException
