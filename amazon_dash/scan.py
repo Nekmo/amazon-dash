@@ -1,10 +1,11 @@
 import logging
-from typing import Callable, Any
+from scapy.packet import Packet
+from scapy.sendrecv import sniff
+from typing import Callable, Any, Union
 
 from amazon_dash.exceptions import SocketPermissionError
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
-from scapy.all import *
 
 try:
     PermissionError
