@@ -3,3 +3,4 @@ jsonschema
 requests
 click
 click-default-group
+scapy>=2.4.0

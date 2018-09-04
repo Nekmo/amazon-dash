@@ -1,2 +1,0 @@
-scapy>=2.4.0
--r common-requirements.txt

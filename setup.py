@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 """Package description
 """
-from setuptools import setup, find_packages, __version__ as setuptool_version
+from setuptools import setup, find_packages
 from distutils.util import convert_path
-from distutils.version import StrictVersion
 from fnmatch import fnmatchcase
 import os
 import sys
@@ -21,11 +20,7 @@ EMAIL = 'contacto@nekmo.com'
 # Información del paquete
 PACKAGE_NAME = 'amazon-dash'
 PACKAGE_DOWNLOAD_URL = 'https://github.com/Nekmo/amazon-dash/archive/master.zip'  # .tar.gz
-REQUIREMENTS_FILES = [
-    {'name': 'common-requirements.txt'},
-    {'name': 'py2-requirements.txt', 'marker': 'python_version<"3.0"', "include": sys.version_info < (3,0)},
-    {'name': 'py3-requirements.txt', 'marker': 'python_version>"3.0"', "include": sys.version_info > (3,0)},
-]
+REQUIREMENT_FILE = 'requirements.txt'
 URL = 'https://github.com/Nekmo/amazon-dash'
 STATUS_LEVEL = 5  # 1:Planning 2:Pre-Alpha 3:Alpha 4:Beta 5:Production/Stable 6:Mature 7:Inactive
 KEYWORDS = ['amazon', 'dash', 'hack', 'amazon-dash', 'home-assistant', 'iot', 'amazon-dash-button', 'openhab']
@@ -52,9 +47,6 @@ PLATFORMS = [
 ]
 ROOT_INCLUDE = [
     'requirements.txt',
-    'common-requirements.txt',
-    'py2-requirements.txt',
-    'py3-requirements.txt',
     'VERSION',
     'LICENSE.txt'
 ]
@@ -173,29 +165,9 @@ def find_package_data(where='.', package='',
 ##############################################################################
 
 
-def read_requirements_file(path):
-    if not os.path.lexists(path):
-        return
+def read_requirement_file(path):
     with open(path) as f:
-        lines = f.readlines()
-    for line in lines:
-        line = line.split('#', 1)[0]
-        line = line.strip()
-        if line.startswith('-'):
-            continue
-        yield line
-
-
-def read_requirements_files(files):
-    reqs = []
-    for file in files:
-        if StrictVersion(setuptool_version) >= StrictVersion('20.2'):
-            reqs.extend([('{};{}'.format(req, file['marker']) if file.get('marker') else req)
-                         for req in read_requirements_file(file['name'])])
-        elif file.get('include', True):
-            # Retrocompatibility mode for setuptools < 20.2
-            reqs.extend(list(read_requirements_file(file['name'])))
-    return reqs
+        return f.readlines()
 
 
 # Todos los módulos y submódulos a instalar (module, module.submodule, module.submodule2...)
@@ -314,7 +286,7 @@ setup(
     platforms=PLATFORMS,
 
     provides=modules,
-    install_requires=read_requirements_files(REQUIREMENTS_FILES),
+    install_requires=read_requirement_file(REQUIREMENT_FILE),
 
     packages=packages,
     include_package_data=True,
