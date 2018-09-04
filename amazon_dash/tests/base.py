@@ -1,7 +1,7 @@
 import os
-from unittest.mock import patch
-from pyfakefs.fake_filesystem_unittest import Patcher
 
+from pyfakefs.fake_filesystem_unittest import Patcher
+from ._compat import patch
 
 class FileMockBase(object):
     contents = ''

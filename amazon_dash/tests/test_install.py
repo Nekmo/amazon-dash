@@ -1,10 +1,10 @@
 import unittest
 import os
-from unittest.mock import patch
 
 from click.testing import CliRunner
 
 from pyfakefs.fake_filesystem_unittest import Patcher
+from ._compat import patch
 
 from amazon_dash.install import InstallConfig, IsInstallableException, CONFIG_PATH, IsNecessaryException, \
     CONFIG_EXAMPLE, SYSTEMD_PATHS, InstallSystemd, SYSTEMD_SERVICE, cli

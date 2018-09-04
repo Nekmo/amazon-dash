@@ -1,8 +1,8 @@
 import os
 import unittest
-from unittest.mock import patch
 
 from pyfakefs.fake_filesystem_unittest import Patcher
+from ._compat import patch
 
 from amazon_dash.config import Config, only_root_write, oth_w_perm, check_config
 from amazon_dash.exceptions import SecurityException, InvalidConfig

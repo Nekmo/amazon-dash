@@ -1,8 +1,9 @@
 from __future__ import print_function
 import unittest
-from unittest.mock import patch
 
-from amazon_dash.discovery import BANNED_DEVICES, pkt_text, AMAZON_DEVICES, mac_id_list, discovery_print, discover
+from ._compat import patch
+
+from amazon_dash.discovery import BANNED_DEVICES, pkt_text, AMAZON_DEVICES, mac_id_list, discovery_print
 from amazon_dash.listener import Device
 
 

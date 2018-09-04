@@ -1,7 +1,8 @@
 import threading
 import unittest
 import os
-from unittest.mock import patch
+
+from ._compat import patch
 
 from amazon_dash.confirmations import DisabledConfirmation
 from amazon_dash.execute import ExecuteCmd

@@ -4,8 +4,9 @@ import unittest
 import subprocess
 import requests
 import sys
+
 from requests_mock import NoMockAddress
-from unittest.mock import patch as mock_patch, Mock
+from ._compat import patch as mock_patch, Mock
 
 from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
 from amazon_dash.execute import ExecuteCmd, ExecuteUrl, execute_cmd, get_shell, \
