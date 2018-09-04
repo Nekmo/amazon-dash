@@ -1,10 +1,10 @@
 import logging
+from typing import Callable, Any
 
 from amazon_dash.exceptions import SocketPermissionError
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
-
 
 try:
     PermissionError
@@ -13,12 +13,13 @@ except NameError:
     PermissionError = socket.error
 
 
-def scan_devices(fn, lfilter, iface=None):
-    """Sniff packages
+def scan_devices(fn: Callable[[Packet], Any], lfilter: Callable[[Packet], bool],
+                 iface: Union[str, None]=None) -> None:
+    """Sniff packages loop
 
     :param fn: callback on packet
     :param lfilter: filter packages
-    :return: loop
+    :param iface: Network interface to listen.
     """
     try:
         sniff(prn=fn, store=0,
