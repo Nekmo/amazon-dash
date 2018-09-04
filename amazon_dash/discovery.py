@@ -1,4 +1,6 @@
 import click
+from scapy.packet import Packet
+from typing import Union
 
 from amazon_dash.scan import scan_devices
 
@@ -59,12 +61,11 @@ mac_id_list = []
 """
 
 
-def pkt_text(pkt):
+def pkt_text(pkt: Packet) -> str:
     """Return source mac address for this Scapy Packet
 
-    :param scapy.packet.Packet pkt: Scapy Packet
+    :param pkt: Scapy Packet
     :return: Mac address. Include (Amazon Device) for these devices
-    :rtype: str
     """
     if pkt.src.upper() in BANNED_DEVICES:
         body = ''
@@ -75,12 +76,11 @@ def pkt_text(pkt):
     return body
 
 
-def discovery_print(pkt):
+def discovery_print(pkt: Packet) -> None:
     """Scandevice callback. Register src mac to avoid src repetition.
     Print device on screen.
 
-    :param scapy.packet.Packet pkt: Scapy Packet
-    :return: None
+    :param pkt: Scapy Packet
     """
     if pkt.src in mac_id_list:
         return
@@ -89,10 +89,8 @@ def discovery_print(pkt):
     click.secho(text, fg='magenta') if 'Amazon' in text else click.echo(text)
 
 
-def discover(interface=None):
+def discover(interface: Union[str, None]=None) -> None:
     """Print help and scan devices on screen.
-
-    :return: None
     """
     click.secho(HELP, fg='yellow')
     scan_devices(discovery_print, lfilter=lambda d: d.src not in mac_id_list, iface=interface)
