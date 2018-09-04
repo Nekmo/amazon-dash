@@ -3,11 +3,9 @@ sudo: false
 python:
 - 3.6
 - 3.5
-- 3.4
 before_install:
 - pip install codecov tox>=1.8
 install:
-- if [[ $TRAVIS_PYTHON_VERSION == '3.4' ]]; then export PYVER=py34; fi
 - if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then export PYVER=py35; fi
 - if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then export PYVER=py36; fi
 script: COMMAND='coverage run' tox -e$PYVER
