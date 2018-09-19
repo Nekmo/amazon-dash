@@ -300,7 +300,7 @@ class TestExecuteHomeAssistant(unittest.TestCase):
     def test_execute_with_access_token(self):
         with requests_mock.mock() as m:
             m.post(self.url, text='success', request_headers={'Authorization': 'Bearer abcde12345'})
-            assis = ExecuteHomeAssistant('key', self.default_data(extra_data={'Authorization': 'Bearer abcde12345'}))
+            assis = ExecuteHomeAssistant('key', self.default_data(extra_data={'access_token': 'abcde12345'}))
             assis.execute()
             self.assertTrue(m.called_once)
 
