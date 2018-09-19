@@ -132,7 +132,7 @@ class TestExecuteCmd(ExecuteMockBase, unittest.TestCase):
 class TestExecuteUrl(unittest.TestCase):
     no_body_methods = ['get', 'head', 'delete', 'connect', 'options', 'trace']
     url = 'http://domain.com'
-    
+
     def setUp(self):
         super(TestExecuteUrl, self).setUp()
         self.session_mock = requests_mock.Mocker()
@@ -294,6 +294,13 @@ class TestExecuteHomeAssistant(unittest.TestCase):
         with requests_mock.mock() as m:
             m.post(self.url, text='success', request_headers={'x-ha-access': 'password'})
             assis = ExecuteHomeAssistant('key', self.default_data(extra_data={'access': 'password'}))
+            assis.execute()
+            self.assertTrue(m.called_once)
+
+    def test_execute_with_access_token(self):
+        with requests_mock.mock() as m:
+            m.post(self.url, text='success', request_headers={'Authorization': 'Bearer abcde12345'})
+            assis = ExecuteHomeAssistant('key', self.default_data(extra_data={'access_token': 'abcde12345'}))
             assis.execute()
             self.assertTrue(m.called_once)
 

@@ -98,7 +98,7 @@ for each device. The available exection methods are:
 
 * **cmd**: local command line command. Arguments can be placed after the command.
 * **url**: Call a url.
-* **homeassistant**: send event to Homeassistant. This argument must be the address to the hass server (protocol and
+* **homeassistant**: send event to Home Assistant. This argument must be the address to the hass server (protocol and
   port are optional. By default http and 8123, respectively).
 * **openhab**: send event to OpenHAB. This argument must be the address to the hass server (protocol and
   port are optional. By default http and 8080, respectively).
@@ -248,13 +248,21 @@ Example:
         confirmation: send-tg
 
 
-Homeassistant event
+Home Assistant event
 ~~~~~~~~~~~~~~~~~~~
 When the **homeassistant execution method** is used, the following options are available.
 
 * **event** (required): Event name to send.
 * **data**: Event data to send. Use json as string.
-* **access**: HomeAssistant password for API (``x-ha-access`` header).
+* **access_token**: Long-lived Home Assistant access token.
+* **access**: Home Assistant legacy API password (``x-ha-access`` header).
+
+Starting with version 0.78 of Home Assistant, there are two ways Amazon Dash can authenticate:
+
+1. By providing a long-lived access token (generated within your Home Assistant profile page) via the ``access_token`` option.
+2. By providing the legacy Home Assistant API password via the ``access`` option.
+
+Although both options currently work, the Home Assistant project plans to deprecate (and likely remove) the legacy API password in the future; therefore, to properly future proof your Amazon Dash setup, the long-lived access token option is recommended.
 
 The protocol and the port in the address of the Homeassistant server are optional. The syntax of the address is:
 ``[<protocol>://]<server>[:<port>]. For example: ``https://hassio.local:1234``.
