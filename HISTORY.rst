@@ -6,7 +6,8 @@ v1.3.0 (2018-09-23)
 -------------------
 
 - Pushbullet notifications
-- Home Assistant ``access_token`` option.
+- Home Assistant ``access_token`` option
+- Amazon-dash v2.0.0 disclaimer
 
 
 v1.2.0 (2018-09-03)

@@ -11,6 +11,8 @@ are:
 * Tcpdump.
 * Sudo
 
+Amazon-dash v2.0.0 will only be compatible with Python 3.6+. This version is currently in development.
+
 
 Why root is required
 --------------------
