@@ -63,19 +63,20 @@ class PushbulletConfirmation(ConfirmationBase):
             self.to_field = one_fields.pop()
         super(PushbulletConfirmation, self).__init__(data)
 
-    def get_data(self, title, body):
+    def get_data(self, body, title=''):
         data = {
             "type": "note",
-            "title": title,
             "body": body,
         }
+        if title:
+            data["title"] = title
         if self.to_field:
             data[self.to_field] = self.data[self.to_field]
         return data
 
     def send(self, message, success=True):
         try:
-            r = requests.post(self.url_base, self.get_data('', message),
+            r = requests.post(self.url_base, json=self.get_data(message),
                               headers={'Access-Token': self.data['token']})
         except RequestException as e:
             raise ConfirmationError('Unable to connect to Pushbullet servers on pushbullet confirmation: {}'.format(e))

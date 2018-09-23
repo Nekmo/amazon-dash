@@ -4,7 +4,7 @@ import requests
 import requests_mock
 
 from amazon_dash.confirmations import get_confirmation, DisabledConfirmation, get_confirmation_instance, \
-    TelegramConfirmation, ConfirmationBase
+    TelegramConfirmation, ConfirmationBase, PushbulletConfirmation
 from amazon_dash.exceptions import InvalidConfig, ConfirmationError
 
 
@@ -71,3 +71,40 @@ class TestTelegramConfirmation(unittest.TestCase):
             m.post(telegram.url_base.format('foo'), exc=requests.exceptions.ConnectTimeout)
             with self.assertRaises(ConfirmationError):
                 telegram.send('spam')
+
+
+class TestPushbulletConfirmation(unittest.TestCase):
+    def get_pushbullet(self, extra=None):
+        extra = extra or {}
+        return PushbulletConfirmation(dict({'token': 'foo'}, **extra))
+
+    def test_send(self):
+        pushbullet = self.get_pushbullet()
+        with requests_mock.mock() as m:
+            m.post(pushbullet.url_base, text='{}')
+            pushbullet.send('spam')
+            self.assertTrue(m.called_once)
+
+    def test_invalid_json(self):
+        pushbullet = self.get_pushbullet()
+        with requests_mock.mock() as m:
+            m.post(pushbullet.url_base, text='{"}invalid')
+            with self.assertRaises(ConfirmationError):
+                pushbullet.send('spam')
+
+    def test_server_error(self):
+        pushbullet = self.get_pushbullet()
+        with requests_mock.mock() as m:
+            m.post(pushbullet.url_base, exc=requests.exceptions.ConnectTimeout)
+            with self.assertRaises(ConfirmationError):
+                pushbullet.send('spam')
+
+    def test_extra_to(self):
+        with self.assertRaises(InvalidConfig):
+            self.get_pushbullet({'device_iden': 'foo', 'email': 'bar'})
+
+    def test_to_device_iden(self):
+        pushbullet = self.get_pushbullet({'device_iden': 'bar'})
+        with requests_mock.mock() as m:
+            m.post(pushbullet.url_base, additional_matcher=lambda r: r.json().get('device_iden') == 'bar', text='{}')
+            pushbullet.send('spam')
