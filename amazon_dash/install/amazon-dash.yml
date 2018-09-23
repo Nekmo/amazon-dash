@@ -53,6 +53,10 @@ devices:
 #    token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'  # Telegram token. Get it from Bothfather
 #    to: 24291592  # Your Telegram id. You can get it using @get_id_bot
 #    is_default: true  # Use by default this confirmation for all devices
+#  send-pb:
+#    service: pushbullet
+#    token: 'o.BbbPYjJizbPr2gSWgXGmqNTt6T9Rew51'
+#    is_default: false
 
 # Need help? See the documentation:
 # http://docs.nekmo.org/amazon-dash/config_file.html

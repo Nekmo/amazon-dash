@@ -61,6 +61,7 @@ Real example:
         openhab: 192.168.1.140
         item: open_door
         state: "ON"
+        confirmation: send-pb
       44:65:0D:75:A7:B2:
         name: Pompadour
         ifttt: cdxxx-_gEJ3wdU04yyyzzz
@@ -71,6 +72,10 @@ Real example:
         service: telegram
         token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
         to: 24291592
+        is_default: false
+      send-pb:
+        service: pushbullet
+        token: 'o.BbbPYjJizbPr2gSWgXGmqNTt6T9Rew51'
         is_default: false
 
 
@@ -249,7 +254,7 @@ Example:
 
 
 Home Assistant event
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 When the **homeassistant execution method** is used, the following options are available.
 
 * **event** (required): Event name to send.
@@ -345,6 +350,7 @@ Confirmations
 -------------
 The following **services** are supported to send confirmation messages.
 
+
 Telegram
 ~~~~~~~~
 For use a telegram service you need to define:
@@ -368,4 +374,33 @@ have not started a conversation before.
         service: telegram
         token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
         to: 24291592
+        is_default: false
+
+
+Pushbullet
+~~~~~~~~~~
+For use a pushbullet service you need to define:
+
+* **token**: Get it in your pushbullet Access Token (create a token): https://www.pushbullet.com/#settings/account
+
+Optional: set a target (you can only set a target):
+
+* **device_iden**: Device identifier. To get your device identifier:
+  ``$ curl --header 'Access-Token: <YOUR TOKEN>' https://api.pushbullet.com/v2/devices``
+* **email**: Useful to send a message to your contacts.
+* **channel_tag**: Send to all subscribers to your channel.
+* **client_iden**: Send to all users who have granted access to your OAuth client.
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      # ...
+    confirmations:
+      send-pb:
+        service: pushbullet
+        token: 'o.BbbPYjJizbPr2gSWgXGmqNTt6T9Rew51'
         is_default: false
