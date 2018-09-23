@@ -106,7 +106,10 @@ SCHEMA = {
                     "type": "object",
                     "properties": {
                         "service": {
-                            "enum": ['telegram']
+                            "enum": [
+                                'telegram',
+                                'pushbullet',
+                            ]
                         },
                         "token": {
                             "type": "string",
