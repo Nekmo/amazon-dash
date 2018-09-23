@@ -341,9 +341,13 @@ class ExecuteHomeAssistant(ExecuteOwnApiBase):
         return url
 
     def get_headers(self):
-        return {
-            'x-ha-access': self.data['access']
-        } if 'access' in self.data else {}
+        headers = {}
+        if 'access_token' in self.data:
+            headers['Authorization'] = 'Bearer {0}'.format(self.data['access_token'])
+        elif 'access' in self.data:
+            headers['x-ha-access'] = self.data['access']
+
+        return headers
 
 
 class ExecuteOpenHab(ExecuteOwnApiBase):

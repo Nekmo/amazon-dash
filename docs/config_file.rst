@@ -61,6 +61,7 @@ Real example:
         openhab: 192.168.1.140
         item: open_door
         state: "ON"
+        confirmation: send-pb
       44:65:0D:75:A7:B2:
         name: Pompadour
         ifttt: cdxxx-_gEJ3wdU04yyyzzz
@@ -71,6 +72,10 @@ Real example:
         service: telegram
         token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
         to: 24291592
+        is_default: false
+      send-pb:
+        service: pushbullet
+        token: 'o.BbbPYjJizbPr2gSWgXGmqNTt6T9Rew51'
         is_default: false
 
 
@@ -98,7 +103,7 @@ for each device. The available exection methods are:
 
 * **cmd**: local command line command. Arguments can be placed after the command.
 * **url**: Call a url.
-* **homeassistant**: send event to Homeassistant. This argument must be the address to the hass server (protocol and
+* **homeassistant**: send event to Home Assistant. This argument must be the address to the hass server (protocol and
   port are optional. By default http and 8123, respectively).
 * **openhab**: send event to OpenHAB. This argument must be the address to the hass server (protocol and
   port are optional. By default http and 8080, respectively).
@@ -248,13 +253,21 @@ Example:
         confirmation: send-tg
 
 
-Homeassistant event
-~~~~~~~~~~~~~~~~~~~
+Home Assistant event
+~~~~~~~~~~~~~~~~~~~~
 When the **homeassistant execution method** is used, the following options are available.
 
 * **event** (required): Event name to send.
 * **data**: Event data to send. Use json as string.
-* **access**: HomeAssistant password for API (``x-ha-access`` header).
+* **access_token**: Long-lived Home Assistant access token.
+* **access**: Home Assistant legacy API password (``x-ha-access`` header).
+
+Starting with version 0.78 of Home Assistant, there are two ways Amazon Dash can authenticate:
+
+1. By providing a long-lived access token (generated within your Home Assistant profile page) via the ``access_token`` option.
+2. By providing the legacy Home Assistant API password via the ``access`` option.
+
+Although both options currently work, the Home Assistant project plans to deprecate (and likely remove) the legacy API password in the future; therefore, to properly future proof your Amazon Dash setup, the long-lived access token option is recommended.
 
 The protocol and the port in the address of the Homeassistant server are optional. The syntax of the address is:
 ``[<protocol>://]<server>[:<port>]. For example: ``https://hassio.local:1234``.
@@ -337,6 +350,7 @@ Confirmations
 -------------
 The following **services** are supported to send confirmation messages.
 
+
 Telegram
 ~~~~~~~~
 For use a telegram service you need to define:
@@ -360,4 +374,33 @@ have not started a conversation before.
         service: telegram
         token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
         to: 24291592
+        is_default: false
+
+
+Pushbullet
+~~~~~~~~~~
+For use a pushbullet service you need to define:
+
+* **token**: Get it in your pushbullet Access Token (create a token): https://www.pushbullet.com/#settings/account
+
+Optional: set a target (you can only set a target):
+
+* **device_iden**: Device identifier. To get your device identifier:
+  ``$ curl --header 'Access-Token: <YOUR TOKEN>' https://api.pushbullet.com/v2/devices``
+* **email**: Useful to send a message to your contacts.
+* **channel_tag**: Send to all subscribers to your channel.
+* **client_iden**: Send to all users who have granted access to your OAuth client.
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      # ...
+    confirmations:
+      send-pb:
+        service: pushbullet
+        token: 'o.BbbPYjJizbPr2gSWgXGmqNTt6T9Rew51'
         is_default: false

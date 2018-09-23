@@ -93,6 +93,7 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
         openhab: 192.168.1.140
         item: open_door
         state: "ON"
+        confirmation: send-pb
       44:65:0D:75:A7:B2: # IFTTT example
         name: Pompadour
         ifttt: cdxxx-_gEJ3wdU04yyyzzz
@@ -103,6 +104,10 @@ Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. 
         service: telegram
         token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
         to: 24291592
+        is_default: false
+      send-pb:
+        service: pushbullet
+        token: 'o.BbbPYjJizbPr2gSWgXGmqNTt6T9Rew51'
         is_default: false
 
 
@@ -119,7 +124,7 @@ The following execution methods are supported with your Amazon Dash button with 
 
 
 Amazon-dash also allows you to **send a confirmation** after pressing a button. You will also receive a message in
-case of failure. Currently only **Telegram** is supported.
+case of failure. **Telegram** and **Pushbullet** are supported.
 
 
 For more information see

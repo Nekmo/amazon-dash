@@ -47,8 +47,48 @@ class TelegramConfirmation(ConfirmationBase):
             ))
 
 
+class PushbulletConfirmation(ConfirmationBase):
+    url_base = 'https://api.pushbullet.com/v2/pushes'
+    name = 'pushbullet'
+    required_fields = ('token',)
+    one_field_of = {'device_iden', 'email', 'channel_tag', 'client_id'}
+    to_field = None
+
+    def __init__(self, data):
+        one_fields = set(data) & self.one_field_of
+        if len(one_fields) > 1:
+            raise InvalidConfig(extra_body='Only one in {} is required for {} notifications'.format(
+                ', '.join(one_fields), self.name))
+        elif one_fields:
+            self.to_field = one_fields.pop()
+        super(PushbulletConfirmation, self).__init__(data)
+
+    def get_data(self, body, title=''):
+        data = {
+            "type": "note",
+            "body": body,
+        }
+        if title:
+            data["title"] = title
+        if self.to_field:
+            data[self.to_field] = self.data[self.to_field]
+        return data
+
+    def send(self, message, success=True):
+        try:
+            r = requests.post(self.url_base, json=self.get_data(message),
+                              headers={'Access-Token': self.data['token']})
+        except RequestException as e:
+            raise ConfirmationError('Unable to connect to Pushbullet servers on pushbullet confirmation: {}'.format(e))
+        try:
+            r.json()
+        except JSONDecodeError:
+            raise ConfirmationError('Invalid JSON response in pushbullet confirmation (server error?)')
+
+
 CONFIRMATIONS = {
     'telegram': TelegramConfirmation,
+    'pushbullet': PushbulletConfirmation,
     'disabled': DisabledConfirmation,
 }
 
