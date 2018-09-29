@@ -132,6 +132,7 @@ Externas links
 Send to the email address ``dev [at] nekmo.com`` the articles you write about Amazon Dash. The submitted links will be
 added to this list.
 
+* https://github.com/internetfan420/my-amazon-dash-hacks
 * http://blog.roy29fuku.com/iot/amazon-dash-button%E3%82%92python%E3%81%A7%E3%83%8F%E3%83%83%E3%82%AF%E3%81%99%E3%82%8B-part1-%E8%A8%AD%E5%AE%9A/
 * https://qiita.com/nardtree/items/23c36fa3b989d329a1f3
 * https://qiita.com/moyasi98/items/982c9fb0cf73156c23a3
