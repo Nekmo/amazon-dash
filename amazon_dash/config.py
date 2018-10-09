@@ -5,6 +5,8 @@ from grp import getgrgid
 from pwd import getpwuid
 
 from jsonschema import validate, ValidationError
+from then.configs.components import LoadComponentConfigs
+from then.helper import Then
 from yaml import load
 from yaml.error import YAMLError
 
@@ -196,9 +198,11 @@ def only_root_write(path):
     return True
 
 
-class Config(dict):
+class Config:
     """Parse and validate yaml Amazon-dash file config. The instance behaves like a dictionary
     """
+    then = None
+
     def __init__(self, file, ignore_perms=False, **kwargs):
         """Set the config file and validate file permissions
 
@@ -226,15 +230,17 @@ class Config(dict):
 
         :return: None
         """
-        try:
-            data = load(open(self.file), Loader)
-        except (UnicodeDecodeError, YAMLError) as e:
-            raise InvalidConfig(self.file, '{}'.format(e))
-        try:
-            validate(data, SCHEMA)
-        except ValidationError as e:
-            raise InvalidConfig(self.file, e)
-        self.update(data)
+        self.then = Then(LoadComponentConfigs(self.file, section='actions'))
+        pass
+        # try:
+        #     data = load(open(self.file), Loader)
+        # except (UnicodeDecodeError, YAMLError) as e:
+        #     raise InvalidConfig(self.file, '{}'.format(e))
+        # try:
+        #     validate(data, SCHEMA)
+        # except ValidationError as e:
+        #     raise InvalidConfig(self.file, e)
+        # self.update(data)
 
 
 def check_config(file, printfn=print):

@@ -91,5 +91,5 @@ ENV/
 
 # Created by .ignore support plugin (hsz.mobi)
 .idea
-/amazon-dash.yml
 /_e3/
+/*.yml
