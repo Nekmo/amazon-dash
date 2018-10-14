@@ -5,7 +5,10 @@ from grp import getgrgid
 from pwd import getpwuid
 
 from jsonschema import validate, ValidationError
+
+from then.configs.base import LoadConfig
 from then.configs.components import LoadComponentConfigs
+from then.configs.templates import LoadTemplates
 from then.helper import Then
 from yaml import load
 from yaml.error import YAMLError
@@ -201,7 +204,8 @@ def only_root_write(path):
 class Config:
     """Parse and validate yaml Amazon-dash file config. The instance behaves like a dictionary
     """
-    then = None
+    templates = None
+    devices = None
 
     def __init__(self, file, ignore_perms=False, **kwargs):
         """Set the config file and validate file permissions
@@ -230,7 +234,9 @@ class Config:
 
         :return: None
         """
-        self.then = Then(LoadComponentConfigs(self.file, section='actions'))
+        then = Then(LoadComponentConfigs(self.file, section='actions'))
+        self.templates = then.templates(LoadTemplates(self.file))
+        self.devices = LoadConfig(self.file, 'devices')
         pass
         # try:
         #     data = load(open(self.file), Loader)
