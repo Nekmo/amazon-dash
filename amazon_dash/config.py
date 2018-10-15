@@ -6,6 +6,7 @@ from pwd import getpwuid
 
 from jsonschema import validate, ValidationError
 
+from amazon_dash.device import Device
 from then.configs.base import LoadConfig
 from then.configs.components import LoadComponentConfigs
 from then.configs.templates import LoadTemplates
@@ -236,7 +237,10 @@ class Config:
         """
         then = Then(LoadComponentConfigs(self.file, section='actions'))
         self.templates = then.templates(LoadTemplates(self.file))
-        self.devices = LoadConfig(self.file, 'devices')
+        devices = LoadConfig(self.file, 'devices')
+        devices = {device['mac']: device for device in devices.data} if isinstance(devices.data, list) else devices
+        devices = {key: Device(key, value.get('name'), value.get('actions', [])) for key, value in devices.items()}
+        self.devices = devices
         pass
         # try:
         #     data = load(open(self.file), Loader)

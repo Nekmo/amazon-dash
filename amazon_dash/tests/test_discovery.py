@@ -4,7 +4,7 @@ import unittest
 from ._compat import patch
 
 from amazon_dash.discovery import BANNED_DEVICES, pkt_text, AMAZON_DEVICES, mac_id_list, discovery_print
-from amazon_dash.listener import Device
+from amazon_dash.device import Device
 
 
 class TestDiscovery(unittest.TestCase):
