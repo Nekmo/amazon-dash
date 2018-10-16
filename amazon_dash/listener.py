@@ -85,6 +85,6 @@ def test_device(device, file, root_allowed=False):
     """
     config = Config(file)
     config.read()
-    if not device in config['devices']:
+    if not device in config.devices:
         raise InvalidDevice('Device {} is not in config file.'.format(device))
-    logger.info(Device(device, config['devices'][device], config).execute(root_allowed))
+    logger.info(config.devices[device].execute(root_allowed))

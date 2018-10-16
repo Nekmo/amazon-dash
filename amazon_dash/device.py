@@ -1,3 +1,4 @@
+from amazon_dash.action import Action
 from amazon_dash.confirmations import get_confirmation
 from amazon_dash.exceptions import InvalidConfig
 from amazon_dash.execute import ExecuteCmd, ExecuteUrl, ExecuteHomeAssistant, ExecuteOpenHab, ExecuteIFTTT, logger
@@ -23,12 +24,13 @@ class Device(object):
         :param data: device data
         """
         config = config or {}
+        actions = actions or []
 
         if isinstance(src, Device):
             src = src.src
         self.src = src.lower()
         self.name = name or self.src
-        self.actions = actions
+        self.actions = [Action(**action) for action in actions]
         self.config = config
 
     def execute(self, root_allowed=False):
