@@ -1,4 +1,7 @@
-from amazon_dash.action import Action
+from dataclasses import dataclass
+from typing import Union
+
+from amazon_dash.action import Action, Actions
 from amazon_dash.confirmations import get_confirmation
 from amazon_dash.exceptions import InvalidConfig
 from amazon_dash.execute import ExecuteCmd, ExecuteUrl, ExecuteHomeAssistant, ExecuteOpenHab, ExecuteIFTTT, logger
@@ -12,10 +15,18 @@ EXECUTE_CLS = {
 }
 
 
+@dataclass
+class Result:
+    status: Union[bool, None] = None
+    message: str = ''
+    exception: Exception = None
+
+
 class Device(object):
     """Set the execution method for the device
     """
     execute_instance = None  #: Execute cls instance
+    on_error = 'fail'
 
     def __init__(self, src, name, actions, config=None):
         """
@@ -30,7 +41,7 @@ class Device(object):
             src = src.src
         self.src = src.lower()
         self.name = name or self.src
-        self.actions = [Action(**action) for action in actions]
+        self.actions = Actions(actions)
         self.config = config
 
     def execute(self, root_allowed=False):
@@ -40,21 +51,33 @@ class Device(object):
         :return: None
         """
         logger.debug('%s device executed (mac %s)', self.name, self.src)
-        if not self.execute_instance:
-            msg = '%s: There is not execution method in device conf.'
+        if not self.actions:
+            msg = '%s: There is not actions in device conf.'
             logger.warning(msg, self.name)
-            self.send_confirmation(msg % self.name, False)
+            # self.send_confirmation(msg % self.name, False)
             return
+        success = True
+        results = []
+        for action in self.actions.get_first_run_actions():
+            result = self.execute_action(action)
+            success = result.status
+            results.append(result)
+            if not success and self.on_error == 'fail':
+                break
+        for action in self.actions.get_complete_actions():
+            if action.evaluate_condition('success' if success else 'failure'):
+                self.execute_action(action)
+        return results
+
+    def execute_action(self, action):
+        result = Result()
         try:
-            result = self.execute_instance.execute(root_allowed)
+            result.message = action.send()
         except Exception as e:
-            self.send_confirmation('Error executing the device {}: {}'.format(self.name, e), False)
-            raise
+            result.message = 'Error executing the device {} in action {}: {}'.format(self.name, action, e)
+            result.exception = e
         else:
-            result = 'The {} device has been started and is running right now'.format(self.name) \
-                if result is None else result
-            result = result or 'The {} device has been executed successfully'.format(self.name)
-            self.send_confirmation(result)
+            result.status = True
         return result
 
     def send_confirmation(self, message, success=True):
