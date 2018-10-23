@@ -34,14 +34,14 @@ class Device(object):
         :param str src: Mac address
         :param data: device data
         """
-        config = config or {}
+        config = config
         actions = actions or []
 
         if isinstance(src, Device):
             src = src.src
         self.src = src.lower()
         self.name = name or self.src
-        self.actions = Actions(actions)
+        self.actions = Actions(actions, config)
         self.config = config
 
     def execute(self, root_allowed=False):
@@ -59,7 +59,7 @@ class Device(object):
         success = True
         results = []
         for action in self.actions.get_first_run_actions():
-            result = self.execute_action(action)
+            result = self.execute_action(action, {'mac': self.src})
             success = result.status
             results.append(result)
             if not success and self.on_error == 'fail':
@@ -69,11 +69,13 @@ class Device(object):
                 self.execute_action(action)
         return results
 
-    def execute_action(self, action):
+    def execute_action(self, action, params=None):
         result = Result()
+        params = params or {}
         try:
-            result.message = action.send()
-        except Exception as e:
+            result.message = action.send(**params)
+        # except Exception as e:  # TODO: disabled temporally
+        except ImportError as e:
             result.message = 'Error executing the device {} in action {}: {}'.format(self.name, action, e)
             result.exception = e
         else:

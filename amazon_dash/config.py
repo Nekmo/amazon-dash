@@ -239,7 +239,8 @@ class Config:
         self.templates = then.templates(LoadTemplates(self.file))
         devices = LoadConfig(self.file, 'devices')
         devices = {device['mac']: device for device in devices.data} if isinstance(devices.data, list) else devices
-        devices = {key: Device(key, value.get('name'), value.get('actions', [])) for key, value in devices.items()}
+        devices = {key: Device(key, value.get('name'), value.get('actions', []), self)
+                   for key, value in devices.items()}
         self.devices = devices
         pass
         # try:
