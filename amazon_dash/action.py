@@ -9,7 +9,7 @@ ALL_COMPLETE_CONDITIONS = [COMPLETE_CONDITION] + ACTION_STATUSES
 class Action:
     def __init__(self, use, config=None, params=None, condition=None, template=None):
         self.use = use
-        self.params = params
+        self.params = params or {}
         self.condition = condition.lower() if condition else condition
         self.template = template
         self.config = config
