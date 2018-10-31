@@ -6,7 +6,7 @@
 |
 
 
-.. image:: https://img.shields.io/travis/Nekmo/amazon-dash.svg?style=flat-square&maxAge=2592000
+.. image:: https://img.shields.io/travis/Nekmo/amazon-dash/develop.svg?style=flat-square&maxAge=2592000
   :target: https://travis-ci.org/Nekmo/amazon-dash
   :alt: Latest Travis CI build status
 
