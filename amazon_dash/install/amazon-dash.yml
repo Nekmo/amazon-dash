@@ -50,7 +50,7 @@ devices:
    ## Example of how to send a Telegram confirmation on execution success or failure
 #  send-tg:  # Confirmation name. Set your own confirmation name
 #    service: telegram  # Confirmation service. Currently only Telegram
-#    token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'  # Telegram token. Get it from Bothfather
+#    token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'  # Telegram token. Get it from Botfather
 #    to: 24291592  # Your Telegram id. You can get it using @get_id_bot
 #    is_default: true  # Use by default this confirmation for all devices
 #  send-pb:
