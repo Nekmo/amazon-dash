@@ -71,7 +71,7 @@ class Device(object):
 
     def execute_action(self, action, params=None):
         result = Result()
-        params = params or {}
+        params = params or self.default_params()
         try:
             result.message = action.send(**params)
         # except Exception as e:  # TODO: disabled temporally
@@ -96,3 +96,6 @@ class Device(object):
             self.confirmation.send(message, success)
         except Exception as e:
             logger.warning('Error sending confirmation on device {}: {}'.format(self.name, e))
+
+    def default_params(self):
+        return {'mac': self.src}
