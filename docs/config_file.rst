@@ -293,6 +293,18 @@ Example:
         homeassistant: hassio.local
         event: toggle_kitchen_light
 
+To perform the action in Home Assistant you can use any event name to send; for example, ``toggle_kitchen_light``.
+Then you must **create an automation** in Home Assistant to perform one or several actions in Home Assistant
+when the event is received.
+
+.. image:: home-assistant-event.png
+
+
+More info in the homeassistant documentation:
+
+* https://www.home-assistant.io/docs/configuration/events/
+* https://www.home-assistant.io/docs/automation/trigger/
+
 
 OpenHAB event
 ~~~~~~~~~~~~~
