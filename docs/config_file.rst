@@ -261,13 +261,19 @@ When the **homeassistant execution method** is used, the following options are a
 * **data**: Event data to send. Use json as string.
 * **access_token**: Long-lived Home Assistant access token.
 * **access**: Home Assistant legacy API password (``x-ha-access`` header).
+* **verify**: By default True. Validate SSL/TLS certificate on request. To ignore errors (for example self-signed
+  certificate) put false. You can also set the path to the certificate or certificate directory (generate using
+  OpenSSL ``c_rehash`` utility). This can be useful if you use self-signed https.
 
 Starting with version 0.78 of Home Assistant, there are two ways Amazon Dash can authenticate:
 
-1. By providing a long-lived access token (generated within your Home Assistant profile page) via the ``access_token`` option.
+1. By providing a long-lived access token (generated within your Home Assistant profile page) via
+   the ``access_token`` option.
 2. By providing the legacy Home Assistant API password via the ``access`` option.
 
-Although both options currently work, the Home Assistant project plans to deprecate (and likely remove) the legacy API password in the future; therefore, to properly future proof your Amazon Dash setup, the long-lived access token option is recommended.
+Although both options currently work, the Home Assistant project plans to deprecate (and likely remove) the legacy
+API password in the future; therefore, to properly future proof your Amazon Dash setup, the long-lived access
+token option is recommended.
 
 The protocol and the port in the address of the Homeassistant server are optional. The syntax of the address is:
 ``[<protocol>://]<server>[:<port>]. For example: ``https://hassio.local:1234``.
