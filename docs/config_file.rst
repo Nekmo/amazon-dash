@@ -300,6 +300,24 @@ when the event is received.
 .. image:: home-assistant-event.png
 
 
+It is possible (but not recommended) to run a service directly using amazon-dash:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      40:B4:CD:67:A2:E1:
+        name: Fairy
+        homeassistant: hassio.local
+        event: call_service
+        data: '{"domain": "light", "service": "toggle", "service_data": {"entity_id": "light.Main_Room"}}'
+
+Running a service using Amazon-dash is more limited and may break the configuration in the future. For example,
+your ``entity_id`` could change in the future if you change your service.
+
 More info in the homeassistant documentation:
 
 * https://www.home-assistant.io/docs/configuration/events/
