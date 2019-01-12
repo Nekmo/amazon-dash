@@ -55,6 +55,14 @@ If you use Arch Linux or an Arch Linux derivative, you can install Amazon Dash f
     $ yaourt -S amazon-dash-git
 
 
+FreeNAS
+```````
+There is support for FreeNAS created by `Troy Prelog <https://github.com/tprelog/iocage-amazon-dash>`_::
+
+    wget -O /tmp/amazon-dash.json https://raw.githubusercontent.com/tprelog/iocage-amazon-dash/master/amazon-dash.json
+    sudo iocage fetch -P dhcp=on vnet=on bpf=yes -n /tmp/amazon-dash.json --branch 'master'
+
+
 Installation Issues
 -------------------
 There are many Linux distributions available and not all are tested. If you think there is a bug please

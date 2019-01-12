@@ -31,6 +31,10 @@
      :alt: Requirements Status
 
 
+**DEVELOPMENT BRANCH**: The current branch is a development version. Go to the stable release by clicking
+on `the master branch <https://github.com/Nekmo/amazon-dash/tree/master>`_.
+
+
 Python Amazon Dash
 ##################
 Hack your Amazon Dash to run what you want. Without welders. For the entire family.
@@ -49,7 +53,8 @@ with few resources.
     $ sudo pip install amazon-dash  # and after:
     $ sudo python -m amazon_dash.install
 
-Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_. See other installation methods
+Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_ and
+`FreeNAS <http://docs.nekmo.org/amazon-dash/installation.html#freenas>`_. See other installation methods
 `in the documentation <http://docs.nekmo.org/amazon-dash/installation.html>`_.
 
 

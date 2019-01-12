@@ -261,13 +261,19 @@ When the **homeassistant execution method** is used, the following options are a
 * **data**: Event data to send. Use json as string.
 * **access_token**: Long-lived Home Assistant access token.
 * **access**: Home Assistant legacy API password (``x-ha-access`` header).
+* **verify**: By default True. Validate SSL/TLS certificate on request. To ignore errors (for example self-signed
+  certificate) put false. You can also set the path to the certificate or certificate directory (generate using
+  OpenSSL ``c_rehash`` utility). This can be useful if you use self-signed https.
 
 Starting with version 0.78 of Home Assistant, there are two ways Amazon Dash can authenticate:
 
-1. By providing a long-lived access token (generated within your Home Assistant profile page) via the ``access_token`` option.
+1. By providing a long-lived access token (generated within your Home Assistant profile page) via
+   the ``access_token`` option.
 2. By providing the legacy Home Assistant API password via the ``access`` option.
 
-Although both options currently work, the Home Assistant project plans to deprecate (and likely remove) the legacy API password in the future; therefore, to properly future proof your Amazon Dash setup, the long-lived access token option is recommended.
+Although both options currently work, the Home Assistant project plans to deprecate (and likely remove) the legacy
+API password in the future; therefore, to properly future proof your Amazon Dash setup, the long-lived access
+token option is recommended.
 
 The protocol and the port in the address of the Homeassistant server are optional. The syntax of the address is:
 ``[<protocol>://]<server>[:<port>]. For example: ``https://hassio.local:1234``.
@@ -286,6 +292,36 @@ Example:
         name: Fairy
         homeassistant: hassio.local
         event: toggle_kitchen_light
+
+To perform the action in Home Assistant you can use any event name to send; for example, ``toggle_kitchen_light``.
+Then you must **create an automation** in Home Assistant to perform one or several actions in Home Assistant
+when the event is received.
+
+.. image:: home-assistant-event.png
+
+
+It is possible (but not recommended) to run a service directly using amazon-dash:
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      40:B4:CD:67:A2:E1:
+        name: Fairy
+        homeassistant: hassio.local
+        event: call_service
+        data: '{"domain": "light", "service": "toggle", "service_data": {"entity_id": "light.Main_Room"}}'
+
+Running a service using Amazon-dash is more limited and may break the configuration in the future. For example,
+your ``entity_id`` could change in the future if you change your service.
+
+More info in the homeassistant documentation:
+
+* https://www.home-assistant.io/docs/configuration/events/
+* https://www.home-assistant.io/docs/automation/trigger/
 
 
 OpenHAB event
