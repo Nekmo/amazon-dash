@@ -62,6 +62,9 @@ There is support for FreeNAS created by `Troy Prelog <https://github.com/tprelog
     wget -O /tmp/amazon-dash.json https://raw.githubusercontent.com/tprelog/iocage-amazon-dash/master/amazon-dash.json
     sudo iocage fetch -P dhcp=on vnet=on bpf=yes -n /tmp/amazon-dash.json --branch 'master'
 
+**IMPORTANT**: ``scapy >= 2.4.1`` (including 2.4.2)
+`has a bug with FreeBSD <https://github.com/secdev/scapy/issues/1793>`_. Install Scapy 2.4.0
+
 
 Installation Issues
 -------------------
