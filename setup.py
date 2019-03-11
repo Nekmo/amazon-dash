@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Find web directories without bruteforce
+"""Hack your Amazon Dash to run what you want.
 """
 from setuptools import setup, find_packages, __version__ as setuptool_version
 from distutils.util import convert_path
