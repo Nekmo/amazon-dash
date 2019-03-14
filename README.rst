@@ -50,12 +50,13 @@ with few resources.
 
 .. code:: console
 
-    $ sudo pip install amazon-dash  # and after:
-    $ sudo python -m amazon_dash.install
+    $ sudo pip3 install amazon-dash  # and after:
+    $ sudo python3 -m amazon_dash.install
 
 Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_ and
-`FreeNAS <http://docs.nekmo.org/amazon-dash/installation.html#freenas>`_. See other installation methods
-`in the documentation <http://docs.nekmo.org/amazon-dash/installation.html>`_.
+`FreeNAS <http://docs.nekmo.org/amazon-dash/installation.html#freenas>`_. You can also use ``pip2`` and
+``python2`` if your system only has Python2, but Python 3 is the recommended version. See other installation
+methods `in the documentation <http://docs.nekmo.org/amazon-dash/installation.html>`_.
 
 
 2. Use *discovery mode* **to know the mac of your Dash** (Run the program, and then press any button):
