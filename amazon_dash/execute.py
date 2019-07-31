@@ -209,7 +209,7 @@ class ExecuteUrl(Execute):
         if self.data.get('content-type'):
             kwargs['headers']['content-type'] = self.data['content-type']
         if self.data.get('body'):
-            kwargs['data'] = self.data['body']
+            kwargs['data'] = self.data['body'].encode('utf-8')
         if self.data.get('auth'):
             kwargs['auth'] = tuple(self.data['auth'].split(':', 1))
         try:
