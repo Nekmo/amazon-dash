@@ -46,13 +46,17 @@ with few resources.
 
 .. code:: console
 
-    $ sudo pip install amazon-dash  # and after:
-    $ sudo python -m amazon_dash.install
+    $ sudo pip3 install amazon-dash  # and after:
+    $ sudo python3 -m amazon_dash.install
 
 Also available on `AUR <https://aur.archlinux.org/packages/amazon-dash-git/>`_ and
-`FreeNAS <http://docs.nekmo.org/amazon-dash/installation.html#freenas>`_. See other installation methods
-`in the documentation <http://docs.nekmo.org/amazon-dash/installation.html>`_.
+`FreeNAS <http://docs.nekmo.org/amazon-dash/installation.html#freenas>`_. You can also use ``pip2`` and
+``python2`` if your system only has Python2, but Python 3 is the recommended version. See other installation
+methods `in the documentation <http://docs.nekmo.org/amazon-dash/installation.html>`_.
 
+**Note:** ``scapy 2.4.1/2.4.2`` releases are broken (``MANIFEST`` is missing in wheel). Scapy 2.4.0 will be used by
+default (or earlier). It may also be necessary to install ``tcpdump`` on your system (in Debian
+``apt install tcpdump``).
 
 2. Use *discovery mode* **to know the mac of your Dash** (Run the program, and then press any button):
 

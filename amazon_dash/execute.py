@@ -209,7 +209,7 @@ class ExecuteUrl(Execute):
         if self.data.get('content-type'):
             kwargs['headers']['content-type'] = self.data['content-type']
         if self.data.get('body'):
-            kwargs['data'] = self.data['body']
+            kwargs['data'] = self.data['body'].encode('utf-8')
         if self.data.get('auth'):
             kwargs['auth'] = tuple(self.data['auth'].split(':', 1))
         try:
@@ -278,7 +278,9 @@ class ExecuteUrlServiceBase(ExecuteUrl):
         :return: HTTP Headers
         :rtype: dict
         """
-        return copy.copy(self.default_headers or {})
+        headers = copy.copy(self.default_headers or {})
+        headers.update(self.data.get('headers') or {})
+        return headers
 
     def get_body(self):
         """Get body to send. By default default_body
@@ -363,7 +365,7 @@ class ExecuteOpenHab(ExecuteOwnApiBase):
 
     def __init__(self, name, data):
         super(ExecuteOpenHab, self).__init__(name, data)
-        self.data['headers'] = {'Accept': 'application/json'}
+        self.data['headers'] = dict(self.data.get('headers') or {}, **{'Accept': 'application/json'})
 
     def get_url(self):
         """Open Hab url

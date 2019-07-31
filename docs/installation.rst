@@ -12,11 +12,16 @@ To install amazon-dash, run these commands in your terminal:
 
 .. code-block:: console
 
-    $ pip install -U amazon_dash
-    $ sudo python -m amazon_dash.install
+    $ sudo pip3 install -U amazon_dash
+    $ sudo python3 -m amazon_dash.install
 
 This is the preferred method to install amazon-dash, as it will always install the most recent stable release.
-You must execute both commands in the correct order.
+You must execute both commands in the correct order. Amazon-dash also works with Python2:
+
+.. code-block:: console
+
+    $ sudo pip2 install -U amazon_dash
+    $ sudo python2 -m amazon_dash.install
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -61,6 +66,9 @@ There is support for FreeNAS created by `Troy Prelog <https://github.com/tprelog
 
     wget -O /tmp/amazon-dash.json https://raw.githubusercontent.com/tprelog/iocage-amazon-dash/master/amazon-dash.json
     sudo iocage fetch -P dhcp=on vnet=on bpf=yes -n /tmp/amazon-dash.json --branch 'master'
+
+**IMPORTANT**: ``scapy >= 2.4.1`` (including 2.4.2)
+`has a bug with FreeBSD <https://github.com/secdev/scapy/issues/1793>`_. Install Scapy 2.4.0
 
 
 Installation Issues

@@ -1,4 +1,5 @@
 import os
+import platform
 import shutil
 import sys
 from subprocess import check_output
@@ -15,6 +16,7 @@ SYSTEMD_PATHS = [
 dirname = os.path.dirname(os.path.abspath(__file__))
 CONFIG_EXAMPLE = os.path.join(dirname, 'amazon-dash.yml')
 SYSTEMD_SERVICE = os.path.join(dirname, 'services', 'amazon-dash.service')
+UNSUPPORTED_SYSTEMS = ['Darwin', 'Windows']
 
 
 if sys.version_info < (3,0):
@@ -125,6 +127,12 @@ SERVICES = [
 @click.group(cls=DefaultGroup, default='all', default_if_no_args=True)
 @click.option('--root-required/--root-not-required', default=True)
 def cli(root_required):
+    system = platform.system()
+    if system in UNSUPPORTED_SYSTEMS:
+        click.echo('{} is not supported by the installation wizard. '
+                   'However, you can use Amazon-dash manually.\n'
+                   'http://docs.nekmo.org/amazon-dash/usage.html#manually'.format(system), err=True)
+        sys.exit(2)
     if os.getuid() and root_required:
         click.echo('The installation must be done as root. Maybe you forgot sudo?', err=True)
         sys.exit(1)
