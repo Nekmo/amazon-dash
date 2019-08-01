@@ -205,7 +205,8 @@ class TestExecuteUrl(unittest.TestCase):
             execute_url2.execute()
 
     def test_execute_body(self):
-        self.session_mock.post(self.url, additional_matcher=lambda r: r.body == 'foo')
+        self.session_mock.post(self.url,
+                               additional_matcher=lambda r: r.body == b'foo')
         execute_url = ExecuteUrl('key', dict(self.get_default_data(), method='post', body='foo',
                                              **{'content-type': 'plain'}))
         execute_url.validate()
