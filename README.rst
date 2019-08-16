@@ -35,6 +35,10 @@ Python Amazon Dash
 ##################
 Hack your Amazon Dash to run what you want. Without welders. For the entire family.
 
+**IMPORTANT**: You have until **August 31** to configure your existing Amazon Dash buttons. Your configured buttons
+should continue to work using Amazon-dash until its end of life. However it is advisable to block the connection
+to Amazon servers with a firewall.
+
 This program written in Python runs in daemon mode waiting for someone in the same
 network to press a configured Amazon Dash button. It is not necessary to know
 programming to use this program. Amazon-Dash executes **commands by command line,
