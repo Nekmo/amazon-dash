@@ -83,6 +83,12 @@ class ExecuteError(AmazonDashException):
     error_code = 10  #: Error code to return
 
 
+class ConfigWifiError(AmazonDashException):
+    """Error on dash button Wifi configuration.
+    """
+    error_code = 11  #: Error code to return
+
+
 def catch(fn, exception_cls=None, raises=True):
     exception_cls = exception_cls or AmazonDashException
 
