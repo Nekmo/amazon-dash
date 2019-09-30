@@ -5,7 +5,6 @@ dhclient wlan0
 """
 import subprocess
 
-# from amazon_dash.exceptions import ConfigWifiError
 
 
 def get_cmd_output(cmd, split_lines=True, decode='utf-8'):
@@ -22,11 +21,13 @@ class Wifi:
     def __init__(self, device=None):
         self.device = device or next(self.get_wireless_devices(), None)
         if self.device is None:
+            from amazon_dash.exceptions import ConfigWifiError
             raise ConfigWifiError('Wireless card is not available.')
 
     def get_wireless_devices(self):
-        devices = get_cmd_output(['netstat', '-i'])[2:]
-        return map(lambda x: x.split(' ')[0], filter(lambda x: x.startswith('wl'), devices))
+        devices = get_cmd_output(['ip', 'a'])
+        devices = map(lambda x: x.split(' ')[1].rstrip(':'), filter(lambda x: not x.startswith(' '), devices))
+        return filter(lambda x: x.startswith('wl'), devices)
 
     def connect(self, essid, key=None):
         cmd = ['iwconfig', self.device, 'essid', essid]
