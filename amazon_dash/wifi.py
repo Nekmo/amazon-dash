@@ -4,6 +4,8 @@ iwconfig wlan0 essid NETWORK_NAME key WIRELESS_KEY
 dhclient wlan0
 """
 import subprocess
+import sys
+
 from bs4 import BeautifulSoup
 
 import requests
@@ -60,8 +62,25 @@ class ConfigureAmazonDash(object):
             'battery': items[3].string,
         }
 
+    def get_networks_availables(self):
+        r = requests.get(CONFIGURE_URL, headers={'Content-Type': 'application/json'}, timeout=5)
+        r.raise_for_status()
+        data = r.json()
+        return iter(data['amzn_networks'])
+
+    def configure(self, ssid, password):
+        networks = self.get_networks_availables()
+        if not next(filter(lambda x: x['ssid'] == ssid, networks), None):
+            from amazon_dash.exceptions import ConfigWifiError
+            raise ConfigWifiError('Network {} is not available.'.format(ssid))
+        r = requests.get(CONFIGURE_URL, {'amzn_ssid': ssid, 'amzn_pw': password})
+        r.raise_for_status()
+
 
 if __name__ == '__main__':
     w = Wifi()
     w.connect('Amazon ConfigureMe')
     w.dhcp()
+    configure = ConfigureAmazonDash()
+    print(configure.get_info())
+    configure.configure(sys.argv[1], sys.argv[2])
