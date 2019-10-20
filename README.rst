@@ -159,15 +159,10 @@ To run Amazon-dash at **startup**:
 To run Amazon-dash manually look at `the documentation <http://docs.nekmo.org/amazon-dash/usage.html>`_.
 
 
-5. **Avoid making a purchase** by pressing the button
+5. **Avoid making a request** to Amazon.
 
-This program detects when your button connects to the network to execute actions, but does not prevent the ordering.
-The easiest way to avoid making a purchase is to reconfigure the button using the Amazon instructions
-(by pressing the button for 5 seconds) but **skipping the last configuration step** *(do not choose which product you
-want to associate with the button)*. If Amazon does not know what product you want, they can not charge anything on
-your credit card.
-
-There are two more methods `in the documentation. <http://docs.nekmo.org/amazon-dash/avoid_purchase.html>`_
+This program detects when your button connects to the network to execute actions, but does not prevent the request.
+Read more `in the documentation. <http://docs.nekmo.org/amazon-dash/avoid_purchase.html>`_
 
 
 Docker
