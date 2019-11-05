@@ -72,6 +72,15 @@ class Wifi(object):
         get_cmd_output(['dhclient', self.device])
 
 
+class NetworkManagerWifi(Wifi):
+    @retry()
+    def connect(self, essid, key=None):
+        get_cmd_output(['nmcli', 'device', 'wifi', 'connect', essid])
+
+    def dhcp(self):
+        pass
+
+
 class ConfigureAmazonDash(object):
     def __init__(self):
         pass
