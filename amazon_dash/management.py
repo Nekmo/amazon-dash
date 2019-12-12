@@ -10,6 +10,11 @@ from click_default_group import DefaultGroup
 
 CONFIG_FILE = 'amazon-dash.yml'
 
+BRICKED_MESSAGE = """\
+December 31 is the last day to block requests from your Amazon-dash buttons to Amazon servers. \
+In 2020 your buttons can be bricked in an update from Amazon servers.\
+"""
+
 
 def create_logger(name, level=logging.INFO):
     """Create a Logger and set handler and formatter
@@ -86,6 +91,7 @@ def cli(loglevel):
     from amazon_dash import __version__
     click.secho('Welcome to Amazon-dash v{} using Python {}'.format(__version__, sys.version.split()[0]),
                 fg='cyan')
+    click.secho(BRICKED_MESSAGE, fg='magenta')
     create_logger('amazon-dash', loglevel)
 
 

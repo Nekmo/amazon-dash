@@ -159,15 +159,13 @@ To run Amazon-dash at **startup**:
 To run Amazon-dash manually look at `the documentation <http://docs.nekmo.org/amazon-dash/usage.html>`_.
 
 
-5. **Avoid making a purchase** by pressing the button
+5. **Avoid a connection to Amazon servers**
 
-This program detects when your button connects to the network to execute actions, but does not prevent the ordering.
-The easiest way to avoid making a purchase is to reconfigure the button using the Amazon instructions
-(by pressing the button for 5 seconds) but **skipping the last configuration step** *(do not choose which product you
-want to associate with the button)*. If Amazon does not know what product you want, they can not charge anything on
-your credit card.
-
-There are two more methods `in the documentation. <http://docs.nekmo.org/amazon-dash/avoid_purchase.html>`_
+December 31 is the last day to block requests from your Amazon-dash buttons to Amazon servers. In 2020 your buttons
+can be bricked in an update from Amazon servers. To continue using your buttons you must configure your router
+to block Internet connections from the buttons. Alternatively you can block these domains: ``dash-button-na-aws-opf
+.amazon.com``, ``0.amazon.pool.ntp.org``, ``1.amazon.pool.ntp.org``, ``2.amazon.pool.ntp.org``, ``3.amazon.pool.ntp
+.org``. However, it is recommended to block all requests from the buttons.
 
 
 Docker
