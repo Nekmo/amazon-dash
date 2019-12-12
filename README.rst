@@ -31,13 +31,18 @@
      :alt: Requirements Status
 
 
+**WARNING**: **Your Amazon-dash buttons can be bricked after December 31st. Go to section 5 to read more.**
+
 **DEVELOPMENT BRANCH**: The current branch is a development version. Go to the stable release by clicking
 on `the master branch <https://github.com/Nekmo/amazon-dash/tree/master>`_.
-
 
 Python Amazon Dash
 ##################
 Hack your Amazon Dash to run what you want. Without welders. For the entire family.
+
+**IMPORTANT**: You have until **August 31** to configure your existing Amazon Dash buttons. Your configured buttons
+should continue to work using Amazon-dash until its end of life. However it is advisable to block the connection
+to Amazon servers with a firewall.
 
 This program written in Python runs in daemon mode waiting for someone in the same
 network to press a configured Amazon Dash button. It is not necessary to know
@@ -159,10 +164,13 @@ To run Amazon-dash at **startup**:
 To run Amazon-dash manually look at `the documentation <http://docs.nekmo.org/amazon-dash/usage.html>`_.
 
 
-5. **Avoid making a request** to Amazon.
+5. **Avoid a connection to Amazon servers**
 
-This program detects when your button connects to the network to execute actions, but does not prevent the request.
-Read more `in the documentation. <http://docs.nekmo.org/amazon-dash/avoid_purchase.html>`_
+December 31 is the last day to block requests from your Amazon-dash buttons to Amazon servers. In 2020 your buttons
+can be bricked in an update from Amazon servers. To continue using your buttons you must configure your router
+to block Internet connections from the buttons. Alternatively you can block these domains: ``dash-button-na-aws-opf
+.amazon.com``, ``0.amazon.pool.ntp.org``, ``1.amazon.pool.ntp.org``, ``2.amazon.pool.ntp.org``, ``3.amazon.pool.ntp
+.org``. However, it is recommended to block all requests from the buttons.
 
 
 Docker
