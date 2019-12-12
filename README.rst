@@ -31,6 +31,8 @@
      :alt: Requirements Status
 
 
+**Your Amazon-dash buttons can be bricked after December 31st. Go to section 5 to read more.**
+
 Python Amazon Dash
 ##################
 Hack your Amazon Dash to run what you want. Without welders. For the entire family.
