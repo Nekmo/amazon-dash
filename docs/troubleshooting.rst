@@ -6,7 +6,7 @@ Requirements and installation
 All dependencies are commonly used on a Linux system, but some may not be installed on your system. The dependencies
 are:
 
-* Python 2.7 or 3.4+.
+* Python 2.7 or 3.5+.
 * Python-pip (pip).
 * Tcpdump.
 * Sudo
