@@ -1,3 +1,2 @@
-scapy<=2.4.0
 subprocess32
 -r common-requirements.txt

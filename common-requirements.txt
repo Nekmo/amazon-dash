@@ -1,5 +1,6 @@
 PyYAML>=3.0
 jsonschema<3.0.0
+scapy>=2.4.3
 requests
 click
 click-default-group
