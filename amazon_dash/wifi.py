@@ -7,6 +7,8 @@ import subprocess
 import sys
 import time
 from functools import wraps
+from subprocess import CalledProcessError
+
 from amazon_dash.exceptions import ConfigWifiError
 
 from bs4 import BeautifulSoup
@@ -24,14 +26,24 @@ def get_cmd_output(cmd, split_lines=True, decode='utf-8'):
     return output
 
 
+def get_wifi_class():
+    try:
+        subprocess.check_call(['nmcli', 'general', 'status'])
+    except (FileNotFoundError, CalledProcessError):
+        return Wifi
+    else:
+        return NetworkManagerWifi
+
+
 def retry(exceptions=(Exception,), tries=5):
     def wrap(fn):
         @wraps(fn)
         def f_retry(*args, **kwargs):
-            for i in range(tries):
+            for i in range(1, tries + 1):
                 try:
                     return fn(*args, **kwargs)
                 except exceptions:
+                    time.sleep(3 * i)
                     if i + 1 >= tries:
                         raise
         return f_retry
@@ -113,9 +125,14 @@ class ConfigureAmazonDash(object):
 
 
 if __name__ == '__main__':
-    w = Wifi()
-    w.connect('Amazon ConfigureMe')
-    print('dhcp')
+    wifi_class = get_wifi_class()
+    w = wifi_class()
+    essid = 'Amazon ConfigureMe'
+    try:
+        w.connect(essid)
+    except CalledProcessError:
+        raise ConfigWifiError('Error connecting to amazon-dash. '
+                              'Is the led flashing blue on the amazon-dash button?'.format(essid))
     w.dhcp()
     configure = ConfigureAmazonDash()
     print(configure.get_info())
