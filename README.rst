@@ -31,18 +31,18 @@
      :alt: Requirements Status
 
 
-**WARNING**: **Your Amazon-dash buttons can be bricked after December 31st. Go to section 5 to read more.**
-
 **DEVELOPMENT BRANCH**: The current branch is a development version. Go to the stable release by clicking
 on `the master branch <https://github.com/Nekmo/amazon-dash/tree/master>`_.
+
+Amazon-dash is still alive
+##########################
+Amazon has abandoned the Amazon-dash buttons, but this project wants to keep them alive. However, we are looking
+for alternatives. If you have suggestions you are welcome to open an incident. All suggestions are welcome.
+You can open an issue with your suggestions.
 
 Python Amazon Dash
 ##################
 Hack your Amazon Dash to run what you want. Without welders. For the entire family.
-
-**IMPORTANT**: You have until **August 31** to configure your existing Amazon Dash buttons. Your configured buttons
-should continue to work using Amazon-dash until its end of life. However it is advisable to block the connection
-to Amazon servers with a firewall.
 
 This program written in Python runs in daemon mode waiting for someone in the same
 network to press a configured Amazon Dash button. It is not necessary to know
