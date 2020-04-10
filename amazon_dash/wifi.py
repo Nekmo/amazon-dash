@@ -59,7 +59,7 @@ class Wifi(object):
 
     def get_wireless_devices(self):
         devices = get_cmd_output(['ip', 'a'])
-        devices = map(lambda x: x.split(' ')[1].rstrip(':'), filter(lambda x: not x.startswith(' '), devices))
+        devices = map(lambda x: x.split(' ')[1].rstrip(':'), filter(lambda x: not x.startswith(' ') and x, devices))
         return filter(lambda x: x.startswith('wl'), devices)
 
     @retry(ConfigWifiError)
@@ -124,7 +124,7 @@ class ConfigureAmazonDash(object):
         r.raise_for_status()
 
 
-if __name__ == '__main__':
+def enable_wifi():
     wifi_class = get_wifi_class()
     w = wifi_class()
     essid = 'Amazon ConfigureMe'
@@ -134,6 +134,3 @@ if __name__ == '__main__':
         raise ConfigWifiError('Error connecting to amazon-dash. '
                               'Is the led flashing blue on the amazon-dash button?'.format(essid))
     w.dhcp()
-    configure = ConfigureAmazonDash()
-    print(configure.get_info())
-    configure.configure(sys.argv[1], sys.argv[2])
