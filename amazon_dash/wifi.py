@@ -78,7 +78,7 @@ class Wifi(object):
             if self.get_network_state() == 'up':
                 return
             time.sleep(.1)
-        ConfigWifiError('Timeout connecting to network')
+        raise ConfigWifiError('Timeout connecting to network')
 
     def dhcp(self):
         get_cmd_output(['dhclient', self.device])
