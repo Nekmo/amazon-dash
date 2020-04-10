@@ -87,7 +87,10 @@ class Wifi(object):
 class NetworkManagerWifi(Wifi):
     @retry()
     def connect(self, essid, key=None):
-        get_cmd_output(['nmcli', 'device', 'wifi', 'connect', essid])
+        cmd = ['nmcli', 'device', 'wifi', 'connect', essid]
+        if key:
+            cmd += ['password', key]
+        get_cmd_output(cmd)
 
     def dhcp(self):
         pass

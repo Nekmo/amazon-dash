@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from amazon_dash.exceptions import ConfigWifiError
-from amazon_dash.wifi import Wifi
+from amazon_dash.wifi import Wifi, NetworkManagerWifi
 
 DEVICES_OUTPUT = """
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
@@ -65,3 +65,14 @@ class TestWifi(unittest.TestCase):
         wifi = Wifi('wifi-eggs')
         with self.assertRaises(ConfigWifiError):
             wifi.wait_up()
+
+
+class TestNetworkManagerWifi(unittest.TestCase):
+    @patch('amazon_dash.wifi.get_cmd_output')
+    def test_connect(self, m):
+        device = 'wifi-eggs'
+        essid = 'foo'
+        key = 'bar'
+        wifi = NetworkManagerWifi(device)
+        wifi.connect(essid, key)
+        m.assert_called_once_with(['nmcli', 'device', 'wifi', 'connect', essid, 'password', key])
