@@ -1,10 +1,12 @@
 import unittest
+from subprocess import CalledProcessError
 from unittest.mock import patch
 
 import requests_mock
 
 from amazon_dash.exceptions import ConfigWifiError
-from amazon_dash.wifi import Wifi, NetworkManagerWifi, ConfigureAmazonDash, CONFIGURE_URL
+from amazon_dash.wifi import Wifi, NetworkManagerWifi, ConfigureAmazonDash, CONFIGURE_URL, get_cmd_output, \
+    get_wifi_class, enable_wifi, retry
 
 DEVICES_OUTPUT = """
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
@@ -62,6 +64,35 @@ NETWORKS_RESPONSE = {
       0
    ]
 }
+
+
+class TestGetCmdOutput(unittest.TestCase):
+    @patch('subprocess.check_output', return_value=b'foo\nbar')
+    def test_get_cmd_output(self, m):
+        output = get_cmd_output(['cmd', 'bar'])
+        self.assertEqual(output, ['foo', 'bar'])
+
+
+class TestGetWifiClass(unittest.TestCase):
+    @patch('subprocess.check_call', side_effect=FileNotFoundError)
+    def test_wifi(self, m):
+        self.assertEqual(get_wifi_class(), Wifi)
+        m.assert_called_once()
+
+    @patch('subprocess.check_call')
+    def test_network_manager_wifi(self, m):
+        self.assertEqual(get_wifi_class(), NetworkManagerWifi)
+        m.assert_called_once()
+
+
+class TestRetry(unittest.TestCase):
+    @patch('amazon_dash.wifi.time.sleep')
+    def test_raises(self, m):
+        with self.assertRaises(ValueError):
+            def fn():
+                raise ValueError
+            retry()(fn)()
+            self.assertEqual(m.call_count, 5)
 
 
 class TestWifi(unittest.TestCase):
@@ -149,3 +180,19 @@ class TestConfigureAmazonDash(unittest.TestCase):
         m.get(CONFIGURE_URL + '?amzn_ssid={}&amzn_pw={}'.format(amzn_ssid, amzn_pw),
               json=NETWORKS_RESPONSE)
         ConfigureAmazonDash().configure(amzn_ssid, amzn_pw)
+
+
+class TestEnableWifi(unittest.TestCase):
+    @patch('amazon_dash.wifi.get_wifi_class')
+    def test_enable_wifi(self, m):
+        enable_wifi()
+        m.assert_called_once()
+        m.return_value.assert_called_once()
+        m.return_value.return_value.connect.assert_called_once()
+        m.return_value.return_value.dhcp.assert_called_once()
+
+    @patch('amazon_dash.wifi.get_wifi_class')
+    def test_enable_wifi_connect_error(self, m):
+        m.return_value.return_value.connect.side_effect = CalledProcessError(1, 'foo')
+        with self.assertRaises(ConfigWifiError):
+            enable_wifi()
