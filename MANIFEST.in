@@ -2,4 +2,5 @@ include common-requirements.txt
 include py2-requirements.txt
 include py3-requirements.txt
 include README.rst
+include amazon_dash/hack.wav
 recursive-include amazon_dash/install *.yml *.service

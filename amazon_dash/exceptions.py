@@ -89,6 +89,12 @@ class ConfigWifiError(AmazonDashException):
     error_code = 11  #: Error code to return
 
 
+class AudioError(AmazonDashException):
+    """Error on dash button audio hack error.
+    """
+    error_code = 12  #: Error code to return
+
+
 def catch(fn, exception_cls=None, raises=True):
     exception_cls = exception_cls or AmazonDashException
 

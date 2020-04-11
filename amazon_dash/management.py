@@ -8,12 +8,17 @@ import sys
 import os
 from click_default_group import DefaultGroup
 
+from amazon_dash.audio import WavAudio
+
 CONFIG_FILE = 'amazon-dash.yml'
 
 BRICKED_MESSAGE = """\
 December 31 is the last day to block requests from your Amazon-dash buttons to Amazon servers. \
 In 2020 your buttons can be bricked in an update from Amazon servers.\
 """
+
+
+directory = os.path.dirname(os.path.abspath(__file__))
 
 
 def create_logger(name, level=logging.INFO):
@@ -39,6 +44,13 @@ def create_logger(name, level=logging.INFO):
 
     # add ch to logger
     logger.addHandler(ch)
+
+
+def blue_light_confirm(no_input):
+    if no_input:
+        click.secho('Used --no-input, ignoring confirm...')
+    else:
+        click.confirm('Is the blue light flashing?', abort=True)
 
 
 def latest_release(package):
@@ -146,10 +158,7 @@ def configure(ssid, password, no_enable_wifi, no_input):
     click.secho('Not blocking Internet connections after setting it could brick your device.', fg='red', blink=True)
     click.secho('Hold the button on your Amazon dash device for 5 seconds until '
                 'the light blinks blue.', fg='blue')
-    if no_input:
-        click.secho('Used --no-input, ignoring confirm...')
-    else:
-        click.confirm('Is the blue light flashing?', abort=True)
+    blue_light_confirm(no_input)
     from amazon_dash.wifi import ConfigureAmazonDash, enable_wifi
     if not no_enable_wifi:
         enable_wifi()
@@ -163,3 +172,24 @@ def configure(ssid, password, no_enable_wifi, no_input):
     click.echo('Success! The button is already configured. However, before using it, '
                'you must block the Internet connections of the device.')
     click.secho('Not blocking Internet connections could brick your device.', fg='red', blink=True)
+
+
+@cli.command('hack-device', help='Hack an amazon-dash device that has never been connected to amazon servers.')
+@click.option('--no-input', is_flag=True)
+@click.option('--loop', type= int, default=5)
+def hack_device(no_input, loop):
+    click.echo('This command allows you to hack a Amazon-dash device built on May 2016 and earlier. '
+               'Even if your device was purchased later, it is likely that it has an older firmware installed. ')
+    click.echo('You only need to use this command if you have never connected your device to Amazon servers in '
+               'the past.')
+    click.echo('Sound is used to hack the device (Amazon Dash buttons include a microphone). It is recommended to '
+               'use earbuds near the button. Remember to turn up the volume on your computer.')
+    click.secho('To start the hack, place the earbuds and hold the button on your Amazon dash device for 5 seconds '
+                'until the light blinks blue. Observe the led during the hack.', fg='blue')
+    blue_light_confirm(no_input)
+    wav_file = os.path.join(directory, 'hack.wav')
+    WavAudio(wav_file).loop_play(loop)
+    click.echo('What happened to the led during the hack?')
+    click.echo('* The LED turns green: the exploit worked! Run the amazon-dash "configure" command')
+    click.echo('* The LED turns off: the device is probably patched. If you have previously connected '
+               'your device to amazon servers maybe you can run the amazon-dash "configure" command')
