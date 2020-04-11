@@ -137,16 +137,22 @@ def discovery(interface):
 @click.option('--ssid', type=str, prompt='SSID (Wireless network name)')
 @click.option('--password', prompt='Network password', hide_input=True,
               help='Password of the wifi network to configure on the device')
-def configure(ssid, password):
+@click.option('--no-enable-wifi', is_flag=True)
+@click.option('--no-input', is_flag=True)
+def configure(ssid, password, no_enable_wifi, no_input):
     click.echo('This command allows you to configure the Wi-Fi network of an amazon-dash device.')
     click.secho('After the configuration, you must block the Internet connection of the device '
                 'before using it.', fg='red')
     click.secho('Not blocking Internet connections after setting it could brick your device.', fg='red', blink=True)
     click.secho('Hold the button on your Amazon dash device for 5 seconds until '
                 'the light blinks blue.', fg='blue')
-    click.confirm('Is the blue light flashing?', abort=True)
+    if no_input:
+        click.secho('Used --no-input, ignoring confirm...')
+    else:
+        click.confirm('Is the blue light flashing?', abort=True)
     from amazon_dash.wifi import ConfigureAmazonDash, enable_wifi
-    enable_wifi()
+    if not no_enable_wifi:
+        enable_wifi()
     configure = ConfigureAmazonDash()
     info = configure.get_info()
     click.echo('Device info:')
