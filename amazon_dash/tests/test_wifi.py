@@ -1,12 +1,18 @@
+import sys
 import unittest
 from subprocess import CalledProcessError
-from unittest.mock import patch
+from ._compat import patch
 
 import requests_mock
 
 from amazon_dash.exceptions import ConfigWifiError
 from amazon_dash.wifi import Wifi, NetworkManagerWifi, ConfigureAmazonDash, CONFIGURE_URL, get_cmd_output, \
     get_wifi_class, enable_wifi, retry
+
+
+if sys.version_info < (3,2):
+    FileNotFoundError = OSError
+
 
 DEVICES_OUTPUT = """
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000

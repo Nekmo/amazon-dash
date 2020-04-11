@@ -17,6 +17,10 @@ import requests
 
 CONFIGURE_URL = 'http://192.168.0.1/'
 
+if sys.version_info < (3,2):
+    FileNotFoundError = OSError
+
+
 def get_cmd_output(cmd, split_lines=True, decode='utf-8'):
     output = subprocess.check_output(cmd)
     if decode:
@@ -60,7 +64,7 @@ class Wifi(object):
     def get_wireless_devices(self):
         devices = get_cmd_output(['ip', 'a'])
         devices = map(lambda x: x.split(' ')[1].rstrip(':'), filter(lambda x: not x.startswith(' ') and x, devices))
-        return filter(lambda x: x.startswith('wl'), devices)
+        return iter(filter(lambda x: x.startswith('wl'), devices))
 
     @retry(ConfigWifiError)
     def connect(self, essid, key=None):
@@ -121,7 +125,7 @@ class ConfigureAmazonDash(object):
 
     def configure(self, ssid, password):
         networks = self.get_networks_availables()
-        if not next(filter(lambda x: x['ssid'] == ssid, networks), None):
+        if not next(iter(filter(lambda x: x['ssid'] == ssid, networks)), None):
             raise ConfigWifiError('Network {} is not available.'.format(ssid))
         r = requests.get(CONFIGURE_URL, {'amzn_ssid': ssid, 'amzn_pw': password})
         r.raise_for_status()
