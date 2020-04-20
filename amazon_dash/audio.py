@@ -1,15 +1,27 @@
 import subprocess
+import sys
 import wave
 import time
-from subprocess import check_call
 
 from amazon_dash.exceptions import AudioError
 
 
-def pyaudio_callback(in_data, frame_count, time_info, status):
+def get_pyaudio_module():
     import pyaudio
-    data = wf.readframes(frame_count)
-    return (data, pyaudio.paContinue)
+    return pyaudio
+
+
+def pyaudio_callback(wf):
+    pyaudio = get_pyaudio_module()
+
+    def wrapper(in_data, frame_count, time_info, status):
+        data = wf.readframes(frame_count)
+        return (data, pyaudio.paContinue)
+    return wrapper
+
+
+if sys.version_info < (3,2):
+    FileNotFoundError = OSError
 
 
 class WavAudio(object):
@@ -37,13 +49,13 @@ class WavAudio(object):
 
     def get_best_play_method(self):
         try:
-            import pyaudio
+            get_pyaudio_module()
         except ImportError:
             pass
         else:
             return self.play_pyaudio
         try:
-            check_call(['play', '--version'])
+            subprocess.check_call(['play', '--version'])
         except FileNotFoundError:
             pass
         else:
@@ -55,7 +67,7 @@ class WavAudio(object):
         subprocess.check_call(['play', self.wav_file])
 
     def play_pyaudio(self):
-        import pyaudio
+        pyaudio = get_pyaudio_module()
 
         wf = wave.open(self.wav_file, 'rb')
         p = pyaudio.PyAudio()
@@ -64,7 +76,7 @@ class WavAudio(object):
                         channels=wf.getnchannels(),
                         rate=wf.getframerate(),
                         output=True,
-                        stream_callback=pyaudio_callback)
+                        stream_callback=pyaudio_callback(wf))
 
         stream.start_stream()
 
