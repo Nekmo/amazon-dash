@@ -30,6 +30,7 @@ Contents
 
    readme
    installation
+   rescue
    usage
    avoid_purchase
    config_file
