@@ -153,8 +153,8 @@ def discovery(interface):
 @click.option('--no-input', is_flag=True)
 def configure(ssid, password, no_enable_wifi, no_input):
     click.echo('This command allows you to configure the Wi-Fi network of an amazon-dash device.')
-    click.secho('After the configuration, you must block the Internet connection of the device '
-                'before using it.', fg='red')
+    click.secho('During the configuration you will have to block the Internet connection of the device.',
+                fg='red')
     click.secho('Not blocking Internet connections after setting it could brick your device.', fg='red', blink=True)
     click.secho('Hold the button on your Amazon dash device for 5 seconds until '
                 'the light blinks blue.', fg='blue')
@@ -167,6 +167,9 @@ def configure(ssid, password, no_enable_wifi, no_input):
     click.echo('Device info:')
     click.echo('\n'.join(['{}: {}'.format(key.replace('_', ' ').title(), value)
                           for key, value in info.items()]))
+    click.secho('Now you must block Internet connections from the device. ', fg='red', blink=True)
+    if not no_input:
+        click.confirm('Have you blocked Internet connections on the router?', abort=True)
     click.echo('Configuring...')
     configure.configure(ssid, password)
     click.echo('Success! The button is already configured. However, before using it, '
