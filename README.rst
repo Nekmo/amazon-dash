@@ -33,7 +33,8 @@
 
 Amazon-dash is still alive
 ##########################
-Amazon has abandoned the Amazon-dash buttons, but this project wants to keep them alive. However, we are looking
+Amazon has abandoned the Amazon-dash buttons, but
+`this project wants to keep them alive <https://docs.nekmo.org/amazon-dash/future.html>`_. However, we are looking
 for alternatives. If you have suggestions you are welcome to open an incident. All suggestions are welcome.
 You can open an issue with your suggestions.
 
@@ -62,14 +63,28 @@ methods `in the documentation <http://docs.nekmo.org/amazon-dash/installation.ht
 
 **Note:** It may also be necessary to install ``tcpdump`` on your system (in Debian ``apt install tcpdump``).
 
-2. Use *discovery mode* **to know the mac of your Dash** (Run the program, and then press any button):
+2. **Hack and configure Wi-Fi**:
+
+You must hack your button with the `hack-device command <https://docs.nekmo.org/amazon-dash/rescue.html#hack>`_
+if you have never used it. Then you must `configure the Wifi connection
+<https://docs.nekmo.org/amazon-dash/rescue.html#configure-wifi>`_. You can skip this step if you have
+already configured the Wi-Fi connection to the router.
+
+3. **Avoid a connection to Amazon servers**
+
+Since 2020 your buttons can be bricked in an update from Amazon servers. To continue using your buttons you must
+configure your router to block Internet connections from the buttons. More info in
+`the Amazon-dash documentation <https://docs.nekmo.org/amazon-dash/block_connections.html>`_.
+
+4. Use *discovery mode* **to know the mac of your Dash** (Run the program, and then press any button). You can
+skip this step if you already know the mac address:
 
 .. code-block:: console
 
     $ sudo amazon-dash discovery
 
 
-3. Edit **config file** (``/etc/amazon-dash.yml``):
+5. Edit **config file** (``/etc/amazon-dash.yml``):
 
 .. code-block:: yaml
 
@@ -140,7 +155,7 @@ For more information see
 `the documentation of the configuration file <http://docs.nekmo.org/amazon-dash/config_file.html>`_.
 
 
-4. Run the **daemon**:
+6. Run the **daemon**:
 
 If you use a **Systemd** system *(Debian 8+, Fedora 15+, Ubuntu 15.04+, Arch Linux 2012+, OpenSUSE 12.1+, and more)*
 execute:
@@ -158,14 +173,6 @@ To run Amazon-dash at **startup**:
 
 To run Amazon-dash manually look at `the documentation <http://docs.nekmo.org/amazon-dash/usage.html>`_.
 
-
-5. **Avoid a connection to Amazon servers**
-
-December 31 is the last day to block requests from your Amazon-dash buttons to Amazon servers. In 2020 your buttons
-can be bricked in an update from Amazon servers. To continue using your buttons you must configure your router
-to block Internet connections from the buttons. Alternatively you can block these domains: ``dash-button-na-aws-opf
-.amazon.com``, ``0.amazon.pool.ntp.org``, ``1.amazon.pool.ntp.org``, ``2.amazon.pool.ntp.org``, ``3.amazon.pool.ntp
-.org``. However, it is recommended to block all requests from the buttons.
 
 
 Docker
