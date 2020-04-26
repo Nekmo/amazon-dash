@@ -31,9 +31,6 @@
      :alt: Requirements Status
 
 
-**DEVELOPMENT BRANCH**: The current branch is a development version. Go to the stable release by clicking
-on `the master branch <https://github.com/Nekmo/amazon-dash/tree/master>`_.
-
 Amazon-dash is still alive
 ##########################
 Amazon has abandoned the Amazon-dash buttons, but this project wants to keep them alive. However, we are looking
