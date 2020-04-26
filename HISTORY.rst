@@ -2,6 +2,24 @@
 History
 =======
 
+v1.4.0 (2020-04-26)
+-------------------
+
+- Issue #119: Authorization Header with OpenHab
+- Issue #132: Systemd service does not work after reboot
+- Issue #130: jsonschema has been updated to 3.0.0 (incompatible update)
+- Issue #128: Command On Button Press Does Not Work In Combination With Docker
+- Issue #120: FreeNAS iocage Plugin
+- Issue #129: Doubts in the installation between python2 and python3.
+- Issue #117: Trouble installing on os x
+- Issue #150: Add Python 3.7 to travis-ci
+- Issue #151: Remove Python 3.4 support
+- Issue #153: Update pyfakefs in tests
+- Issue #152: Python 3.8 support
+- Issue #147: Scapy update
+- Issue #145: Amazon abandoned Dash Buttons
+
+
 v1.3.0 (2018-09-23)
 -------------------
 
