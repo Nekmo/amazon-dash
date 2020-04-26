@@ -1,5 +1,7 @@
 .. highlight:: console
 
+.. _configure_file:
+
 ===========
 Config file
 ===========
@@ -176,6 +178,7 @@ Execution
 The devices section allows you to perform an action when you press an Amazon dash button.
 The following execution methods are available.
 
+.. _execute_cmd:
 
 Execute cmd
 ~~~~~~~~~~~
@@ -252,6 +255,7 @@ Example:
         body: '{"mac": "AC:63:BE:67:B2:F1", "action": "toggleLight"}'
         confirmation: send-tg
 
+.. _homeassistant:
 
 Home Assistant event
 ~~~~~~~~~~~~~~~~~~~~
@@ -350,6 +354,7 @@ Example:
         item: open_door
         state: "ON"
 
+.. _iftt:
 
 IFTTT event
 ~~~~~~~~~~~

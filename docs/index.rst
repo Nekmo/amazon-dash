@@ -5,6 +5,11 @@ $5/€5/£5 but Amazon gives you the money to spend on products. This project al
 purchased *"almost free"* to do what you want. To use this project you need a linux computer (for example a Raspberry
 PI).
 
+.. warning::
+    Since 2020 your buttons can be **bricked** in an update from Amazon servers. Go to :ref:`future`
+    for more info.
+
+
 To **install** amazon-dash, run these commands in your terminal:
 
 .. code-block:: console
@@ -18,7 +23,7 @@ Actions supported in this project for your Amazon Dash buttons:
 .. image:: https://goo.gl/bq5QSK  .. image:: https://goo.gl/k4DJmf  .. image:: https://goo.gl/Gqo8W3
 `System command`_                 `Call url`_                       `Homeassistant`_
 .. image:: https://goo.gl/Cq4bYC  .. image:: https://goo.gl/L7ng8k
-`OpenHAB`_                       `IFTTT`_
+`OpenHAB`_                        `IFTTT`_
 ================================  ================================  ================================
 
 
@@ -30,9 +35,10 @@ Contents
 
    readme
    installation
+   future
+   block_connections
    rescue
    usage
-   avoid_purchase
    config_file
    upgrade
    docker

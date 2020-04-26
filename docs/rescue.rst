@@ -7,13 +7,15 @@ any device that connects to its servers. This means that any button that connect
 be bricked forever.
 
 To continue using your buttons with this project, you must have an advanced router that allows you to
-block requests to Internet. You can also use a raspberry as a router.
+:ref:`block requests to Internet <block_connections>`. You can also use a raspberry as a router.
 
 If your button has been connected to the Internet after December 31, 2019, it has probably been
 bricked and at the moment there is no solution. If you have never configured your button it is
 necessary to hack it first. If you already have it configured but want to change your Wifi network,
-go to :ref:`Configure wifi`.
+go to :ref:`configure_wifi`.
 
+
+.. _hack:
 
 Hack your device
 ----------------
@@ -31,6 +33,8 @@ To start the hack use::
 This command will repeat a recording to hack the device. If the hack has worked, the LED will turn green.
 
 
+.. _configure_wifi:
+
 Configure wifi
 --------------
 The ``configure`` command allows you to change the Wi-Fi network of your device. It can also be used to
@@ -38,9 +42,8 @@ get device data like MAC Address. This command only works on Linux. This command
 of your computer. Amazon-dash support ``NetworkManager`` and ``iwconfig + dhclient`` but *NetworkManager* is
 recommended because it does not require root. To configure your button::
 
-
     $ amazon-dash configure
 
 
-Halfway through the configuration you must lock your device on the router. You need an advanced
+Halfway through the configuration you must block your device on the router. You need an advanced
 router to block connections.
