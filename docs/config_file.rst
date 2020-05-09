@@ -38,6 +38,9 @@ Real example:
     # ---------------
     settings:
       delay: 10
+      interface:
+        - wlan0
+        - eth0
     devices:
       0C:47:C9:98:4A:12:
         name: Hero
@@ -96,6 +99,8 @@ The following options are available in **settings**:
 
 * **delay** (optional): On seconds. By default, 10 seconds. Minimum time that must pass between pulsations of the
   Amazon Dash button.
+* **interface**: (optional): an array, a string, or null. Allows listening on a specific interface or
+  multiple interfaces.
 
 Device section
 ~~~~~~~~~~~~~~

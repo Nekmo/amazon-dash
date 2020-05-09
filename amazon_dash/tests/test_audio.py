@@ -4,7 +4,7 @@ import unittest
 
 from amazon_dash.audio import WavAudio
 from ._compat import patch
-from ..exceptions import AudioError
+from amazon_dash.exceptions import AudioError
 
 if sys.version_info < (3,2):
     FileNotFoundError = OSError

@@ -27,7 +27,11 @@ SCHEMA = {
                     "type": "integer"
                 },
                 "interface": {
-                    "type": "string"
+                    "type": [
+                        "array",
+                        "string",
+                        "null"
+                    ]
                 },
             }
         },
