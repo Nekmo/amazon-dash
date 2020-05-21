@@ -98,8 +98,10 @@ def print_version(ctx, param, value):
 @click.option('--verbose', 'loglevel', help='set logging to COMM',
               flag_value=5)
 @click.option('--version', is_flag=True, callback=print_version,
-              expose_value=False, is_eager=True)
+              expose_value=False, is_eager=True,
+              help='Get amazon-dash version')
 def cli(loglevel):
+    """Hack your Amazon Dash to run what you want."""
     from amazon_dash import __version__
     click.secho('Welcome to Amazon-dash v{} using Python {}'.format(__version__, sys.version.split()[0]),
                 fg='cyan')
@@ -121,9 +123,17 @@ def run(config, root_allowed, ignore_perms):
     Listener(config, ignore_perms).run(root_allowed=root_allowed)
 
 
-@cli.command('check-config', help='Validate the configuration file.')
+@cli.command('check-config')
 @click.option('--config', type=click.Path(), help='Path to config file.', default=CONFIG_FILE)
 def check_config(config):
+    """Check the configuration file before starting the program. For example:
+
+    .. code-block:: shell
+
+        amazon-dash check-config --config /etc/amazon-dash.yml
+
+    The syntax is:
+    """
     from amazon_dash.config import check_config
     check_config(config)
 
@@ -134,14 +144,32 @@ def check_config(config):
 @click.option('--root-allowed', is_flag=True, default=False,
               help='Allow execute commands on config file as root')
 def test_device(device, config, root_allowed):
+    """Test device execution without pressing the associated button. Useful for
+    testing and debugging. For example:
+
+    .. code-block:: shell
+
+        amazon-dash test-device 00:11:22:33:44:55 --config /etc/amazon-dash.yml
+
+    The syntax is:
+    """
     from amazon_dash.listener import test_device
     test_device(device, config, root_allowed)
 
 
-@cli.command(help='Discover Amazon Dash device on network.')
+@cli.command()
 @click.option('--interface', help='Network interface. Use this parameter for each interface to listen on',
               multiple=True)
 def discovery(interface):
+    """Use *discovery mode* **to know the mac of your Dash** (Run the program,
+    and then press the button). For example:
+
+    .. code-block:: shell
+
+        sudo amazon-dash discovery
+
+    The syntax is:
+    """
     interface = list(interface) or None
     from amazon_dash.discovery import discover
     discover(interface)
@@ -151,8 +179,10 @@ def discovery(interface):
 @click.option('--ssid', type=str, prompt='SSID (Wireless network name)')
 @click.option('--password', prompt='Network password', hide_input=True,
               help='Password of the wifi network to configure on the device')
-@click.option('--no-enable-wifi', is_flag=True)
-@click.option('--no-input', is_flag=True)
+@click.option('--no-enable-wifi', is_flag=True,
+              help='Do not activate wifi connection. You must connect manually '
+                   'if you use this option')
+@click.option('--no-input', is_flag=True, help='Answer yes to all questions')
 def configure(ssid, password, no_enable_wifi, no_input):
     click.echo('This command allows you to configure the Wi-Fi network of an amazon-dash device.')
     click.secho('During the configuration you will have to block the Internet connection of the device.',
@@ -180,8 +210,8 @@ def configure(ssid, password, no_enable_wifi, no_input):
 
 
 @cli.command('hack-device', help='Hack an amazon-dash device that has never been connected to amazon servers.')
-@click.option('--no-input', is_flag=True)
-@click.option('--loop', type= int, default=5)
+@click.option('--no-input', is_flag=True, help='Answer yes to all questions')
+@click.option('--loop', type= int, default=5, help='Number of times the audio will play')
 def hack_device(no_input, loop):
     click.echo('This command allows you to hack a Amazon-dash device built on May 2016 and earlier. '
                'Even if your device was purchased later, it is likely that it has an older firmware installed. ')

@@ -52,6 +52,7 @@ clean:
 	rm -rf $(BUILDDIR)/*
 
 html:
+	rm -rf $(BUILDDIR)
 	$(SPHINXAPIDOC) -o . ../amazon_dash
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo

@@ -1,3 +1,4 @@
 pyfakefs==4.0.2
 requests-mock>=1.4.0
 Sphinx
+sphinx-click
