@@ -11,6 +11,7 @@ RUN apk update \
       build-base \
       git \
     && apk add --no-cache \
+      bash \
       libpcap \
       procps \
       tcpdump \
