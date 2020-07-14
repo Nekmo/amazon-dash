@@ -1,4 +1,4 @@
-FROM python:3.8-alpine
+FROM python:alpine
 LABEL maintainer="Nekmo Com <contacto@nekmo.com>"
 
 VOLUME /config
@@ -15,6 +15,7 @@ RUN apk update \
       libpcap \
       procps \
       tcpdump \
+      tzdata \
     && git clone https://github.com/Nekmo/amazon-dash.git /usr/src/app \
     && pip install --no-cache-dir -r py3-requirements.txt \
     && pip install . \
