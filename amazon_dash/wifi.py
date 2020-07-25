@@ -6,6 +6,7 @@ dhclient wlan0
 import subprocess
 import sys
 import time
+import urllib
 from functools import wraps
 from subprocess import CalledProcessError
 
@@ -125,9 +126,14 @@ class ConfigureAmazonDash(object):
 
     def configure(self, ssid, password):
         networks = self.get_networks_availables()
-        if not next(iter(filter(lambda x: x['ssid'] == ssid, networks)), None):
+	# Escape the ssid for the search
+        xssid = urllib.parse.quote(ssid)
+        if not next(iter(filter(lambda x: x['ssid'] == xssid, networks)), None):
             raise ConfigWifiError('Network {} is not available.'.format(ssid))
-        r = requests.get(CONFIGURE_URL, {'amzn_ssid': ssid, 'amzn_pw': password})
+        # Use %20 instead of + to escape space
+        payload = {'amzn_ssid': ssid, 'amzn_pw': password}
+        params = urllib.parse.urlencode(payload, quote_via=urllib.parse.quote)
+        r = requests.get(CONFIGURE_URL, params=params)
         r.raise_for_status()
 
 
