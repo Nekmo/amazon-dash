@@ -6,7 +6,7 @@ import threading
 from amazon_dash.config import Config
 from amazon_dash.confirmations import get_confirmation
 from amazon_dash.exceptions import InvalidConfig, InvalidDevice
-from amazon_dash.execute import logger, ExecuteCmd, ExecuteUrl, ExecuteHomeAssistant, ExecuteOpenHab, ExecuteIFTTT
+from amazon_dash.execute import logger, ExecuteCmd, ExecuteUrl, ExecuteHomeAssistant, ExecuteOpenHab, ExecuteIFTTT, ExecuteMQTT
 from amazon_dash.scan import scan_devices
 
 DEFAULT_DELAY = 10
@@ -20,6 +20,7 @@ EXECUTE_CLS = {
     'homeassistant': ExecuteHomeAssistant,
     'openhab': ExecuteOpenHab,
     'ifttt': ExecuteIFTTT,
+    'mqtt': ExecuteMQTT,
 }
 """
 Execute classes registered.

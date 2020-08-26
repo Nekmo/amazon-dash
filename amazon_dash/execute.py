@@ -6,6 +6,7 @@ import getpass
 import sys
 
 import copy
+import paho.mqtt.client as mqtt   # pip install paho-mqtt
 from requests import request, RequestException
 from amazon_dash._compat import JSONDecodeError
 from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
@@ -170,6 +171,52 @@ class ExecuteCmd(Execute):
             output = execute_cmd(cmd, self.data.get('cwd'))
         if output:
             return output[0]
+
+class ExecuteMQTT(Execute):
+    """Publish a mqtt
+    """
+    mqtt_client = mqtt.Client(protocol=mqtt.MQTTv311)
+    default_host = 'localhost'  #: default broker host
+    default_port = 1883  #: default MQTT port
+    default_clientID = 'amazon-dash'  #: default content type to send
+
+    def __init__(self, name, data):
+        """
+
+        :param str name: name or mac address
+        :param data: data on device section
+        """
+        super(ExecuteMQTT, self).__init__(name, data)
+        self.host = data.get('mqtt', default_host)
+        self.port = data.get('mqttport', default_host)
+        self.clientID = data.get('clientid', default_clientID)
+
+    def validate(self):
+        """Check self.data. Raise InvalidConfig on error
+
+        :return: None
+        """
+        try:
+            mqtt_client.connect(self.host, self.port, keepalive=60)
+            mqtt_client.disconnect()
+        except:
+            raise InvalidConfig(
+                extra_body='Invalid MQTT broker on {} device.'.format(self.name)
+            )
+
+    def execute(self, root_allowed=False):
+
+        topic = self.data.get('topic', None)
+        message = self.data.get('message', None)
+
+        if (topic is not None) and (message is not None):
+            try:
+                mqtt_client.connect(self.host, self.port, keepalive=60)
+                mqtt_client.publish(topic, message)
+                mqtt_client.disconnect()
+            except:
+                raise ExecuteError('Exception on publish to {}: {}'.format(self.host, e))
+
 
 
 class ExecuteUrl(Execute):
