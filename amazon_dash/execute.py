@@ -6,7 +6,7 @@ import getpass
 import sys
 
 import copy
-import paho.mqtt.client as mqtt   # pip install paho-mqtt
+import paho.mqtt.client as mqtt
 from requests import request, RequestException
 from amazon_dash._compat import JSONDecodeError
 from amazon_dash.exceptions import SecurityException, InvalidConfig, ExecuteError
