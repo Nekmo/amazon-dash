@@ -103,7 +103,7 @@ class Device(object):
         if not self.confirmation:
             return
         try:
-            self.confirmation.send(message, success)
+            self.confirmation.send(message, success, src=self.src, **self.data)
         except Exception as e:
             logger.warning('Error sending confirmation on device {}: {}'.format(self.name, e))
 

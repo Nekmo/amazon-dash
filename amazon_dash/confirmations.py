@@ -14,14 +14,19 @@ class ConfirmationBase(object):
                 raise InvalidConfig(extra_body='{} is a required parameter for {} confirmation'.format(key, self.name))
         self.data = data
 
-    def send(self, message, success=True):
+    def format_message(self, message, success=True, **kwargs):
+        format_message = self.data.get('success_message' if success else 'failure_message')
+        format_message = format_message or '{message}'
+        return format_message.format(message=message, success=success, **kwargs)
+
+    def send(self, message, success=True, **kwargs):
         raise NotImplementedError
 
 
 class DisabledConfirmation(ConfirmationBase):
     name = 'disabled'
 
-    def send(self, message, success=True):
+    def send(self, message, success=True, **kwargs):
         pass
 
 
@@ -30,7 +35,8 @@ class TelegramConfirmation(ConfirmationBase):
     name = 'telegram'
     required_fields = ('token', 'to')
 
-    def send(self, message, success=True):
+    def send(self, message, success=True, **kwargs):
+        message = self.format_message(message, success, **kwargs)
         try:
             r = requests.post(self.url_base.format(self.data['token']), dict(
                 text=message, chat_id=self.data['to'],
@@ -74,7 +80,8 @@ class PushbulletConfirmation(ConfirmationBase):
             data[self.to_field] = self.data[self.to_field]
         return data
 
-    def send(self, message, success=True):
+    def send(self, message, success=True, **kwargs):
+        message = self.format_message(message, success, **kwargs)
         try:
             r = requests.post(self.url_base, json=self.get_data(message),
                               headers={'Access-Token': self.data['token']})
