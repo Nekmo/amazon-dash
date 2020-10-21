@@ -33,6 +33,19 @@ class TestGetConfirmation(unittest.TestCase):
 
 
 class TestConfirmationBase(unittest.TestCase):
+    def get_confirmation(self, data):
+        class Confirmation(ConfirmationBase):
+            pass
+        return Confirmation(data or {})
+    
+    def test_format_success_message(self):
+        confirmation = self.get_confirmation({'success_message': 'Foo {message} {foo}'})
+        self.assertEqual(confirmation.format_message('bar', foo='spam'), 'Foo bar spam')
+
+    def test_format_failure_message(self):
+        confirmation = self.get_confirmation({'failure_message': 'Foo {message} {foo}'})
+        self.assertEqual(confirmation.format_message('bar', False, foo='spam'), 'Foo bar spam')
+
     def test_required_fields(self):
         class Confirmation(ConfirmationBase):
             required_fields = ('foo',)
