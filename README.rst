@@ -44,6 +44,8 @@ Python Amazon Dash
 ##################
 Hack your Amazon Dash to run what you want. Without welders. For the entire family.
 
+Better yet, build your own push button using ESP8266 device. Of course, some assembly is required.
+
 This program written in Python runs in daemon mode waiting for someone in the same
 network to press a configured Amazon Dash button. It is not necessary to know
 programming to use this program. Amazon-Dash executes **commands by command line,
