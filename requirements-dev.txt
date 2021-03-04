@@ -1,4 +1,9 @@
-pyfakefs==4.0.2
+-rcommon-requirements.txt
 requests-mock>=1.4.0
 Sphinx
 sphinx-click
+codecov>=1.4.0
+mock
+requests-mock
+pyfakefs==4.0.2; python_version > '3.0'
+pyfakefs==3.3; python_version < '3'
