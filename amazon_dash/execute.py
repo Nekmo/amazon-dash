@@ -305,7 +305,7 @@ class ExecuteOwnApiBase(ExecuteUrlServiceBase):
         """
         url = self.data[self.execute_name]
         parsed = urlparse(url)
-        if not parsed.scheme:
+        if not parsed.scheme or not parsed.netloc:
             url = '{}://{}'.format(self.default_protocol, url)
         if not url.split(':')[-1].isalnum():
             url += ':{}'.format(self.default_port)
