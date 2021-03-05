@@ -301,7 +301,7 @@ setup(
     name=PACKAGE_NAME,
     version=package_version,
 
-    description=__doc__,
+    description=__doc__.strip(),
     long_description=long_description,
 
     author=AUTHOR,
