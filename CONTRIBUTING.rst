@@ -103,7 +103,7 @@ Before you submit a pull request, check that it meets these guidelines:
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
 3. The pull request should work for Python 2.7, 3.4, 3.5, 3.6, 3.7 and 3.8. Check
-   https://travis-ci.org/Nekmo/amazon-dash/pull_requests
+   https://github.com/Nekmo/amazon-dash/actions/workflows/test.yml
    and make sure that the tests pass for all supported Python versions.
 
 Tips

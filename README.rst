@@ -6,9 +6,9 @@
 |
 
 
-.. image:: https://img.shields.io/travis/Nekmo/amazon-dash/develop.svg?style=flat-square&maxAge=2592000
-  :target: https://travis-ci.org/Nekmo/amazon-dash
-  :alt: Latest Travis CI build status
+.. image:: https://img.shields.io/github/workflow/status/Nekmo/amazon-dash/Tests.svg?style=flat-square&maxAge=2592000
+  :target: https://github.com/Nekmo/amazon-dash/actions?query=workflow%3ATests
+  :alt: Latest Tests CI build status
 
 .. image:: https://img.shields.io/pypi/v/amazon-dash.svg?style=flat-square
   :target: https://pypi.org/project/amazon-dash/
