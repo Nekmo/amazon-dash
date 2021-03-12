@@ -88,6 +88,21 @@ SCHEMA = {
                         "ifttt": {
                             "type": "string"
                         },
+                        "mqtt": {
+                            "type": "string"
+                        },
+                        "mqttport": {
+                            "type": "string"
+                        },
+                        "clientid": {
+                            "type": "string"
+                        },
+                        "topic": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        },
                         "event": {
                             "type": "string"
                         },
