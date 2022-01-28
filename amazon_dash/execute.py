@@ -24,6 +24,21 @@ CONTENT_TYPE_ALIASES = {
 logger = logging.getLogger('amazon-dash')
 
 
+def human_request_exception(e: RequestException):
+    """Human requests error message
+
+    :param e:
+    :return: error message
+    """
+    if e.args and hasattr(e.args[0], 'reason') \
+            and isinstance(getattr(e.args[0].reason, 'args', None), tuple) \
+            and len(e.args[0].reason.args) == 2:
+        return e.args[0].reason.args[1]
+    else:
+        return e.__class__.__name__
+
+
+
 def get_shell(name):
     """Absolute path to command
 
@@ -217,7 +232,7 @@ class ExecuteUrl(Execute):
                            verify=self.data.get('verify', True),
                            **kwargs)
         except RequestException as e:
-            raise ExecuteError('Exception on request to {}: {}'.format(self.data['url'], e))
+            raise ExecuteError('Exception on request to {}: {}'.format(self.data['url'], human_request_exception(e)))
         if resp.status_code >= 400:
             raise ExecuteError('"{}" return code {}.'.format(self.data['url'], resp.status_code))
         data = resp.raw.read(1000, decode_content=True)
