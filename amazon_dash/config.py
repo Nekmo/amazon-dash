@@ -123,7 +123,13 @@ SCHEMA = {
                         },
                         "to": {
                             "type": "integer"
-                        }
+                        },
+                        "success_message": {
+                            "type": "string"
+                        },
+                        "failure_message": {
+                            "type": "string"
+                        },
                     },
                     "required": ["service"],
                 }
