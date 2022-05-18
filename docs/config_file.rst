@@ -177,6 +177,27 @@ For run a confirmation for all devices by default using ``is_default: true``:
         to: 24291592
         is_default: true
 
+By default the message is the response of the call (for example the *stdout output* of the command) but the message
+can be customized using ``success_message`` or/and ``failure_message`` options. This message can use the variables
+``message`` (command output), ``src`` (mac address) and device options (*name, url*...). For example::
+
+.. code-block:: yaml
+
+    # amazon-dash.yml
+    # ---------------
+    settings:
+      delay: 10
+    devices:
+      # ...
+    confirmations:
+      confirmation-name:
+        service: telegram
+        token: '402642618:QwGDgiKE3LqdkNAtBkq0UEeBoDdpZYw8b4h'
+        to: 24291592
+        is_default: true
+        success_message: 'Success call of device {src} ({name}): {message}'
+        failure_message: 'Error call of device {src} ({name}): {message}'
+
 
 Execution
 ---------

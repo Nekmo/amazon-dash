@@ -37,7 +37,7 @@ class TestConfirmationBase(unittest.TestCase):
         class Confirmation(ConfirmationBase):
             pass
         return Confirmation(data or {})
-    
+
     def test_format_success_message(self):
         confirmation = self.get_confirmation({'success_message': 'Foo {message} {foo}'})
         self.assertEqual(confirmation.format_message('bar', foo='spam'), 'Foo bar spam')
