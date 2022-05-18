@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 import requests
 import requests_mock
@@ -45,6 +46,13 @@ class TestConfirmationBase(unittest.TestCase):
     def test_format_failure_message(self):
         confirmation = self.get_confirmation({'failure_message': 'Foo {message} {foo}'})
         self.assertEqual(confirmation.format_message('bar', False, foo='spam'), 'Foo bar spam')
+
+    @patch('amazon_dash.confirmations.logger')
+    def test_format_error(self, m):
+        confirmation = self.get_confirmation({'success_message': 'Foo {missing}'})
+        message = 'bar'
+        self.assertIn(message, confirmation.format_message(message, foo='spam'))
+        m.warning.assert_called_once()
 
     def test_required_fields(self):
         class Confirmation(ConfirmationBase):

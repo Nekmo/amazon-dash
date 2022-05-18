@@ -1,8 +1,14 @@
+import logging
+
 import requests
 from requests import RequestException
 
 from amazon_dash.exceptions import InvalidConfig, ConfirmationError
 from amazon_dash._compat import JSONDecodeError
+
+
+logger = logging.getLogger('amazon-dash')
+
 
 class ConfirmationBase(object):
     name = None
@@ -17,7 +23,16 @@ class ConfirmationBase(object):
     def format_message(self, message, success=True, **kwargs):
         format_message = self.data.get('success_message' if success else 'failure_message')
         format_message = format_message or '{message}'
-        return format_message.format(message=message, success=success, **kwargs)
+        try:
+            return format_message.format(message=message, success=success, **kwargs)
+        except KeyError as e:
+            error_message = "The template message '{}' could not be formatted due to a missing variable: {}".format(
+                format_message, e
+            )
+            logger.warning(error_message)
+            return "{} [{}]".format(
+                message, error_message
+            )
 
     def send(self, message, success=True, **kwargs):
         raise NotImplementedError
