@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch
+from amazon_dash.tests._compat import patch
 
 import requests
 import requests_mock
