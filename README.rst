@@ -6,7 +6,7 @@
 |
 
 
-.. image:: https://img.shields.io/github/workflow/status/Nekmo/amazon-dash/Tests.svg?style=flat-square&maxAge=2592000
+.. image:: https://img.shields.io/github/actions/workflow/status/Nekmo/amazon-dash/test.yml?style=flat-square&maxAge=2592000&branch=master
   :target: https://github.com/Nekmo/amazon-dash/actions?query=workflow%3ATests
   :alt: Latest Tests CI build status
 
@@ -18,7 +18,7 @@
   :target: https://pypi.org/project/amazon-dash/
   :alt: Python versions
 
-.. image:: https://img.shields.io/codeclimate/github/Nekmo/amazon-dash.svg?style=flat-square
+.. image:: https://img.shields.io/codeclimate/maintainability/Nekmo/amazon-dash.svg?style=flat-square
   :target: https://codeclimate.com/github/Nekmo/amazon-dash
   :alt: Code Climate
 
@@ -26,9 +26,10 @@
   :target: https://codecov.io/github/Nekmo/amazon-dash
   :alt: Test coverage
 
-.. image:: https://img.shields.io/requires/github/Nekmo/amazon-dash.svg?style=flat-square
-     :target: https://requires.io/github/Nekmo/amazon-dash/requirements/?branch=master
-     :alt: Requirements Status
+.. image:: https://img.shields.io/github/stars/Nekmo/telegram-upload?style=flat-square
+     :target: https://github.com/Nekmo/telegram-upload
+     :alt: Github stars
+
 
 **DEVELOPMENT BRANCH**: The current branch is a development version. Go to the stable release by clicking
 on `the master branch <https://github.com/Nekmo/amazon-dash/tree/master>`_.
