@@ -5,8 +5,11 @@
 
 |
 
+.. image:: https://raw.githubusercontent.com/Nekmo/amazon-dash/pip-rating-badge/pip-rating-badge.svg
+  :target: https://github.com/Nekmo/amazon-dash/actions/workflows/pip-rating.yml
+  :alt: pip-rating badge
 
-.. image:: https://img.shields.io/github/actions/workflow/status/Nekmo/amazon-dash/test.yml?style=flat-square&maxAge=2592000&branch=master
+.. image:: https://img.shields.io/github/actions/workflow/status/Nekmo/amazon-dash/test.yml?style=flat-square&maxAge=2592000&branch=develop
   :target: https://github.com/Nekmo/amazon-dash/actions?query=workflow%3ATests
   :alt: Latest Tests CI build status
 
@@ -26,8 +29,8 @@
   :target: https://codecov.io/github/Nekmo/amazon-dash
   :alt: Test coverage
 
-.. image:: https://img.shields.io/github/stars/Nekmo/telegram-upload?style=flat-square
-     :target: https://github.com/Nekmo/telegram-upload
+.. image:: https://img.shields.io/github/stars/Nekmo/amazon-dash?style=flat-square
+     :target: https://github.com/Nekmo/amazon-dash
      :alt: Github stars
 
 
