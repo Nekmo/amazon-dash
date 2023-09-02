@@ -228,6 +228,7 @@ class ExecuteUrl(Execute):
         if self.data.get('auth'):
             kwargs['auth'] = tuple(self.data['auth'].split(':', 1))
         try:
+            kwargs['headers']['user-agent'] ='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
             resp = request(self.data.get('method', 'get').lower(), self.data['url'],
                            verify=self.data.get('verify', True),
                            **kwargs)
