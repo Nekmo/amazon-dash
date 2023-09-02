@@ -31,6 +31,7 @@ AMAZON_DEVICES = [
     '34:D2:70',
     'B4:7C:9C',
     'F0:81:73',
+    '5C:CF:7F',
 ]
 """Amazon Dash Mac Devices. Source: https://standards.ieee.org/develop/regauth/oui/oui.csv
 
